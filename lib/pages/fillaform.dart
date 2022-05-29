@@ -124,12 +124,15 @@ class _fillaformState extends State<fillaform> {
                 });
 
             String url = await uploadFile(image!);
-            Occupationdb();
+            Occupationdb(context);
 
             // newProduct.group = group;
             _firestore.collection("Members").add({
-              // 'image': url.toString(),
-              // 'name': addMember.name.toString(),
+              'image': url.toString(),
+             "FirstName":Provider.of<Users>(context,listen: false).userInfo?.fname ??"",
+             "LastName":Provider.of<Users>(context,listen: false).userInfo?.lname ??"",
+             "Email":Provider.of<Users>(context,listen: false).userInfo?.email ??"",
+             "PhoneNumber":Provider.of<Users>(context,listen: false).userInfo?.phone ??"",
               // "": rndnumber.toString(),
               "placeofwork": addMember.placeofwork.toString(),
               "Residence": addMember.residence,
@@ -2546,19 +2549,32 @@ class _fillaformState extends State<fillaform> {
     );
   }
 
-  Occupationdb() async {
+
+  Occupationdb(context) async {
+
+    var firstname =Provider.of<Users>(context,listen: false).userInfo?.fname ??"";
+    var lastname=Provider.of<Users>(context,listen: false).userInfo?.lname ??"";
+    var email=Provider.of<Users>(context,listen: false).userInfo?.email ??"";
+    var phone=Provider.of<Users>(context,listen: false).userInfo?.phone ??"";
     // String url = await uploadsFile();
     String url = await uploadFile(image!);
     Map userDataMap = {
       'profile': url.toString(),
-      // 'name': addMember1?.name.toString(),
-      'Deposit': addMember1?.Deposit.toString(),
-      "TotalBalance": addMember1?.TotalBalance,
-      'Amount': rndnumber.toString(),
-      'mobile': addMember1?.mobile.toString(),
+      "FirstName":firstname,
+      "LastName":lastname,
+      "Email":email,
+      "PhoneNumber":phone,
+      // "": rndnumber.toString(),
+      "placeofwork": addMember.placeofwork.toString(),
+      "Residence": addMember.residence,
+      "Region": addMember.Region,
+      "language": addMember.language,
+      "Occupation": addMember.Occupation,
+
+      "homeTown": addMember.homeTown,
     };
 
-    clients.child("Client").set(userDataMap);
+    clients.child("Members").set(userDataMap);
   }
 }
 
