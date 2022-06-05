@@ -11,9 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:piwc/pages/registration.dart';
 import 'package:piwc/pages/utils/color_palette.dart';
+import 'package:provider/provider.dart';
 
 import '../Membershipform/Addmember.dart';
 import '../main.dart';
+import '../model/Users.dart';
 import '../progressdialog.dart';
 
 
@@ -176,10 +178,12 @@ class _fillaformState extends State<fillaform> {
                                                     color: Colors.black.withOpacity(.1),
                                                     borderRadius: BorderRadius.circular(20),
                                                   ),
-                                                  child: TextField(
+                                                  child: TextFormField(
                                                     style: TextStyle(
                                                       color: Colors.white.withOpacity(.9),
                                                     ),
+
+                                                    initialValue: Provider.of<Users>(context).userInfo?.fname?? '',
 
                                                     onChanged: (rndnumber) {
                                                       addMember.accountNumber ==rndnumber;
@@ -211,10 +215,13 @@ class _fillaformState extends State<fillaform> {
                                                     color: Colors.black.withOpacity(.1),
                                                     borderRadius: BorderRadius.circular(20),
                                                   ),
-                                                  child: TextField(
+                                                  child: TextFormField(
                                                     style: TextStyle(
                                                       color: Colors.white.withOpacity(.9),
                                                     ),
+
+
+                                                    initialValue:Provider.of<Users>(context).userInfo?.lname?? '',
                                                     // controller: lname,
                                                     // onChanged: (value){
                                                     //   _lastname = value;
@@ -852,7 +859,7 @@ class _fillaformState extends State<fillaform> {
     final User? user = auth.currentUser;
     final myUid = user?.uid;
 
-    final userId = currentfirebaseUser?.email;
+    // final userId = currentfirebaseUser?.email;
     final _storage = FirebaseStorage.instance;
 
     String downloadUrl;
@@ -889,7 +896,7 @@ class _fillaformState extends State<fillaform> {
   }
   Future<String> downloadUrl() {
     final dateTime = DateTime.now();
-    final userId = currentfirebaseUser?.uid;
+    // final userId = currentfirebaseUser?.uid;
 
     return FirebaseStorage.instance
         .refFromURL("gs://capitalsusu.appspot.com/")
@@ -1015,7 +1022,7 @@ Future<String> uploadFile(io.File image) async {
   final User? user = auth.currentUser;
   final myUid = user?.uid;
 
-  final userId = currentfirebaseUser?.email;
+  // final userId = currentfirebaseUser?.email;
   final _storage = FirebaseStorage.instance;
 
   String downloadUrl;
