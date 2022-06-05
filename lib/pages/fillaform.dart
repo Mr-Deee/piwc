@@ -248,6 +248,91 @@ class _fillaformState extends State<fillaform> {
                                           ),
                                         ),
 
+
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: size.width / 8,
+                                                  width: size.width /2.4,
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(right: size.width / 30),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black.withOpacity(.1),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                      color: Colors.white.withOpacity(.9),
+                                                    ),
+
+                                                    initialValue: Provider.of<Users>(context).userInfo?.fname?? '',
+
+                                                    onChanged: (rndnumber) {
+                                                      addMember.accountNumber ==rndnumber;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      prefixIcon: Icon(
+                                                        Icons.account_circle_outlined,
+                                                        color: Colors.white.withOpacity(.8),
+                                                      ),
+                                                      border: InputBorder.none,
+                                                      hintMaxLines: 1,
+                                                      hintText:'First Name',
+                                                      hintStyle: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white.withOpacity(.5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: size.width / 8,
+                                                  width: size.width / 2.4,
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(right: size.width / 30),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black.withOpacity(.1),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                      color: Colors.white.withOpacity(.9),
+                                                    ),
+
+
+                                                    initialValue:Provider.of<Users>(context).userInfo?.lname?? '',
+                                                    // controller: lname,
+                                                    // onChanged: (value){
+                                                    //   _lastname = value;
+                                                    // },
+                                                    // obscureText: isPassword,
+                                                    // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      prefixIcon: Icon(
+                                                        Icons.account_circle_outlined,
+                                                        color: Colors.white.withOpacity(.8),
+                                                      ),
+                                                      border: InputBorder.none,
+                                                      hintMaxLines: 1,
+                                                      hintText:'Last Name',
+                                                      hintStyle: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white.withOpacity(.5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         //email
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
