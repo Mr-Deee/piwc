@@ -339,40 +339,84 @@ class _fillaformState extends State<fillaform> {
                                           ),
                                         ),
                                         //Hometown
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: size.width / 8,
-                                            width: size.width / 2.5,
-                                            alignment: Alignment.center,
-                                            padding: EdgeInsets.only(
-                                                right: size.width / 30),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black.withOpacity(.1),
-                                              borderRadius: BorderRadius.circular(20),
-                                            ),
-                                            child: TextField(
-                                              style: TextStyle(
-                                                color: Colors.white.withOpacity(.9),
-                                              ),
+                                        Row(
+                                          children: [
 
-                                              // obscureText: isPassword,
-                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                              decoration: InputDecoration(
-                                                prefixIcon: Icon(
-                                                  Icons.holiday_village,
-                                                  color: Colors.white.withOpacity(.8),
+                                            //Hometown
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: size.width / 8,
+                                                width: size.width / 2.5,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.only(
+                                                    right: size.width / 30),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black.withOpacity(.1),
+                                                  borderRadius: BorderRadius.circular(20),
                                                 ),
-                                                border: InputBorder.none,
-                                                hintMaxLines: 1,
-                                                hintText: 'HomeTown',
-                                                hintStyle: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white.withOpacity(.5),
+                                                child: TextField(
+                                                  style: TextStyle(
+                                                    color: Colors.white.withOpacity(.9),
+                                                  ),
+
+                                                  // obscureText: isPassword,
+                                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: Icon(
+                                                      Icons.holiday_village,
+                                                      color: Colors.white.withOpacity(.8),
+                                                    ),
+                                                    border: InputBorder.none,
+                                                    hintMaxLines: 1,
+                                                    hintText: 'HomeTown',
+                                                    hintStyle: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white.withOpacity(.5),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+
+
+                                            //Residentiaal Address
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: size.width / 8,
+                                                width: size.width / 2.5,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.only(
+                                                    right: size.width / 30),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black.withOpacity(.1),
+                                                  borderRadius: BorderRadius.circular(20),
+                                                ),
+                                                child: TextField(
+                                                  style: TextStyle(
+                                                    color: Colors.white.withOpacity(.9),
+                                                  ),
+
+                                                  // obscureText: isPassword,
+                                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                  decoration: InputDecoration(
+                                                    prefixIcon: Icon(
+                                                      Icons.holiday_village,
+                                                      color: Colors.white.withOpacity(.8),
+                                                    ),
+                                                    border: InputBorder.none,
+                                                    hintMaxLines: 1,
+                                                    hintText: 'Residential Address',
+                                                    hintStyle: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white.withOpacity(.5),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
 
                                         //pass
