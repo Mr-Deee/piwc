@@ -362,7 +362,7 @@ class _fillaformState extends State<fillaform> {
 
                                                   controller: lname,
                                                   onChanged: (value){
-                                                    addMember. = value;
+                                                    addMember.homeTown = value;
                                                   },
 
                                                   // obscureText: isPassword,

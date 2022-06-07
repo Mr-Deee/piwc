@@ -8,6 +8,7 @@ class addedMember {
     this.language,
     this.Occupation,
     this.PlaceofWork,
+    this.residence,
     this.group,
     this.location,
     this.company,
@@ -25,6 +26,7 @@ class addedMember {
   String? fathername;
   String? mothername;
   String? homeTown;
+  String? residence;
   String? language;
 
   String? Occupation;
