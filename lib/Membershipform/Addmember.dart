@@ -6,7 +6,6 @@ class addedMember {
     this.mothername,
     this.homeTown,
     this.language,
-
     this.Occupation,
     this.PlaceofWork,
     this.group,
@@ -53,10 +52,9 @@ class addedMember {
       image: json["image"] as String?,
       accountNumber: json["Account Number"] as String?,
 
-
+  );
   Map<String, dynamic> toMap() => {
         // "name": name,
-        "Deposit amount": Deposit,
         "TotalBalance": TotalBalance! + Deposit!,
         "UserType": group,
         "agentname": agentname,
