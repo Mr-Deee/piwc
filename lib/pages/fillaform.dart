@@ -355,10 +355,15 @@ class _fillaformState extends State<fillaform> {
                                                   color: Colors.black.withOpacity(.1),
                                                   borderRadius: BorderRadius.circular(20),
                                                 ),
-                                                child: TextField(
+                                                child: TextFormField(
                                                   style: TextStyle(
                                                     color: Colors.white.withOpacity(.9),
                                                   ),
+
+                                                  controller: lname,
+                                                  onChanged: (value){
+                                                    addMember. = value;
+                                                  },
 
                                                   // obscureText: isPassword,
                                                   // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
@@ -402,7 +407,7 @@ class _fillaformState extends State<fillaform> {
                                                   // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                   decoration: InputDecoration(
                                                     prefixIcon: Icon(
-                                                      Icons.holiday_village,
+                                                      Icons.house_outlined,
                                                       color: Colors.white.withOpacity(.8),
                                                     ),
                                                     border: InputBorder.none,

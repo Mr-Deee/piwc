@@ -1,17 +1,14 @@
-
-import 'package:provider/provider.dart';
-
 class addedMember {
   addedMember({
     this.fname,
     this.lname,
-    // this.fathername,
-    // this.motehrname,
-    // this.homeTown,
-    // this.language,
+    this.fathername,
+    this.mothername,
+    this.homeTown,
+    this.language,
 
-    this.Deposit,
-    this.TotalBalance,
+    this.Occupation,
+    this.PlaceofWork,
     this.group,
     this.location,
     this.company,
@@ -26,9 +23,16 @@ class addedMember {
   String? fname;
   String? lname;
   String? agentname;
+  String? fathername;
+  String? mothername;
+  String? homeTown;
+  String? language;
+
+  String? Occupation;
+  String? PlaceofWork;
   int? availablebalance;
-  int? Deposit=0;
-  int? TotalBalance =0;
+  int? Deposit = 0;
+  int? TotalBalance = 0;
   String? group;
   String? location;
   String? company;
@@ -39,7 +43,7 @@ class addedMember {
 
   factory addedMember.fromMap(Map<String, dynamic> json) => addedMember(
       // name: json["name"] as String?,
-      Deposit: json["Deposit amount"] as int?,
+
       group: json["UserType"] as String?,
       location: json["location"] as String?,
       mobile: json["mobile"] as String?,
@@ -48,18 +52,17 @@ class addedMember {
       // quantity: json["quantity"] as int?,
       image: json["image"] as String?,
       accountNumber: json["Account Number"] as String?,
-      TotalBalance:json["TotalBalance"] as int?
-  );
+
 
   Map<String, dynamic> toMap() => {
-    // "name": name,
-    "Deposit amount": Deposit,
-    "TotalBalance": TotalBalance!+Deposit!,
-    "UserType": group,
-    "agentname": agentname,
-    "location": location,
-    "image": image,
-    "Account Number": accountNumber,
-    "mobile": mobile,
-  };
+        // "name": name,
+        "Deposit amount": Deposit,
+        "TotalBalance": TotalBalance! + Deposit!,
+        "UserType": group,
+        "agentname": agentname,
+        "location": location,
+        "image": image,
+        "Account Number": accountNumber,
+        "mobile": mobile,
+      };
 }
