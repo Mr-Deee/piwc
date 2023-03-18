@@ -105,7 +105,7 @@ class _loginState extends State<login> {
                                     ),
                                     controller: email,
                                     // obscureText: isPassword,
-                                    // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  keyboardType:  TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
                                           Icons.email,

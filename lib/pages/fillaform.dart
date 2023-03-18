@@ -133,7 +133,7 @@ class _fillaformState extends State<fillaform> {
                Expanded(
                     flex:1,
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 10),
+                      padding:  EdgeInsets.symmetric(horizontal: 0),
                       child: SizedBox(
                         child: Column(
 
@@ -171,7 +171,7 @@ class _fillaformState extends State<fillaform> {
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Container(
                                                   height: size.width / 8,
-                                                  width: size.width /2.4,
+                                                  width: size.width /2.5,
                                                   alignment: Alignment.center,
                                                   padding: EdgeInsets.only(right: size.width / 30),
                                                   decoration: BoxDecoration(
@@ -185,9 +185,9 @@ class _fillaformState extends State<fillaform> {
 
                                                     initialValue: Provider.of<Users>(context).userInfo?.fname?? '',
 
-                                                    onChanged: (rndnumber) {
-                                                      addMember.accountNumber ==rndnumber;
-                                                    },
+                                                    // onChanged: (rnnumber) {
+                                                    //   addMember.accountNumber ==rndnumber;
+                                                    // },
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
                                                         Icons.account_circle_outlined,
@@ -208,7 +208,7 @@ class _fillaformState extends State<fillaform> {
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Container(
                                                   height: size.width / 8,
-                                                  width: size.width / 2.4,
+                                                  width: size.width / 2.5,
                                                   alignment: Alignment.center,
                                                   padding: EdgeInsets.only(right: size.width / 30),
                                                   decoration: BoxDecoration(
@@ -248,7 +248,7 @@ class _fillaformState extends State<fillaform> {
                                           ),
                                         ),
 
-
+                                      //phone
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Row(
@@ -257,7 +257,7 @@ class _fillaformState extends State<fillaform> {
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Container(
                                                   height: size.width / 8,
-                                                  width: size.width /2.4,
+                                                  width: size.width /2.5,
                                                   alignment: Alignment.center,
                                                   padding: EdgeInsets.only(right: size.width / 30),
                                                   decoration: BoxDecoration(
@@ -268,20 +268,21 @@ class _fillaformState extends State<fillaform> {
                                                     style: TextStyle(
                                                       color: Colors.white.withOpacity(.9),
                                                     ),
+                                                    readOnly: true,
 
-                                                    initialValue: Provider.of<Users>(context).userInfo?.fname?? '',
+                                                    initialValue: Provider.of<Users>(context).userInfo?.phone?? '',
 
-                                                    onChanged: (rndnumber) {
-                                                      addMember.accountNumber ==rndnumber;
-                                                    },
+                                                    // onChanged: (rndnumber) {
+                                                    //   addMember.accountNumber ==rndnumber;
+                                                    // },
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
-                                                        Icons.account_circle_outlined,
+                                                        Icons.phone,
                                                         color: Colors.white.withOpacity(.8),
                                                       ),
                                                       border: InputBorder.none,
                                                       hintMaxLines: 1,
-                                                      hintText:'First Name',
+                                                      hintText:'Phone',
                                                       hintStyle: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.white.withOpacity(.5),
@@ -290,11 +291,14 @@ class _fillaformState extends State<fillaform> {
                                                   ),
                                                 ),
                                               ),
+
+
+                                              //Email
                                               Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Container(
                                                   height: size.width / 8,
-                                                  width: size.width / 2.4,
+                                                  width: size.width / 2.5,
                                                   alignment: Alignment.center,
                                                   padding: EdgeInsets.only(right: size.width / 30),
                                                   decoration: BoxDecoration(
@@ -307,21 +311,22 @@ class _fillaformState extends State<fillaform> {
                                                     ),
 
 
-                                                    initialValue:Provider.of<Users>(context).userInfo?.lname?? '',
+                                                    initialValue:Provider.of<Users>(context).userInfo?.email?? '',
                                                     // controller: lname,
                                                     // onChanged: (value){
                                                     //   _lastname = value;
                                                     // },
+                                                    readOnly: true,
                                                     // obscureText: isPassword,
                                                     // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                     decoration: InputDecoration(
                                                       prefixIcon: Icon(
-                                                        Icons.account_circle_outlined,
+                                                        Icons.email,
                                                         color: Colors.white.withOpacity(.8),
                                                       ),
                                                       border: InputBorder.none,
                                                       hintMaxLines: 1,
-                                                      hintText:'Last Name',
+                                                      hintText:'Email',
                                                       hintStyle: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.white.withOpacity(.5),
@@ -333,12 +338,12 @@ class _fillaformState extends State<fillaform> {
                                             ],
                                           ),
                                         ),
-                                        //email
+                                        //Hometown
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
                                             height: size.width / 8,
-                                            width: size.width / 1.25,
+                                            width: size.width / 2.5,
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.only(
                                                 right: size.width / 30),
@@ -355,12 +360,12 @@ class _fillaformState extends State<fillaform> {
                                               // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
-                                                  Icons.email,
+                                                  Icons.holiday_village,
                                                   color: Colors.white.withOpacity(.8),
                                                 ),
                                                 border: InputBorder.none,
                                                 hintMaxLines: 1,
-                                                hintText: 'Email...',
+                                                hintText: 'HomeTown',
                                                 hintStyle: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white.withOpacity(.5),
