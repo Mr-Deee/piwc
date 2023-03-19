@@ -191,7 +191,7 @@ class _registrationState extends State<registration> {
                                               _email = value;
                                             },
                                             // obscureText: isPassword,
-                                            // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                            keyboardType:  TextInputType.emailAddress ,
                                             decoration: InputDecoration(
                                               prefixIcon: Icon(
                                                 Icons.email,
@@ -229,7 +229,7 @@ class _registrationState extends State<registration> {
                                               _mobileNumber = value;
                                             },
 
-                                            // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                        keyboardType:  TextInputType.phone ,
                                             decoration: InputDecoration(
                                               prefixIcon: Icon(
                                                 Icons.phone,
