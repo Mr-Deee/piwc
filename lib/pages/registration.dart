@@ -22,7 +22,14 @@ class registation extends StatefulWidget {
 User ?firebaseUser;
 User? currentfirebaseUser;
 class _registationState extends State<registation> {
-  TextEditingController? email,fname,lname, password,username,phone;
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController fname = new TextEditingController();
+  TextEditingController lname = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
+  String? _email, _password, _firstName,_lastname, _mobileNumber;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
@@ -97,7 +104,10 @@ class _registationState extends State<registation> {
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(.9),
                                               ),
-                                              controller: username,
+                                              controller: fname,
+                                              onChanged: (value){
+                                                _firstName = value;
+                                              },
                                               // obscureText: isPassword,
                                               // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                               decoration: InputDecoration(
@@ -131,7 +141,10 @@ class _registationState extends State<registation> {
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(.9),
                                               ),
-                                              controller: fname,
+                                              controller: lname,
+                                              onChanged: (value){
+                                                _lastname = value;
+                                              },
                                               // obscureText: isPassword,
                                               // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                               decoration: InputDecoration(
@@ -171,7 +184,7 @@ class _registationState extends State<registation> {
                                         style: TextStyle(
                                           color: Colors.white.withOpacity(.9),
                                         ),
-                                        controller: username,
+                                        controller: email,
                                         // obscureText: isPassword,
                                         // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                         decoration: InputDecoration(
@@ -190,6 +203,8 @@ class _registationState extends State<registation> {
                                       ),
                                     ),
                                   ),
+
+                                  //pass
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
@@ -206,7 +221,7 @@ class _registationState extends State<registation> {
                                         style: TextStyle(
                                           color: Colors.white.withOpacity(.9),
                                         ),
-                                        controller: username,
+                                        controller: password,
                                         obscureText: true,
                                         // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
                                         decoration: InputDecoration(
@@ -255,6 +270,8 @@ class _registationState extends State<registation> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () {
+                                      registerInfirestore(context);
+                                      registerNewUser(context);
                                       HapticFeedback.lightImpact();
                                       Fluttertoast.showToast(
                                         msg: 'Sign-In button pressed',
@@ -317,8 +334,8 @@ class _registationState extends State<registation> {
 
   firebaseUser = (await _firebaseAuth
       .createUserWithEmailAndPassword(
-      email: email!.text,
-      password: password!.text)
+      email: email.text,
+      password: password.text)
       .catchError((errMsg) {
     Navigator.pop(context);
     displayToast("Error" + errMsg.toString(), context);
@@ -365,7 +382,7 @@ class _registationState extends State<registation> {
 Future<void> registerInfirestore(BuildContext context) async {
   User? user = FirebaseAuth.instance.currentUser;
   if(user!=null) {
-    FirebaseFirestore.instance.collection('Clients').doc(email.toString()).set({
+    FirebaseFirestore.instance.collection('Clients').doc(_email).set({
       'firstName': fname,
       'lastName': lname,
       'MobileNumber': phone,
