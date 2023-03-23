@@ -1,5 +1,6 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:piwc/pages/login.dart';
 
+
+import '../main.dart';
+import '../progressdialog.dart';
 import '../widgets/behavior.dart';
 
 class registation extends StatefulWidget {
@@ -15,7 +19,8 @@ class registation extends StatefulWidget {
   @override
   State<registation> createState() => _registationState();
 }
-
+User ?firebaseUser;
+User? currentfirebaseUser;
 class _registationState extends State<registation> {
   TextEditingController? email,fname,lname, password,username,phone;
   @override
@@ -294,4 +299,94 @@ class _registationState extends State<registation> {
         ),
       ),
     );
-  }}
+  }
+
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> registerNewUser(BuildContext context) async {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return ProgressDialog(
+          message: "Registering,Please wait.....",
+        );
+      });
+  registerInfirestore(context);
+
+  firebaseUser = (await _firebaseAuth
+      .createUserWithEmailAndPassword(
+      email: email!.text,
+      password: password!.text)
+      .catchError((errMsg) {
+    Navigator.pop(context);
+    displayToast("Error" + errMsg.toString(), context);
+  }))
+      .user;
+
+  if (firebaseUser != null) // user created
+
+      {
+    //save use into to database
+
+    Map userDataMap = {
+      "firstName": fname?.text.trim(),
+      "lastName": lname?.text.trim(),
+      "email": email?.text.trim(),
+      "fullName":[fname?.text.trim()]  + [lname!.text.trim()],
+      "phone": phone?.text.trim(),
+      // "Dob":birthDate,
+      // "Gender":Gender,
+    };
+    clients.child(firebaseUser!.uid).set(userDataMap);
+    // Admin.child(firebaseUser!.uid).set(userDataMap);
+
+    currentfirebaseUser = firebaseUser;
+
+    displayToast("Congratulation, your account has been created", context);
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => login()),
+            (Route<dynamic> route) => false);
+  } else {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return login();
+      }),
+    );
+    // Navigator.pop(context);
+    //error occured - display error
+    displayToast("user has not been created", context);
+  }
+}
+
+Future<void> registerInfirestore(BuildContext context) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if(user!=null) {
+    FirebaseFirestore.instance.collection('Clients').doc(email.toString()).set({
+      'firstName': fname,
+      'lastName': lname,
+      'MobileNumber': phone,
+      'fullName':[ fname] + [lname],
+      'Email': email,
+      // 'Gender': Gender,
+      // 'Date Of Birth': birthDate,
+    });
+  }
+  print("Registered");
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(builder: (context) {
+  //     return SignInScreen();
+  //   }),
+  // );
+
+
+}
+
+  displayToast(String message, BuildContext context) {
+    Fluttertoast.showToast(msg: message);
+  }
+}
