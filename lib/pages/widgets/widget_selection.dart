@@ -23,7 +23,7 @@ class Widget_selection extends StatelessWidget {
               height: 120,
               width: 119,
               decoration: BoxDecoration(
-                  color: Colors. transparent,
+                  color: Colors. blue,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
                     BoxShadow(
@@ -37,7 +37,7 @@ class Widget_selection extends StatelessWidget {
 
 
                   image: DecorationImage(
-                      image: AssetImage(image!), fit: BoxFit.scaleDown, scale: 2)),
+                      image: AssetImage(image!), fit: BoxFit.scaleDown, scale: 6)),
 
             ),
           ),

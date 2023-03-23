@@ -8,6 +8,7 @@ import 'package:piwc/pages/login.dart';
 import 'package:piwc/pages/widgets/widget_selection.dart';
 
 import '../widgets/behavior.dart';
+import 'fillaform.dart';
 
 class homepage extends StatefulWidget {
   static const String idScreen = "homepage";
@@ -25,7 +26,7 @@ class _homepageState extends State<homepage> {
         .size;
     return Scaffold(
 
-
+    backgroundColor: Colors.black12,
       body:
       ScrollConfiguration(
         behavior: MyBehavior(),
@@ -57,49 +58,85 @@ class _homepageState extends State<homepage> {
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(30),
                                         child: BackdropFilter(
+
                                             filter: ImageFilter.blur(
-                                                sigmaY: 100, sigmaX: 70),
+                                                sigmaY: 400, sigmaX: 400),
                                             child: SizedBox(
                                               width: size.width * .95,
                                               child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                                children: [
 
-                                                  Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          // Navigator.of(context).push(
-                                                          //     MaterialPageRoute(
-                                                          //         builder: (context) =>
-                                                          //             askaquestion()));
-                                                        },
-                                                        child: Widget_selection(
-                                                          image: 'assets/images/consultancy.png',
-                                                          title: 'Fill A Form',
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top:28.0,left: 28,right: 28),
+                                                    child: Row(
+                                                      children: [
+                                                                  SizedBox(height: 30,),
+
+                                                            Column(
+                                                              children: [
+                                                                Container(
+
+                                                                  height: 100,
+                                                                  width: 279,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors. black12,
+                                                                    borderRadius: BorderRadius.circular(8),
+                                                                    boxShadow: const [
+                                                                    BoxShadow(
+                                                                      color: Colors.black45,
+                                                                      blurRadius: 2.0,
+                                                                      spreadRadius: 0.0,
+                                                                      offset: Offset(1.0, 1.0), // shadow direction: bottom right
+                                                                    ),]),
+                                                                  child: Row(
+                                                                    children: [
+
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+
+                                                      ],
+                                                    ),
+                                                  ),
+
+
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 18.0,left:18 ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.of(context).push(
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        fillaform()));
+                                                          },
+                                                          child: Widget_selection(
+                                                            image: 'assets/images/fo.png',
+                                                            title: 'Fill A Form',
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          // Navigator.of(context).push(
-                                                          //     MaterialPageRoute(
-                                                          //         builder: (context) =>
-                                                          //             askaquestion()));
-                                                        },
-                                                        child: Widget_selection(
-                                                          image: 'assets/images/consultancy.png',
-                                                          title: 'Announcement',
+                                                      Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+
+                                                          },
+                                                          child: Widget_selection(
+                                                            image: 'assets/images/consultancy.png',
+                                                            title: 'Announcement',
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
                                                 ),
+                                                  ),
 
                                                   Padding(
                                                     padding: const EdgeInsets.only(top: 8.0,bottom: 39),
