@@ -96,12 +96,12 @@ class _loginState extends State<login> {
                                   // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
-                                        Icons.email,
+                                        Icons.person,
                                       color: Colors.white.withOpacity(.8),
                                     ),
                                     border: InputBorder.none,
                                     hintMaxLines: 1,
-                                    hintText:'Email...',
+                                    hintText:'Username...',
                                     hintStyle: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white.withOpacity(.5),
@@ -126,7 +126,7 @@ class _loginState extends State<login> {
                                   style: TextStyle(
                                     color: Colors.white.withOpacity(.9),
                                   ),
-                                  controller: username,
+                                  controller: email,
                                   // obscureText: isPassword,
                                   // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                   decoration: InputDecoration(
