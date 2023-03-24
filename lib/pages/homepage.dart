@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:piwc/pages/login.dart';
 import 'package:piwc/pages/widgets/widget_selection.dart';
+import 'package:provider/provider.dart';
 
+import '../model/Users.dart';
+import '../model/assistantmethods.dart';
 import '../widgets/behavior.dart';
 import 'fillaform.dart';
 
@@ -19,6 +22,14 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
+
+
+  @override
+  void initState() {
+    AssistantMethods.getCurrentOnlineUserInfo(context);
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
@@ -76,20 +87,35 @@ class _homepageState extends State<homepage> {
                                                               children: [
                                                                 Container(
 
-                                                                  height: 100,
-                                                                  width: 279,
+                                                                  height: 70,
+                                                                  width: 283,
                                                                   decoration: BoxDecoration(
-                                                                    color: Colors. black12,
+                                                                    color: Colors. blue,
                                                                     borderRadius: BorderRadius.circular(8),
                                                                     boxShadow: const [
                                                                     BoxShadow(
-                                                                      color: Colors.black45,
+                                                                      color: Colors.lightBlueAccent,
                                                                       blurRadius: 2.0,
                                                                       spreadRadius: 0.0,
                                                                       offset: Offset(1.0, 1.0), // shadow direction: bottom right
                                                                     ),]),
-                                                                  child: Row(
+                                                                  child: Column(
                                                                     children: [
+                                                                      Row(
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Text("Hi"),
+                                                                            ),
+                                                                            if (Provider.of<Users>(context).userInfo?.fname != null)
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Text(Provider.of<Users>(context).userInfo!.fname!,style: TextStyle(color: Colors.black),),
+                                                                            ),
+
+                                                                          ],
+                                                                        ),
+
 
                                                                     ],
                                                                   ),

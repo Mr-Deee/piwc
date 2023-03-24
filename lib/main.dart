@@ -3,15 +3,28 @@ import 'package:piwc/pages/homepage.dart';
 import 'package:piwc/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:piwc/pages/registration.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import 'model/Users.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<Users>(
+      create: (context) => Users(),
+    ),
+
+
+
+
+
+
+  ],child:MyApp()));
 
   await Firebase.initializeApp();
 }
