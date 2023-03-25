@@ -65,7 +65,7 @@ class _registrationState extends State<registration> {
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaY: 100, sigmaX: 70),
                             child: SizedBox(
-                              width: size.width * .9,
+                              width: size.width * .96,
                               child: Column(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
@@ -86,9 +86,8 @@ class _registrationState extends State<registration> {
                                   ),
 
                                   //Username
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
+
+                              Row(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -166,43 +165,88 @@ class _registrationState extends State<registration> {
                                         ),
                                       ],
                                     ),
-                                  ),
+
 
                                   //email
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: size.width / 8,
-                                      width: size.width / 1.25,
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.only(
-                                          right: size.width / 30),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(.1),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: TextField(
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(.9),
-                                        ),
-                                        controller: email,
-                                        // obscureText: isPassword,
-                                        // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(
-                                            Icons.email,
-                                            color: Colors.white.withOpacity(.8),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: size.width / 8,
+                                          width: size.width / 2.4,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.only(
+                                              right: size.width / 30),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(.1),
+                                            borderRadius: BorderRadius.circular(20),
                                           ),
-                                          border: InputBorder.none,
-                                          hintMaxLines: 1,
-                                          hintText: 'Email...',
-                                          hintStyle: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white.withOpacity(.5),
+                                          child: TextField(
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(.9),
+                                            ),
+                                            controller: email,
+                                            onChanged: (value){
+                                              _email = value;
+                                            },
+                                            // obscureText: isPassword,
+                                            // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(
+                                                Icons.email,
+                                                color: Colors.white.withOpacity(.8),
+                                              ),
+                                              border: InputBorder.none,
+                                              hintMaxLines: 1,
+                                              hintText: 'Email...',
+                                              hintStyle: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white.withOpacity(.5),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: size.width / 8,
+                                          width: size.width / 2.4,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.only(
+                                              right: size.width / 30),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(.1),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: TextField(
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(.9),
+                                            ),
+                                            controller: phone,
+                                            onChanged: (value){
+                                              _mobileNumber = value;
+                                            },
+
+                                            // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                            decoration: InputDecoration(
+                                              prefixIcon: Icon(
+                                                Icons.phone,
+                                                color: Colors.white.withOpacity(.8),
+                                              ),
+                                              border: InputBorder.none,
+                                              hintMaxLines: 1,
+                                              hintText: 'Phone Number...',
+                                              hintStyle: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white.withOpacity(.5),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
 
                                   //pass
@@ -224,6 +268,9 @@ class _registrationState extends State<registration> {
                                         ),
                                         controller: password,
                                         obscureText: true,
+                                        onChanged: (value){
+                                          _password=value;
+                                        },
                                         // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
                                         decoration: InputDecoration(
                                           prefixIcon: Icon(
@@ -241,6 +288,8 @@ class _registrationState extends State<registration> {
                                       ),
                                     ),
                                   ),
+
+
 
 
                                   Row(
@@ -274,9 +323,7 @@ class _registrationState extends State<registration> {
                                       registerInfirestore(context);
                                       registerNewUser(context);
                                       HapticFeedback.lightImpact();
-                                      Fluttertoast.showToast(
-                                        msg: 'Sign-In button pressed',
-                                      );
+
                                     },
                                     child: Container(
                                       margin: EdgeInsets.only(
@@ -354,6 +401,7 @@ class _registrationState extends State<registration> {
       "email": email.text.trim(),
       "fullName":fname.text.trim() + lname.text.trim(),
       "phone": phone.text.trim(),
+      "Password": password.text.trim(),
       // "Dob":birthDate,
       // "Gender":Gender,
     };
@@ -383,12 +431,13 @@ class _registrationState extends State<registration> {
 Future<void> registerInfirestore(BuildContext context) async {
   User? user = FirebaseAuth.instance.currentUser;
   if(user!=null) {
-    FirebaseFirestore.instance.collection('Clients').doc(_email).set({
+    FirebaseFirestore.instance.collection('Members').doc(_email).set({
       'firstName': _firstName,
       'lastName': _lastname,
       'MobileNumber': _mobileNumber,
       'fullName':_firstName! +  _lastname!,
       'Email': _email,
+      'Password':_password,
       // 'Gender': Gender,
       // 'Date Of Birth': birthDate,
     });

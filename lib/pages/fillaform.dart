@@ -1,19 +1,20 @@
 import 'dart:io';
+import 'dart:io' as io;
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 import 'package:piwc/pages/registration.dart';
 import 'package:piwc/pages/utils/color_palette.dart';
-import 'dart:io' as io;
+
 import '../Membershipform/Addmember.dart';
-import '../progressdialog.dart';
-import 'package:path/path.dart';
 import '../main.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import '../progressdialog.dart';
 
 
 
@@ -62,6 +63,9 @@ class _fillaformState extends State<fillaform> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(
@@ -75,7 +79,7 @@ class _fillaformState extends State<fillaform> {
                   barrierDismissible: false,
                   builder: (BuildContext context) {
                     return ProgressDialog(
-                      message: "Adding New Client,Please wait.....",
+                      message: "Add Member Details,Please wait.....",
                     );
                   });
 
@@ -83,15 +87,15 @@ class _fillaformState extends State<fillaform> {
               Occupationdb();
 
               // newProduct.group = group;
-              _firestore.collection("Client").add({
+              _firestore.collection("Members").add({
                 'image': url.toString(),
-                'name': addMember.name.toString(),
-                'IdNumber': rndnumber.toString(),
-                'UserType': addMember.group.toString(),
-                "TotalBalance": addMember.TotalBalance,
-                'location': addMember.location,
-                "Deposit amount": addMember.Deposit,
-                'mobile': addMember.mobile,
+                // 'name': addMember.name.toString(),
+               "": rndnumber.toString(),
+                "": addMember.group.toString(),
+                "": addMember.TotalBalance,
+                "": addMember.location,
+                "": addMember.Deposit,
+                "": addMember.mobile,
 
 
                 //newProduct.toMap()
@@ -116,26 +120,24 @@ class _fillaformState extends State<fillaform> {
         body: Container(
           color: ColorPalette.pacificBlue,
           child: SafeArea(
-            child: Container(
-              color: ColorPalette.aquaHaze,
-              height: double.infinity,
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Expanded(
+        child: Container(
+            color: ColorPalette.aquaHaze,
+            height: double.infinity,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+               Expanded(
+                    flex:1,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding:  EdgeInsets.symmetric(horizontal: 10),
                       child: SizedBox(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+
+
                           children: [
-                            Row(
-                              children: const [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
+
                             Expanded(
                               child: Stack(
                                 children: [
@@ -144,7 +146,7 @@ class _fillaformState extends State<fillaform> {
                                     width: double.infinity,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 20,
-                                      vertical: 50,
+                                      vertical: 40,
                                     ),
                                     margin: const EdgeInsets.only(top: 75),
                                     decoration: const BoxDecoration(
@@ -154,293 +156,555 @@ class _fillaformState extends State<fillaform> {
                                         topRight: Radius.circular(16),
                                       ),
                                     ),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 8,
-                                              bottom: 12,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                    left: 8,
-                                                    bottom: 12,
-                                                  ),
-                                                  child: Text(
-                                                    "Input Type  : group",
-                                                    style: const TextStyle(
-                                                      fontFamily: "Nunito",
-                                                      fontSize: 17,
-                                                      color:
-                                                      ColorPalette.nileBlue,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorPalette.white,
-                                              borderRadius:
-                                              BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: const Offset(0, 3),
-                                                  blurRadius: 6,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.1),
-                                                ),
-                                              ],
-                                            ),
-                                            height: 50,
-                                            child: TextFormField(
-                                              initialValue: addMember.name ??
-                                                  '',
-                                              onChanged: (value) {
-                                                addMember.name = value;
-                                              },
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              key: UniqueKey(),
-                                              keyboardType: TextInputType.text,
-                                              style: const TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: ColorPalette.nileBlue,
-                                              ),
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: "Client Name",
-                                                filled: true,
-                                                fillColor: Colors.transparent,
-                                                hintStyle: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 16,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.58),
-                                                ),
-                                              ),
-                                              cursorColor:
-                                              ColorPalette.timberGreen,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
+                                    child:  Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+
+                                        //Username
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
                                             children: [
-
-                                              const SizedBox(
-                                                width: 20,
-                                              ),
-                                              Expanded(
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
                                                 child: Container(
+                                                  height: size.width / 8,
+                                                  width: size.width /2.4,
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(right: size.width / 30),
                                                   decoration: BoxDecoration(
-                                                    color: ColorPalette.white,
-                                                    borderRadius:
-                                                    BorderRadius.circular(12),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        offset:
-                                                        const Offset(0, 3),
-                                                        blurRadius: 6,
-                                                        color: ColorPalette
-                                                            .nileBlue
-                                                            .withOpacity(0.1),
-                                                      ),
-                                                    ],
+                                                    color: Colors.black.withOpacity(.1),
+                                                    borderRadius: BorderRadius.circular(20),
                                                   ),
-                                                  height: 50,
-                                                  child: TextFormField(
-                                                    initialValue: "",
-
-                                                    //rndnumber,
-                                                    // newProduct.accountNumber == rndnumber
-                                                    //     ? rndnumber
-                                                    //     : rndnumber,
-                                                    //newProduct.quantity
-                                                    //.toString(),
-                                                    // onChanged: (rndnumber) {
-                                                    //   newProduct.accountNumber ==rndnumber;
-                                                    // },
-                                                    textInputAction:
-                                                    TextInputAction.next,
-                                                    key: UniqueKey(),
-                                                    keyboardType:
-                                                    TextInputType.number,
-                                                    style: const TextStyle(
-                                                      fontFamily: "Nunito",
-                                                      fontSize: 16,
-                                                      color:
-                                                      ColorPalette.nileBlue,
+                                                  child: TextField(
+                                                    style: TextStyle(
+                                                      color: Colors.white.withOpacity(.9),
                                                     ),
+
+                                                    onChanged: (rndnumber) {
+                                                      addMember.accountNumber ==rndnumber;
+                                                    },
                                                     decoration: InputDecoration(
+                                                      prefixIcon: Icon(
+                                                        Icons.account_circle_outlined,
+                                                        color: Colors.white.withOpacity(.8),
+                                                      ),
                                                       border: InputBorder.none,
-                                                      hintText: rndnumber,
-                                                      filled: true,
-                                                      fillColor:
-                                                      Colors.transparent,
+                                                      hintMaxLines: 1,
+                                                      hintText:'First Name',
                                                       hintStyle: TextStyle(
-                                                        fontFamily: "Nunito",
-                                                        fontSize: 16,
-                                                        color: ColorPalette
-                                                            .nileBlue
-                                                            .withOpacity(0.58),
+                                                        fontSize: 14,
+                                                        color: Colors.white.withOpacity(.5),
                                                       ),
                                                     ),
-                                                    cursorColor:
-                                                    ColorPalette.timberGreen,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: size.width / 8,
+                                                  width: size.width / 2.4,
+                                                  alignment: Alignment.center,
+                                                  padding: EdgeInsets.only(right: size.width / 30),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black.withOpacity(.1),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: TextField(
+                                                    style: TextStyle(
+                                                      color: Colors.white.withOpacity(.9),
+                                                    ),
+                                                    // controller: lname,
+                                                    // onChanged: (value){
+                                                    //   _lastname = value;
+                                                    // },
+                                                    // obscureText: isPassword,
+                                                    // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      prefixIcon: Icon(
+                                                        Icons.account_circle_outlined,
+                                                        color: Colors.white.withOpacity(.8),
+                                                      ),
+                                                      border: InputBorder.none,
+                                                      hintMaxLines: 1,
+                                                      hintText:'Last Name',
+                                                      hintStyle: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white.withOpacity(.5),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          // const SizedBox(
+                                        ),
 
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: ColorPalette.white,
-                                              borderRadius:
-                                              BorderRadius.circular(12),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: const Offset(0, 3),
-                                                  blurRadius: 6,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.1),
-                                                ),
-                                              ],
-                                            ),
-                                            height: 50,
-                                            child: TextFormField(
-                                              initialValue:
-                                              addMember.mobile ?? '',
-                                              onChanged: (value) {
-                                                addMember.mobile = value;
-                                              },
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              key: UniqueKey(),
-                                              keyboardType: TextInputType
-                                                  .number,
-                                              style: const TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: ColorPalette.nileBlue,
-                                              ),
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: "Mobile Number ",
-                                                filled: true,
-                                                fillColor: Colors.transparent,
-                                                hintStyle: TextStyle(
-                                                  fontFamily: "Nunito",
-                                                  fontSize: 16,
-                                                  color: ColorPalette.nileBlue
-                                                      .withOpacity(0.58),
-                                                ),
-                                              ),
-                                              cursorColor:
-                                              ColorPalette.timberGreen,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          // Container(
-                                          //   decoration: BoxDecoration(
-                                          //     color: ColorPalette.white,
-                                          //     borderRadius:
-                                          //     BorderRadius.circular(12),
-                                          //     boxShadow: [
-                                          //       BoxShadow(
-                                          //         offset: const Offset(0, 3),
-                                          //         blurRadius: 6,
-                                          //         color: ColorPalette.nileBlue
-                                          //             .withOpacity(0.1),
-                                          //       ),
-                                          //     ],
-                                          //   ),
-                                          //   height: 50,
-                                          //   child: Text(""),
-                                          // ),
-                                          Padding(
+                                        //email
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: size.width / 8,
+                                            width: size.width / 1.25,
+                                            alignment: Alignment.center,
                                             padding: EdgeInsets.only(
-                                              left: 8,
-                                              bottom: 34,
+                                                right: size.width / 30),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(.1),
+                                              borderRadius: BorderRadius.circular(20),
                                             ),
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    color: ColorPalette.white,
-                                                    borderRadius:
-                                                    BorderRadius.circular(12),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        offset:
-                                                        const Offset(0, 3),
-                                                        blurRadius: 6,
-                                                        color: ColorPalette
-                                                            .nileBlue
-                                                            .withOpacity(0.1),
-                                                      ),
-                                                    ],
+                                            child: TextField(
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(.9),
+                                              ),
+
+                                              // obscureText: isPassword,
+                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                              decoration: InputDecoration(
+                                                prefixIcon: Icon(
+                                                  Icons.email,
+                                                  color: Colors.white.withOpacity(.8),
+                                                ),
+                                                border: InputBorder.none,
+                                                hintMaxLines: 1,
+                                                hintText: 'Email...',
+                                                hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white.withOpacity(.5),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        //pass
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: size.width / 8,
+                                            width: size.width / 1.25,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(
+                                                right: size.width / 30),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(.1),
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                            child: TextField(
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(.9),
+                                              ),
+
+                                              obscureText: true,
+                                              // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                              decoration: InputDecoration(
+                                                prefixIcon: Icon(
+                                                  Icons.password,
+                                                  color: Colors.white.withOpacity(.8),
+                                                ),
+                                                border: InputBorder.none,
+                                                hintMaxLines: 1,
+                                                hintText: 'Password...',
+                                                hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white.withOpacity(.5),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+
+
+
+
+                                        Row(
+                                          children: [
+
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
                                                   ),
-                                                  height: 50,
-                                                  child: TextFormField(
-                                                    initialValue:
-                                                    addMember.location ?? '',
-                                                    onChanged: (value) {
-                                                      addMember.location =
-                                                          value;
-                                                    },
-                                                    textInputAction:
-                                                    TextInputAction.next,
-                                                    key: UniqueKey(),
-                                                    keyboardType:
-                                                    TextInputType.text,
-                                                    style: const TextStyle(
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
                                                       fontFamily: "Nunito",
                                                       fontSize: 16,
-                                                      color:
-                                                      ColorPalette.nileBlue,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
                                                     ),
-                                                    decoration: InputDecoration(
-                                                      border: InputBorder.none,
-                                                      hintText:
-                                                      "Location/Digital Address",
-                                                      filled: true,
-                                                      fillColor:
-                                                      Colors.transparent,
-                                                      hintStyle: TextStyle(
-                                                        fontFamily: "Nunito",
-                                                        fontSize: 16,
-                                                        color: ColorPalette
-                                                            .nileBlue
-                                                            .withOpacity(0.58),
-                                                      ),
-                                                    ),
-                                                    cursorColor:
-                                                    ColorPalette.timberGreen,
                                                   ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                          //LocationDD(product: newProduct),
-                                        ],
-                                      ),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Nunito",
+                                                      fontSize: 16,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
+                                                    ),
+                                                  ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Nunito",
+                                                      fontSize: 16,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
+                                                    ),
+                                                  ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Nunito",
+                                                      fontSize: 16,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
+                                                    ),
+                                                  ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),    Row(
+                                          children: [
+
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Nunito",
+                                                      fontSize: 16,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
+                                                    ),
+                                                  ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: ColorPalette.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                      const Offset(0, 3),
+                                                      blurRadius: 6,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                height: 50,
+                                                child: TextFormField(
+                                                  initialValue: "",
+
+                                                  //rndnumber,
+                                                  // newProduct.accountNumber == rndnumber
+                                                  //     ? rndnumber
+                                                  //     : rndnumber,
+                                                  //newProduct.quantity
+                                                  //.toString(),
+                                                  // onChanged: (rndnumber) {
+                                                  //   newProduct.accountNumber ==rndnumber;
+                                                  // },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  key: UniqueKey(),
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 16,
+                                                    color:
+                                                    ColorPalette.nileBlue,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: rndnumber,
+                                                    filled: true,
+                                                    fillColor:
+                                                    Colors.transparent,
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Nunito",
+                                                      fontSize: 16,
+                                                      color: ColorPalette
+                                                          .nileBlue
+                                                          .withOpacity(0.58),
+                                                    ),
+                                                  ),
+                                                  cursorColor: ColorPalette
+                                                      .timberGreen,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        //LocationDD(product: newProduct),
+                                      ],
                                     ),
                                   ),
+
                                   Align(
                                       alignment: Alignment.topCenter,
                                       child: Padding(
@@ -563,12 +827,14 @@ class _fillaformState extends State<fillaform> {
                       ),
                     ),
                   ),
-                ],
-              ),
+
+              ],
             ),
           ),
+        ),
+          ),
 
-        ));
+        );
   }
   io.File? image;
   Future<String> uploadFile(io.File image) async {
@@ -666,9 +932,7 @@ class _fillaformState extends State<fillaform> {
                   getImageFromCamera();
                 },
 
-                child: Positioned(
-                  bottom: 70,
-                  right: 62,
+
                   child: GestureDetector(
                       onTap: () {
                         getImageFromCamera();
@@ -679,7 +943,7 @@ class _fillaformState extends State<fillaform> {
                         size: 1000,
                       )),
                 ),
-              ));
+              );
         }
         return Stack(
           children: [
@@ -717,7 +981,7 @@ class _fillaformState extends State<fillaform> {
     String url = await uploadFile(image!);
     Map userDataMap = {
       'profile': url.toString(),
-      'name': addMember1?.name.toString(),
+      // 'name': addMember1?.name.toString(),
       'Deposit': addMember1?.Deposit.toString(),
       "TotalBalance": addMember1?.TotalBalance,
       'Amount': rndnumber.toString(),

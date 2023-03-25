@@ -3,7 +3,13 @@ import 'package:provider/provider.dart';
 
 class addedMember {
   addedMember({
-    this.name,
+    this.fname,
+    this.lname,
+    // this.fathername,
+    // this.motehrname,
+    // this.homeTown,
+    // this.language,
+
     this.Deposit,
     this.TotalBalance,
     this.group,
@@ -17,7 +23,8 @@ class addedMember {
     this.availablebalance,
   });
 
-  String? name;
+  String? fname;
+  String? lname;
   String? agentname;
   int? availablebalance;
   int? Deposit=0;
@@ -31,7 +38,7 @@ class addedMember {
   String? accountNumber;
 
   factory addedMember.fromMap(Map<String, dynamic> json) => addedMember(
-      name: json["name"] as String?,
+      // name: json["name"] as String?,
       Deposit: json["Deposit amount"] as int?,
       group: json["UserType"] as String?,
       location: json["location"] as String?,
@@ -45,7 +52,7 @@ class addedMember {
   );
 
   Map<String, dynamic> toMap() => {
-    "name": name,
+    // "name": name,
     "Deposit amount": Deposit,
     "TotalBalance": TotalBalance!+Deposit!,
     "UserType": group,
