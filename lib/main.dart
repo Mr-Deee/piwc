@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:piwc/pages/homepage.dart';
 import 'package:piwc/pages/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:piwc/pages/registration.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,6 +32,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const login(),
+
+        initialRoute: FirebaseAuth.instance.currentUser == null
+            ? login.idScreen
+            : homepage.idScreen,
+        // : Doctorspage.idScreen,
+
+        routes: {
+          login.idScreen: (context) => login(),
+          homepage.idScreen:(context)=> homepage(),
+         registration.idScreen: (context) => registration(),
+
+        }
     );
   }
 }

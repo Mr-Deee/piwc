@@ -1,15 +1,20 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:piwc/pages/homepage.dart';
 import 'package:piwc/pages/registration.dart';
 
+import '../main.dart';
+import '../progressdialog.dart';
 import '../widgets/behavior.dart';
 
 class login extends StatefulWidget {
+  static const String idScreen = "login";
   const login({Key? key}) : super(key: key);
 
   @override
@@ -17,8 +22,12 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
-  TextEditingController? email,fname,lname, password,username,phone;
 
+  String ?_email, _password;
+  TextEditingController email =
+  new TextEditingController();
+  TextEditingController password =
+  new TextEditingController();
   @override
   Widget build(BuildContext context) {
     bool? isPassword;
@@ -76,40 +85,7 @@ class _loginState extends State<login> {
 
 
                             //email
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: size.width / 8,
-                                width: size.width / 1.25,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.only(right: size.width / 30),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: TextField(
-                                  style: TextStyle(
-                                    color: Colors.white.withOpacity(.9),
-                                  ),
-                                  controller: username,
-                                  // obscureText: isPassword,
-                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                        Icons.person,
-                                      color: Colors.white.withOpacity(.8),
-                                    ),
-                                    border: InputBorder.none,
-                                    hintMaxLines: 1,
-                                    hintText:'Username...',
-                                    hintStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white.withOpacity(.5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+
                             //Phone
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -160,7 +136,7 @@ class _loginState extends State<login> {
                                   style: TextStyle(
                                     color: Colors.white.withOpacity(.9),
                                   ),
-                                  controller: username,
+                                  controller: password,
                                   obscureText: true,
                                   // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
                                   decoration: InputDecoration(
@@ -216,7 +192,7 @@ class _loginState extends State<login> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) {
-                                              return registation();
+                                              return registration();
                                             }),
                                           );
                                         },
@@ -229,6 +205,7 @@ class _loginState extends State<login> {
                                     splashColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () {
+                                      loginAndAuthenticateUser(context);
                                       HapticFeedback.lightImpact();
                                       Fluttertoast.showToast(
                                         msg: 'Sign-In button pressed',
@@ -278,7 +255,9 @@ class _loginState extends State<login> {
 
   Widget component(
       IconData icon, String hintText, bool isPassword, bool isEmail, TextEditingController controller) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -296,7 +275,8 @@ class _loginState extends State<login> {
           ),
           controller: controller,
           obscureText: isPassword,
-          keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+          keyboardType: isEmail ? TextInputType.emailAddress : TextInputType
+              .text,
           decoration: InputDecoration(
             prefixIcon: Icon(
               icon,
@@ -314,7 +294,78 @@ class _loginState extends State<login> {
       ),
     );
   }
-}
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+
+    void loginAndAuthenticateUser(BuildContext context) async
+    {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return ProgressDialog(message: "Logging you ,Please wait.",);
+          }
+
+
+      );
+
+      Future signInWithEmailAndPassword(String email, String password) async {
+        try {
+          UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
+              email: email, password: password);
+          User ?user = result.user;
+          return _firebaseAuth;
+        } catch (error) {
+          print(error.toString());
+          return null;
+        }
+      }
+
+
+      final User? firebaseUser = (await _firebaseAuth
+          .signInWithEmailAndPassword(
+          email: email.text.trim(),
+          password: password.text.trim()
+      ).catchError((errMsg) {
+        Navigator.pop(context);
+        displayToast("Error" + errMsg.toString(), context);
+      })).user;
+      try {
+        UserCredential userCredential = await _firebaseAuth
+            .signInWithEmailAndPassword(
+            email: email.text.trim(),
+            password: password.text.trim());
+
+
+        if (clients != null) {
+          Navigator.of(context).pushNamed(homepage.idScreen);
+
+
+          displayToast("Logged-in ",
+              context);
+        } else {
+          displayToast("Error: Cannot be signed in", context);
+        }
+
+
+      } catch (e) {
+        // handle error
+      }
+
+
+
+
+
+    }
+    //
+    displayToast(String message, BuildContext context) {
+      Fluttertoast.showToast(msg: message);
+
+// user created
+
+    }
+
+  }
 
 
 

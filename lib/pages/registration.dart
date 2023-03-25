@@ -13,15 +13,16 @@ import '../main.dart';
 import '../progressdialog.dart';
 import '../widgets/behavior.dart';
 
-class registation extends StatefulWidget {
-  const registation({Key? key}) : super(key: key);
+class registration extends StatefulWidget {
+  static const String idScreen = "registration";
+  const registration({Key? key}) : super(key: key);
 
   @override
-  State<registation> createState() => _registationState();
+  State<registration> createState() => _registrationState();
 }
 User ?firebaseUser;
 User? currentfirebaseUser;
-class _registationState extends State<registation> {
+class _registrationState extends State<registration> {
 
   TextEditingController email = new TextEditingController();
   TextEditingController fname = new TextEditingController();
@@ -348,11 +349,11 @@ class _registationState extends State<registation> {
     //save use into to database
 
     Map userDataMap = {
-      "firstName": fname?.text.trim(),
-      "lastName": lname?.text.trim(),
-      "email": email?.text.trim(),
-      "fullName":[fname?.text.trim()]  + [lname!.text.trim()],
-      "phone": phone?.text.trim(),
+      "firstName": fname.text.trim(),
+      "lastName": lname.text.trim(),
+      "email": email.text.trim(),
+      "fullName":fname.text.trim() + lname.text.trim(),
+      "phone": phone.text.trim(),
       // "Dob":birthDate,
       // "Gender":Gender,
     };
@@ -383,11 +384,11 @@ Future<void> registerInfirestore(BuildContext context) async {
   User? user = FirebaseAuth.instance.currentUser;
   if(user!=null) {
     FirebaseFirestore.instance.collection('Clients').doc(_email).set({
-      'firstName': fname,
-      'lastName': lname,
-      'MobileNumber': phone,
-      'fullName':[ fname] + [lname],
-      'Email': email,
+      'firstName': _firstName,
+      'lastName': _lastname,
+      'MobileNumber': _mobileNumber,
+      'fullName':_firstName! +  _lastname!,
+      'Email': _email,
       // 'Gender': Gender,
       // 'Date Of Birth': birthDate,
     });
