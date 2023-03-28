@@ -34,7 +34,8 @@ class _fillaformState extends State<fillaform> {
 
   TextEditingController residence=
   new TextEditingController();
-  TextEditingController password =
+  TextEditingController mothersname =
+  new TextEditingController();  TextEditingController fathersname =
   new TextEditingController();
   List<File> _image = [];
   String? _imaage;
@@ -446,17 +447,20 @@ class _fillaformState extends State<fillaform> {
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(.9),
                                               ),
-
-                                              obscureText: true,
-                                              // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                              controller: fathersname,
+                                              onChanged: (value){
+                                                addMember.fathername =value;
+                                              },
+                                              // obscureText: true,
+                                              keyboardType: TextInputType.name,
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
-                                                  Icons.password,
+                                                  Icons.man,
                                                   color: Colors.white.withOpacity(.8),
                                                 ),
                                                 border: InputBorder.none,
                                                 hintMaxLines: 1,
-                                                hintText: 'Password...',
+                                                hintText: 'Fathers Name',
                                                 hintStyle: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white.withOpacity(.5),
