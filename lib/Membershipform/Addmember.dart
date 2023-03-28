@@ -24,6 +24,13 @@ class addedMember {
   String? lname;
   String? agentname;
   String? fathername;
+  String? fathershometown;
+  String? mothershometown;
+  bool ?Maritalstatus;
+  String? SpouseName;
+  bool? registered;
+  String? Where;
+  String? when;
   String? mothername;
   String? homeTown;
   String? residence;
