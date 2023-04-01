@@ -9,8 +9,10 @@ class addedMember {
     this.Occupation,
     this.PlaceofWork,
     this.residence,
+    this.placeofwork,
     this.group,
     this.location,
+    this.Region,
     this.company,
     this.quantity,
     this.image,
@@ -21,6 +23,7 @@ class addedMember {
   });
 
   String? fname;
+  String? group;
   String? lname;
   String? agentname;
   String? fathername;
@@ -38,10 +41,11 @@ class addedMember {
 
   String? Occupation;
   String? PlaceofWork;
+  String? Region;
   int? availablebalance;
   int? Deposit = 0;
   int? TotalBalance = 0;
-  String? group;
+  String? placeofwork;
   String? location;
   String? company;
   String? mobile;

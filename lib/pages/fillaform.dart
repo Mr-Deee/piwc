@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,8 +30,13 @@ class fillaform extends StatefulWidget {
 
 class _fillaformState extends State<fillaform> {
   TextEditingController residence = new TextEditingController();
+  TextEditingController placeofwork = new TextEditingController();
+  TextEditingController occupation = new TextEditingController();
+  TextEditingController language = new TextEditingController();
+  TextEditingController region = new TextEditingController();
   TextEditingController mothersname = new TextEditingController();
   TextEditingController fathersname = new TextEditingController();
+  TextEditingController hometown = new TextEditingController();
 
   bool _residence = false;
   bool _emailAutoValidate = false;
@@ -50,6 +55,14 @@ class _fillaformState extends State<fillaform> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference? imgRef;
   firebase_storage.Reference? ref;
+
+
+
+
+  String initValue = "Select your Birth Date";
+  bool isDateSelected = false;
+  DateTime? birthDate; // instance of DateTime
+  String ?birthDateInString;
 
   // final String? docID;
   String _randomString(int length) {
@@ -70,10 +83,29 @@ class _fillaformState extends State<fillaform> {
     }
     print(rndnumber);
   }
+  TextEditingController dateInput = TextEditingController();
+
+
+  @override
+  void initState() {
+    dateInput.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    TextEditingController dateInput = TextEditingController();
+
     Size size = MediaQuery.of(context).size;
+    DateTime selectedDate = DateTime.now();
+    Future<void> _selectDate(BuildContext context) async {
+}
+
+
     return Scaffold(
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(
@@ -96,14 +128,16 @@ class _fillaformState extends State<fillaform> {
 
             // newProduct.group = group;
             _firestore.collection("Members").add({
-              'image': url.toString(),
+              // 'image': url.toString(),
               // 'name': addMember.name.toString(),
-              "": rndnumber.toString(),
-              "": addMember.group.toString(),
-              "": addMember.TotalBalance,
-              "": addMember.location,
-              "": addMember.Deposit,
-              "": addMember.mobile,
+              // "": rndnumber.toString(),
+              "placeofwork": addMember.placeofwork.toString(),
+              "Residence": addMember.residence,
+              "Region": addMember.Region,
+              "language": addMember.language,
+              "Occupation": addMember.language,
+
+              "homeTown": addMember.homeTown,
 
               //newProduct.toMap()
             }).then((value) {
@@ -160,532 +194,24 @@ class _fillaformState extends State<fillaform> {
                                         topRight: Radius.circular(16),
                                       ),
                                     ),
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          ExpansionTile(
-                                            title: Text("User Info"),
-                                            children: <Widget>[
-                                              Focus(
-                                                onFocusChange: (value) {
-                                                  if (!value) {
-                                                    setState(() {
-                                                      _residence = true;
-                                                    });
-                                                  }
-                                                },
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-
-                                                              initialValue: Provider.of<
-                                                                              Users>(
-                                                                          context)
-                                                                      .userInfo
-                                                                      ?.fname ??
-                                                                  '',
-
-                                                              // onChanged: (rnnumber) {
-                                                              //   addMember.accountNumber ==rndnumber;
-                                                              // },
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons
-                                                                      .account_circle_outlined,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'First Name',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-
-                                                              initialValue: Provider.of<
-                                                                              Users>(
-                                                                          context)
-                                                                      .userInfo
-                                                                      ?.lname ??
-                                                                  '',
-                                                              // controller: lname,
-                                                              // onChanged: (value){
-                                                              //   _lastname = value;
-                                                              // },
-                                                              // obscureText: isPassword,
-                                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons
-                                                                      .account_circle_outlined,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'Last Name',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-                                                              readOnly: true,
-
-                                                              initialValue: Provider.of<
-                                                                              Users>(
-                                                                          context)
-                                                                      .userInfo
-                                                                      ?.phone ??
-                                                                  '',
-
-                                                              // onChanged: (rndnumber) {
-                                                              //   addMember.accountNumber ==rndnumber;
-                                                              // },
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons.phone,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'Phone',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-
-                                                        //Email
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-
-                                                              initialValue: Provider.of<
-                                                                              Users>(
-                                                                          context)
-                                                                      .userInfo
-                                                                      ?.email ??
-                                                                  '',
-                                                              // controller: lname,
-                                                              // onChanged: (value){
-                                                              //   _lastname = value;
-                                                              // },
-                                                              readOnly: true,
-                                                              // obscureText: isPassword,
-                                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons.email,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'Email',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child:
-                                                                TextFormField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-
-                                                              controller:
-                                                                  residence,
-                                                              onChanged:
-                                                                  (value) {
-                                                                addMember
-                                                                        .residence =
-                                                                    value;
-                                                              },
-
-                                                              // obscureText: isPassword,
-                                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons
-                                                                      .holiday_village,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'HomeTown',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-
-                                                        //Residentiaal Address
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height:
-                                                                size.width / 8,
-                                                            width: size.width /
-                                                                2.5,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                      .1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child: TextField(
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        .9),
-                                                              ),
-
-                                                              // obscureText: isPassword,
-                                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                prefixIcon:
-                                                                    Icon(
-                                                                  Icons
-                                                                      .house_outlined,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .8),
-                                                                ),
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintMaxLines: 1,
-                                                                hintText:
-                                                                    'Residential Address',
-                                                                hintStyle:
-                                                                    TextStyle(
-                                                                  fontSize: 14,
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .5),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-
-                                              // Focus(
-                                              //   onFocusChange: (value) {
-                                              //     if (!value) {
-                                              //       setState(() {
-                                              //         _emailAutoValidate = true;
-                                              //       });
-                                              //     }
-                                              //   },
-                                              //   child: TextFormField(
-                                              //     autovalidate: _emailAutoValidate,
-                                              //     controller: _email,
-                                              //     textInputAction: TextInputAction.next,
-                                              //     decoration: InputDecoration(
-                                              //         hintText: "enter email",
-                                              //         labelText: "Email",
-                                              //         border: OutlineInputBorder()),
-                                              //     validator: (value) {
-                                              //       if (value.isEmpty) {
-                                              //         return "Email field cannot be empty.";
-                                              //       }
-                                              //       return null;
-                                              //     },
-                                              //   ),
-                                              // ),
-                                            ],
-                                          ),
-
-                                          ExpansionTile(
-                                              title: Text("Parent Data"),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                           children: [
+                                            ExpansionTile(
+                                              title: Text("Member Persnal Data"),
                                               children: <Widget>[
                                                 Focus(
                                                   onFocusChange: (value) {
                                                     if (!value) {
                                                       setState(() {
-                                                        _emailAutoValidate =
-                                                            true;
+                                                        _residence = true;
                                                       });
                                                     }
                                                   },
-                                                  child: //FathersHometown
-                                                      Column(
+                                                  child: Column(
                                                     children: [
-                                                      //Fathersname
                                                       Row(
                                                         children: [
                                                           Padding(
@@ -694,19 +220,16 @@ class _fillaformState extends State<fillaform> {
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
+                                                                  size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          size.width /
+                                                                              30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -718,200 +241,31 @@ class _fillaformState extends State<fillaform> {
                                                                         .circular(
                                                                             20),
                                                               ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
+                                                              child:
+                                                                  TextFormField(
+                                                                style: TextStyle(
                                                                   color: Colors
                                                                       .white
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
-                                                                controller:
-                                                                    fathersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .fathername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Fathers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
 
-                                                          //mothersname
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    mothersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .mothername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Mothers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                                initialValue: Provider.of<
+                                                                                Users>(
+                                                                            context)
+                                                                        .userInfo
+                                                                        ?.fname ??
+                                                                    '',
 
-                                                      //Mother hometown
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    fathersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .fathername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
+                                                                // onChanged: (rnnumber) {
+                                                                //   addMember.accountNumber ==rndnumber;
+                                                                // },
                                                                 decoration:
                                                                     InputDecoration(
                                                                   prefixIcon:
                                                                       Icon(
                                                                     Icons
-                                                                        .home_sharp,
+                                                                        .account_circle_outlined,
                                                                     color: Colors
                                                                         .white
                                                                         .withOpacity(
@@ -920,14 +274,12 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines:
-                                                                      1,
+                                                                  hintMaxLines: 1,
                                                                   hintText:
-                                                                      'Fathers HomeTown',
+                                                                      'First Name',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize:
-                                                                        14,
+                                                                    fontSize: 14,
                                                                     color: Colors
                                                                         .white
                                                                         .withOpacity(
@@ -937,26 +289,22 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                             ),
                                                           ),
-                                                          //mothersname
                                                           Padding(
                                                             padding:
                                                                 const EdgeInsets
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
+                                                                  size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          size.width /
+                                                                              30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -968,323 +316,33 @@ class _fillaformState extends State<fillaform> {
                                                                         .circular(
                                                                             20),
                                                               ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
+                                                              child:
+                                                                  TextFormField(
+                                                                style: TextStyle(
                                                                   color: Colors
                                                                       .white
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
-                                                                controller:
-                                                                    mothersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .mothername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Mothers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
 
-                                                      //LocationDD(product: newProduct),
-                                                    ],
-                                                  ),
-
-                                                  // TextFormField(
-                                                  //   autovalidate: _emailAutoValidate,
-                                                  //   controller: _email,
-                                                  //   textInputAction: TextInputAction.next,
-                                                  //   decoration: InputDecoration(
-                                                  //       hintText: "enter email",
-                                                  //       labelText: "Email",
-                                                  //       border: OutlineInputBorder()),
-                                                  //   validator: (value) {
-                                                  //     if (value.isEmpty) {
-                                                  //       return "Email field cannot be empty.";
-                                                  //     }
-                                                  //     return null;
-                                                  //   },
-                                                  // ),
-                                                ),
-                                              ]),
-
-                                          ExpansionTile(
-                                              title: Text("Children Data"),
-                                              children: <Widget>[
-                                                Focus(
-                                                  onFocusChange: (value) {
-                                                    if (!value) {
-                                                      setState(() {
-                                                        _emailAutoValidate =
-                                                            true;
-                                                      });
-                                                    }
-                                                  },
-                                                  child: //FathersHometown
-                                                      Column(
-                                                    children: [
-                                                      //Fathersname
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    fathersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .fathername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Fathers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          //mothersname
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    mothersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .mothername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Mothers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      //Mother hometown
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    fathersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .fathername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
+                                                                initialValue: Provider.of<
+                                                                                Users>(
+                                                                            context)
+                                                                        .userInfo
+                                                                        ?.lname ??
+                                                                    '',
+                                                                // controller: lname,
+                                                                // onChanged: (value){
+                                                                //   _lastname = value;
+                                                                // },
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
                                                                     InputDecoration(
                                                                   prefixIcon:
                                                                       Icon(
                                                                     Icons
-                                                                        .home_sharp,
+                                                                        .account_circle_outlined,
                                                                     color: Colors
                                                                         .white
                                                                         .withOpacity(
@@ -1293,95 +351,12 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines:
-                                                                      1,
+                                                                  hintMaxLines: 1,
                                                                   hintText:
-                                                                      'Fathers HomeTown',
+                                                                      'Last Name',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          //mothersname
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    mothersname,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .mothername =
-                                                                      value;
-                                                                },
-                                                                // obscureText: true,
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.man,
-                                                                    color: Colors
-                                                                        .white
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Mothers Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
+                                                                    fontSize: 14,
                                                                     color: Colors
                                                                         .white
                                                                         .withOpacity(
@@ -1393,41 +368,1917 @@ class _fillaformState extends State<fillaform> {
                                                           ),
                                                         ],
                                                       ),
+                                                      Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                                  size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          size.width /
+                                                                              30),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        .1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                              ),
+                                                              child:
+                                                                  TextFormField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          .9),
+                                                                ),
+                                                                readOnly: true,
 
-                                                      //LocationDD(product: newProduct),
+                                                                initialValue: Provider.of<
+                                                                                Users>(
+                                                                            context)
+                                                                        .userInfo
+                                                                        ?.phone ??
+                                                                    '',
+
+                                                                // onChanged: (rndnumber) {
+                                                                //   addMember.accountNumber ==rndnumber;
+                                                                // },
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  prefixIcon:
+                                                                      Icon(
+                                                                    Icons.phone,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .8),
+                                                                  ),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                      'Phone',
+                                                                  hintStyle:
+                                                                      TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                          //Email
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                                  size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                      right:
+                                                                          size.width /
+                                                                              30),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        .1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                              ),
+                                                              child:
+                                                                  TextFormField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          .9),
+                                                                ),
+
+                                                                initialValue: Provider.of<
+                                                                                Users>(
+                                                                            context)
+                                                                        .userInfo
+                                                                        ?.email ??
+                                                                    '',
+                                                                // controller: lname,
+                                                                // onChanged: (value){
+                                                                //   _lastname = value;
+                                                                // },
+                                                                readOnly: true,
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  prefixIcon:
+                                                                      Icon(
+                                                                    Icons.email,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .8),
+                                                                  ),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                      'Email',
+                                                                  hintStyle:
+                                                                      TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      
+
+                                                      //Profession
+
+                                                      Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child:
+                                                              TextFormField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+
+                                                                controller:
+                                                                hometown,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember.homeTown=
+                                                                      value;
+                                                                },
+
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons
+                                                                        .holiday_village,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'HomeTown',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+
+
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child: TextFormField(
+                                                                  controller:region,
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+                                                                onChanged: (value) {
+                                                                  addMember.Region ==value;
+                                                                },
+
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons.house_outlined,
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'Region',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+
+                                                        ],
+                                                      ),
+                                                      //Language
+                                                      Row(
+                                                        children: [
+                                                            //Residential Address
+                                                              Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child: TextField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+                                                                controller: residence,
+                                                                onChanged:(value){
+
+                                                                  addMember.residence==value;
+                                                                },
+
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons
+                                                                        .house_outlined,
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'Residential Address',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child:
+                                                              TextFormField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+
+                                                                controller: language,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember.language=
+                                                                      value;
+                                                                },
+
+
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons.language,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'Language',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+
+                                                        ],
+                                                      ),
+
+
+
+                                                      Row(
+                                                        children: [
+
+                                                          //Occupation
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child: TextFormField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+                                                                controller: occupation,
+                                                                onChanged:(value){
+
+                                                                  addMember.Occupation==value;
+                                                                },
+
+                                                                // obscureText: isPassword,
+                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons.work,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'Occupation',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                           
+
+
+                                                          //place Of Work
+                                                          Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height:
+                                                              size.width / 8,
+                                                              width: size.width /
+                                                                  2.5,
+                                                              alignment: Alignment
+                                                                  .center,
+                                                              padding:
+                                                              EdgeInsets.only(
+                                                                  right:
+                                                                  size.width /
+                                                                      30),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    .1),
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    20),
+                                                              ),
+                                                              child: TextField(
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                      .9),
+                                                                ),
+
+                                                                    controller:placeofwork,
+                                                                onChanged:(value){
+                                                                  addMember.placeofwork==value;
+                                                                },
+                                                              
+                                                                keyboardType:  TextInputType.name ,
+                                                                decoration:
+                                                                InputDecoration(
+                                                                  prefixIcon:
+                                                                  Icon(
+                                                                    Icons.business,
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        .8),
+                                                                  ),
+                                                                  border:
+                                                                  InputBorder
+                                                                      .none,
+                                                                  hintMaxLines: 1,
+                                                                  hintText:
+                                                                  'Place Of Work',
+                                                                  hintStyle:
+                                                                  TextStyle(
+                                                                    fontSize: 14,
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .5),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+
+                                                      Row(
+                                                        children: [
+
+                                                          Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                size.width / 8,
+                                                                width: size.width /
+                                                                    2.5,
+                                                                alignment: Alignment
+                                                                    .center,
+                                                                padding:
+                                                                EdgeInsets.only(
+                                                                    right:
+                                                                    size.width /
+                                                                        30),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                      .1),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      20),
+                                                                ),
+                                                                child:GestureDetector(
+                                                                  onTap: () async {
+                                                                    final datePick = await showDatePicker(
+                                                                        context: context,
+                                                                        initialDate: new DateTime.now(),
+                                                                        firstDate: new DateTime(1900),
+                                                                        lastDate: new DateTime(2100));
+                                                                    if (datePick != null &&
+                                                                        datePick != birthDate) {
+                                                                      setState(() {
+                                                                        birthDate = datePick;
+                                                                        isDateSelected = true;
+                                                                        birthDateInString =
+                                                                        "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
+                                                                      });
+                                                                    }
+                                                                  },
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.all(10.0),
+                                                                    child: SingleChildScrollView(
+                                                                      child: Row(
+                                                                        children: [
+                                                                          new Icon(
+                                                                            Icons.calendar_today,
+                                                                            color:  Colors.black,
+                                                                            size:18,
+                                                                          ),
+                                                                          Padding(
+                                                                            padding: const EdgeInsets.all(8.0),
+                                                                            child: new Text(
+                                                                              (isDateSelected
+                                                                                  ? DateFormat.yMMMd()
+                                                                                  .format(birthDate!)
+                                                                                  : initValue),
+                                                                              style: TextStyle(
+                                                                                fontSize:13,
+                                                                                color: const Color(0xFFb1b2c4),
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+
+
+                                                                // Center(
+                                                                //   child: TextField(
+                                                                //     controller: dateInput,
+                                                                //     //editing controller of this TextField
+                                                                //     decoration: InputDecoration(
+                                                                //
+                                                                //         icon: Icon(Icons.calendar_today), //icon of text field
+                                                                //         labelText: "Enter Date",
+                                                                //       //label text of field
+                                                                //     ),
+                                                                //     readOnly: true,
+                                                                //     //set it true, so that user will not able to edit text
+                                                                //     onTap: () async {
+                                                                //       DateTime? pickedDate = await showDatePicker(
+                                                                //           context: context,
+                                                                //           initialDate: DateTime.now(),
+                                                                //           firstDate: DateTime(1950),
+                                                                //           //DateTime.now() - not to allow to choose before today.
+                                                                //           lastDate: DateTime(2100));
+                                                                //
+                                                                //       if (pickedDate != null) {
+                                                                //         print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                                                //         String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                                                //         print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                                                                //         setState(() {
+                                                                //           dateInput.text = formattedDate; //set output date to TextField value.
+                                                                //         });
+                                                                //       } else {}
+                                                                //     },
+                                                                //   ))
+
+
+                                                              )
+                                                          ),
+
+                                                          //Residentiaal Address
+
+                                                        ],
+                                                      ),
+
                                                     ],
                                                   ),
-
-                                                  // TextFormField(
-                                                  //   autovalidate: _emailAutoValidate,
-                                                  //   controller: _email,
-                                                  //   textInputAction: TextInputAction.next,
-                                                  //   decoration: InputDecoration(
-                                                  //       hintText: "enter email",
-                                                  //       labelText: "Email",
-                                                  //       border: OutlineInputBorder()),
-                                                  //   validator: (value) {
-                                                  //     if (value.isEmpty) {
-                                                  //       return "Email field cannot be empty.";
-                                                  //     }
-                                                  //     return null;
-                                                  //   },
-                                                  // ),
                                                 ),
-                                              ]),
-                                          //Username
-                                          // SingleChildScrollView(
-                                          //   scrollDirection: Axis.horizontal,
-                                          //   child: Row(
-                                          //     children: [
-                                          //
-                                          //
-                                          //     ],
-                                          //   ),
-                                          // ),
 
-                                          //Hometown
-                                        ])),
+                                                // Focus(
+                                                //   onFocusChange: (value) {
+                                                //     if (!value) {
+                                                //       setState(() {
+                                                //         _emailAutoValidate = true;
+                                                //       });
+                                                //     }
+                                                //   },
+                                                //   child: TextFormField(
+                                                //     autovalidate: _emailAutoValidate,
+                                                //     controller: _email,
+                                                //     textInputAction: TextInputAction.next,
+                                                //     decoration: InputDecoration(
+                                                //         hintText: "enter email",
+                                                //         labelText: "Email",
+                                                //         border: OutlineInputBorder()),
+                                                //     validator: (value) {
+                                                //       if (value.isEmpty) {
+                                                //         return "Email field cannot be empty.";
+                                                //       }
+                                                //       return null;
+                                                //     },
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+
+                                            ExpansionTile(
+                                                title: Text("Parent Data"),
+                                                children: <Widget>[
+                                                  Focus(
+                                                    onFocusChange: (value) {
+                                                      if (!value) {
+                                                        setState(() {
+                                                          _emailAutoValidate =
+                                                              true;
+                                                        });
+                                                      }
+                                                    },
+                                                    child: //FathersHometown
+                                                        Column(
+                                                      children: [
+                                                        //Fathersname
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      fathersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .fathername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Fathers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                            //mothersname
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      mothersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .mothername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Mothers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        //Mother hometown
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      fathersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .fathername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .home_sharp,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Fathers HomeTown',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            //mothersname
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      mothersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .mothername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Mothers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        //LocationDD(product: newProduct),
+                                                      ],
+                                                    ),
+
+                                                    // TextFormField(
+                                                    //   autovalidate: _emailAutoValidate,
+                                                    //   controller: _email,
+                                                    //   textInputAction: TextInputAction.next,
+                                                    //   decoration: InputDecoration(
+                                                    //       hintText: "enter email",
+                                                    //       labelText: "Email",
+                                                    //       border: OutlineInputBorder()),
+                                                    //   validator: (value) {
+                                                    //     if (value.isEmpty) {
+                                                    //       return "Email field cannot be empty.";
+                                                    //     }
+                                                    //     return null;
+                                                    //   },
+                                                    // ),
+                                                  ),
+                                                ]),
+
+                                            ExpansionTile(
+                                                title: Text("Children Data"),
+                                                children: <Widget>[
+                                                  Focus(
+                                                    onFocusChange: (value) {
+                                                      if (!value) {
+                                                        setState(() {
+                                                          _emailAutoValidate =
+                                                              true;
+                                                        });
+                                                      }
+                                                    },
+                                                    child: //FathersHometown
+                                                        Column(
+                                                      children: [
+                                                        //Fathersname
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      fathersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .fathername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Fathers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                            //mothersname
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      mothersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .mothername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Mothers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        //Mother hometown
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      fathersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .fathername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .home_sharp,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Fathers HomeTown',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            //mothersname
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                    size.width /
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right: size
+                                                                                .width /
+                                                                            30),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          .1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                            .9),
+                                                                  ),
+                                                                  controller:
+                                                                      mothersname,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                            .mothername =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .name,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    prefixIcon:
+                                                                        Icon(
+                                                                      Icons.man,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .8),
+                                                                    ),
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintMaxLines:
+                                                                        1,
+                                                                    hintText:
+                                                                        'Mothers Name',
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        //LocationDD(product: newProduct),
+                                                      ],
+                                                    ),
+
+                                                    // TextFormField(
+                                                    //   autovalidate: _emailAutoValidate,
+                                                    //   controller: _email,
+                                                    //   textInputAction: TextInputAction.next,
+                                                    //   decoration: InputDecoration(
+                                                    //       hintText: "enter email",
+                                                    //       labelText: "Email",
+                                                    //       border: OutlineInputBorder()),
+                                                    //   validator: (value) {
+                                                    //     if (value.isEmpty) {
+                                                    //       return "Email field cannot be empty.";
+                                                    //     }
+                                                    //     return null;
+                                                    //   },
+                                                    // ),
+                                                  ),
+                                                ]),
+
+
+                                             ExpansionTile(
+                                                 title: Text("Children Data"),
+                                                 children: <Widget>[
+                                                   Focus(
+                                                     onFocusChange: (value) {
+                                                       if (!value) {
+                                                         setState(() {
+                                                           _emailAutoValidate =
+                                                           true;
+                                                         });
+                                                       }
+                                                     },
+                                                     child: //FathersHometown
+                                                     Column(
+                                                       children: [
+                                                         //Fathersname
+                                                         Row(
+                                                           children: [
+                                                             Padding(
+                                                               padding:
+                                                               const EdgeInsets
+                                                                   .all(8.0),
+                                                               child: Container(
+                                                                 height:
+                                                                 size.width /
+                                                                     8,
+                                                                 width:
+                                                                 size.width /
+                                                                     2.5,
+                                                                 alignment:
+                                                                 Alignment
+                                                                     .center,
+                                                                 padding: EdgeInsets
+                                                                     .only(
+                                                                     right: size
+                                                                         .width /
+                                                                         30),
+                                                                 decoration:
+                                                                 BoxDecoration(
+                                                                   color: Colors
+                                                                       .black
+                                                                       .withOpacity(
+                                                                       .1),
+                                                                   borderRadius:
+                                                                   BorderRadius
+                                                                       .circular(
+                                                                       20),
+                                                                 ),
+                                                                 child: TextField(
+                                                                   style:
+                                                                   TextStyle(
+                                                                     color: Colors
+                                                                         .white
+                                                                         .withOpacity(
+                                                                         .9),
+                                                                   ),
+                                                                   controller:
+                                                                   fathersname,
+                                                                   onChanged:
+                                                                       (value) {
+                                                                     addMember
+                                                                         .fathername =
+                                                                         value;
+                                                                   },
+                                                                   // obscureText: true,
+                                                                   keyboardType:
+                                                                   TextInputType
+                                                                       .name,
+                                                                   decoration:
+                                                                   InputDecoration(
+                                                                     prefixIcon:
+                                                                     Icon(
+                                                                       Icons.man,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .8),
+                                                                     ),
+                                                                     border:
+                                                                     InputBorder
+                                                                         .none,
+                                                                     hintMaxLines:
+                                                                     1,
+                                                                     hintText:
+                                                                     'Fathers Name',
+                                                                     hintStyle:
+                                                                     TextStyle(
+                                                                       fontSize:
+                                                                       14,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .5),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                               ),
+                                                             ),
+
+                                                             //mothersname
+                                                             Padding(
+                                                               padding:
+                                                               const EdgeInsets
+                                                                   .all(8.0),
+                                                               child: Container(
+                                                                 height:
+                                                                 size.width /
+                                                                     8,
+                                                                 width:
+                                                                 size.width /
+                                                                     2.5,
+                                                                 alignment:
+                                                                 Alignment
+                                                                     .center,
+                                                                 padding: EdgeInsets
+                                                                     .only(
+                                                                     right: size
+                                                                         .width /
+                                                                         30),
+                                                                 decoration:
+                                                                 BoxDecoration(
+                                                                   color: Colors
+                                                                       .black
+                                                                       .withOpacity(
+                                                                       .1),
+                                                                   borderRadius:
+                                                                   BorderRadius
+                                                                       .circular(
+                                                                       20),
+                                                                 ),
+                                                                 child: TextField(
+                                                                   style:
+                                                                   TextStyle(
+                                                                     color: Colors
+                                                                         .white
+                                                                         .withOpacity(
+                                                                         .9),
+                                                                   ),
+                                                                   controller:
+                                                                   mothersname,
+                                                                   onChanged:
+                                                                       (value) {
+                                                                     addMember
+                                                                         .mothername =
+                                                                         value;
+                                                                   },
+                                                                   // obscureText: true,
+                                                                   keyboardType:
+                                                                   TextInputType
+                                                                       .name,
+                                                                   decoration:
+                                                                   InputDecoration(
+                                                                     prefixIcon:
+                                                                     Icon(
+                                                                       Icons.man,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .8),
+                                                                     ),
+                                                                     border:
+                                                                     InputBorder
+                                                                         .none,
+                                                                     hintMaxLines:
+                                                                     1,
+                                                                     hintText:
+                                                                     'Mothers Name',
+                                                                     hintStyle:
+                                                                     TextStyle(
+                                                                       fontSize:
+                                                                       14,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .5),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                         ),
+
+                                                         //Mother hometown
+                                                         Row(
+                                                           children: [
+                                                             Padding(
+                                                               padding:
+                                                               const EdgeInsets
+                                                                   .all(8.0),
+                                                               child: Container(
+                                                                 height:
+                                                                 size.width /
+                                                                     8,
+                                                                 width:
+                                                                 size.width /
+                                                                     2.5,
+                                                                 alignment:
+                                                                 Alignment
+                                                                     .center,
+                                                                 padding: EdgeInsets
+                                                                     .only(
+                                                                     right: size
+                                                                         .width /
+                                                                         30),
+                                                                 decoration:
+                                                                 BoxDecoration(
+                                                                   color: Colors
+                                                                       .black
+                                                                       .withOpacity(
+                                                                       .1),
+                                                                   borderRadius:
+                                                                   BorderRadius
+                                                                       .circular(
+                                                                       20),
+                                                                 ),
+                                                                 child: TextField(
+                                                                   style:
+                                                                   TextStyle(
+                                                                     color: Colors
+                                                                         .white
+                                                                         .withOpacity(
+                                                                         .9),
+                                                                   ),
+                                                                   controller:
+                                                                   fathersname,
+                                                                   onChanged:
+                                                                       (value) {
+                                                                     addMember
+                                                                         .fathername =
+                                                                         value;
+                                                                   },
+                                                                   // obscureText: true,
+                                                                   keyboardType:
+                                                                   TextInputType
+                                                                       .name,
+                                                                   decoration:
+                                                                   InputDecoration(
+                                                                     prefixIcon:
+                                                                     Icon(
+                                                                       Icons
+                                                                           .home_sharp,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .8),
+                                                                     ),
+                                                                     border:
+                                                                     InputBorder
+                                                                         .none,
+                                                                     hintMaxLines:
+                                                                     1,
+                                                                     hintText:
+                                                                     'Fathers HomeTown',
+                                                                     hintStyle:
+                                                                     TextStyle(
+                                                                       fontSize:
+                                                                       14,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .5),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                               ),
+                                                             ),
+                                                             //mothersname
+                                                             Padding(
+                                                               padding:
+                                                               const EdgeInsets
+                                                                   .all(8.0),
+                                                               child: Container(
+                                                                 height:
+                                                                 size.width /
+                                                                     8,
+                                                                 width:
+                                                                 size.width /
+                                                                     2.5,
+                                                                 alignment:
+                                                                 Alignment
+                                                                     .center,
+                                                                 padding: EdgeInsets
+                                                                     .only(
+                                                                     right: size
+                                                                         .width /
+                                                                         30),
+                                                                 decoration:
+                                                                 BoxDecoration(
+                                                                   color: Colors
+                                                                       .black
+                                                                       .withOpacity(
+                                                                       .1),
+                                                                   borderRadius:
+                                                                   BorderRadius
+                                                                       .circular(
+                                                                       20),
+                                                                 ),
+                                                                 child: TextField(
+                                                                   style:
+                                                                   TextStyle(
+                                                                     color: Colors
+                                                                         .white
+                                                                         .withOpacity(
+                                                                         .9),
+                                                                   ),
+                                                                   controller:
+                                                                   mothersname,
+                                                                   onChanged:
+                                                                       (value) {
+                                                                     addMember
+                                                                         .mothername =
+                                                                         value;
+                                                                   },
+                                                                   // obscureText: true,
+                                                                   keyboardType:
+                                                                   TextInputType
+                                                                       .name,
+                                                                   decoration:
+                                                                   InputDecoration(
+                                                                     prefixIcon:
+                                                                     Icon(
+                                                                       Icons.man,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .8),
+                                                                     ),
+                                                                     border:
+                                                                     InputBorder
+                                                                         .none,
+                                                                     hintMaxLines:
+                                                                     1,
+                                                                     hintText:
+                                                                     'Mothers Name',
+                                                                     hintStyle:
+                                                                     TextStyle(
+                                                                       fontSize:
+                                                                       14,
+                                                                       color: Colors
+                                                                           .white
+                                                                           .withOpacity(
+                                                                           .5),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                         ),
+
+                                                         //LocationDD(product: newProduct),
+                                                       ],
+                                                     ),
+
+                                                     // TextFormField(
+                                                     //   autovalidate: _emailAutoValidate,
+                                                     //   controller: _email,
+                                                     //   textInputAction: TextInputAction.next,
+                                                     //   decoration: InputDecoration(
+                                                     //       hintText: "enter email",
+                                                     //       labelText: "Email",
+                                                     //       border: OutlineInputBorder()),
+                                                     //   validator: (value) {
+                                                     //     if (value.isEmpty) {
+                                                     //       return "Email field cannot be empty.";
+                                                     //     }
+                                                     //     return null;
+                                                     //   },
+                                                     // ),
+                                                   ),
+                                                 ]
+                                                 
+                                             ),
+                                            //Username
+                                            // SingleChildScrollView(
+                                            //   scrollDirection: Axis.horizontal,
+                                            //   child: Row(
+                                            //     children: [
+                                            //
+                                            //
+                                            //     ],
+                                            //   ),
+                                            // ),
+
+                                            //Hometown
+                                          ]),
+                                    )),
                                 Align(
                                     alignment: Alignment.topCenter,
                                     child: Padding(
@@ -1583,6 +2434,9 @@ class _fillaformState extends State<fillaform> {
     return downloadUrl;
   }
 
+
+
+
   getImageFromCamera() async {
     final picker = ImagePicker();
     final dateTime = DateTime.now();
@@ -1605,7 +2459,7 @@ class _fillaformState extends State<fillaform> {
     // final userId = currentfirebaseUser?.uid;
 
     return FirebaseStorage.instance
-        .refFromURL("gs://capitalsusu.appspot.com/")
+        .refFromURL("gs://piwc-5e5a0.appspot.com/")
         .child(
             'group/${addMember1?.accountNumber}/${basename(image?.path ?? "")}')
 
@@ -1673,7 +2527,7 @@ class _fillaformState extends State<fillaform> {
                   backgroundColor: Colors.white,
                   backgroundImage: (image != null)
                       ? FileImage(io.File(image!.path)) as ImageProvider
-                      : AssetImage("assets/images/user_icon.png"),
+                      : AssetImage("assets/images/user_icon.jpg"),
 
                   radius: 70,
                   //child: Image.network(snapshot.data.toString()),

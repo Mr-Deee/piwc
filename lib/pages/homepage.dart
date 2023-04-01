@@ -148,18 +148,18 @@ class _homepageState extends State<homepage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-
-                                                          },
-                                                          child: Widget_selection(
-                                                            image: 'assets/images/consultancy.png',
-                                                            title: 'Announcement',
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      // Padding(
+                                                      //   padding: const EdgeInsets.all(8.0),
+                                                      //   child: GestureDetector(
+                                                      //     onTap: () {
+                                                      //
+                                                      //     },
+                                                      //     child: Widget_selection(
+                                                      //       image: 'assets/images/consultancy.png',
+                                                      //       title: 'Announcement',
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
                                                     ],
                                                 ),
                                                   ),
