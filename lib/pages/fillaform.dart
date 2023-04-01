@@ -135,7 +135,7 @@ class _fillaformState extends State<fillaform> {
               "Residence": addMember.residence,
               "Region": addMember.Region,
               "language": addMember.language,
-              "Occupation": addMember.language,
+              "Occupation": addMember.Occupation,
 
               "homeTown": addMember.homeTown,
 
@@ -260,14 +260,16 @@ class _fillaformState extends State<fillaform> {
                                                                 // onChanged: (rnnumber) {
                                                                 //   addMember.accountNumber ==rndnumber;
                                                                 // },
-                                                                decoration:
+                                                                    readOnly: true,
+
+                                                                    decoration:
                                                                     InputDecoration(
                                                                   prefixIcon:
                                                                       Icon(
                                                                     Icons
                                                                         .account_circle_outlined,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .8),
                                                                   ),
@@ -331,7 +333,10 @@ class _fillaformState extends State<fillaform> {
                                                                         .userInfo
                                                                         ?.lname ??
                                                                     '',
-                                                                // controller: lname,
+
+                                                                    readOnly: true,
+
+                                                                    // controller: lname,
                                                                 // onChanged: (value){
                                                                 //   _lastname = value;
                                                                 // },
@@ -344,7 +349,7 @@ class _fillaformState extends State<fillaform> {
                                                                     Icons
                                                                         .account_circle_outlined,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .8),
                                                                   ),
@@ -423,7 +428,7 @@ class _fillaformState extends State<fillaform> {
                                                                       Icon(
                                                                     Icons.phone,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .8),
                                                                   ),
@@ -437,7 +442,7 @@ class _fillaformState extends State<fillaform> {
                                                                       TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .5),
                                                                   ),
@@ -502,7 +507,7 @@ class _fillaformState extends State<fillaform> {
                                                                       Icon(
                                                                     Icons.email,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .8),
                                                                   ),
@@ -589,7 +594,7 @@ class _fillaformState extends State<fillaform> {
                                                                     Icons
                                                                         .holiday_village,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .8),
                                                                   ),
@@ -651,7 +656,7 @@ class _fillaformState extends State<fillaform> {
                                                                       .9),
                                                                 ),
                                                                 onChanged: (value) {
-                                                                  addMember.Region ==value;
+                                                                  addMember.Region =value;
                                                                 },
 
                                                                 // obscureText: isPassword,
@@ -730,7 +735,7 @@ class _fillaformState extends State<fillaform> {
                                                                 controller: residence,
                                                                 onChanged:(value){
 
-                                                                  addMember.residence==value;
+                                                                  addMember.residence=value;
                                                                 },
 
                                                                 // obscureText: isPassword,
@@ -816,7 +821,7 @@ class _fillaformState extends State<fillaform> {
                                                                   Icon(
                                                                     Icons.language,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .8),
                                                                   ),
@@ -886,7 +891,7 @@ class _fillaformState extends State<fillaform> {
                                                                 controller: occupation,
                                                                 onChanged:(value){
 
-                                                                  addMember.Occupation==value;
+                                                                  addMember.Occupation=value;
                                                                 },
 
                                                                 // obscureText: isPassword,
@@ -897,7 +902,7 @@ class _fillaformState extends State<fillaform> {
                                                                   Icon(
                                                                     Icons.work,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .8),
                                                                   ),
@@ -961,7 +966,7 @@ class _fillaformState extends State<fillaform> {
 
                                                                     controller:placeofwork,
                                                                 onChanged:(value){
-                                                                  addMember.placeofwork==value;
+                                                                  addMember.placeofwork=value;
                                                                 },
                                                               
                                                                 keyboardType:  TextInputType.name ,
