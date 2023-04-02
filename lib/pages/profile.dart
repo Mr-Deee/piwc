@@ -25,7 +25,7 @@ class _MemberProfileState extends State<MemberProfile> {
     var firstname = Provider.of<Users>(context).userInfo!.fname!;
     var lastname = Provider.of<Users>(context).userInfo!.lname!;
     var email = Provider.of<Users>(context).userInfo!.email!;
-    var PhoneNumber = Provider.of<Users>(context).userInfo!.phone!;
+    var Occupation = Provider.of<Users>(context).userInfo!.Occupasion!;
 
     // var education = Provider.of<otherUsermodel>(context).otherinfo!.Education;
     // var experience =
@@ -106,7 +106,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Text(
-                                        addMember.email??"" + " ",
+                                        email??"" + " ",
                                         style: TextStyle(
                                           fontSize: 13,
                                         ),
@@ -140,7 +140,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        "${addMember.Occupation } • ${addMember.placeofwork}",
+                                        "${Occupation } •",
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.normal,
