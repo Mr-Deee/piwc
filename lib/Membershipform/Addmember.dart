@@ -16,6 +16,7 @@ class addedMember {
     this.company,
     this.quantity,
     this.image,
+    this.email,
     this.accountNumber,
     this.mobile,
     this.agentname,
@@ -34,6 +35,7 @@ class addedMember {
   bool? registered;
   String? Where;
   String? when;
+  String? email;
   String? mothername;
   String? homeTown;
   String? residence;
@@ -56,7 +58,7 @@ class addedMember {
   factory addedMember.fromMap(Map<String, dynamic> json) => addedMember(
       // name: json["name"] as String?,
 
-      group: json["UserType"] as String?,
+      email: json["Email"] as String?,
       location: json["location"] as String?,
       mobile: json["mobile"] as String?,
       agentname: json["agentname"] as String?,

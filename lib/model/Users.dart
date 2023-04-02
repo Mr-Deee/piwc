@@ -35,7 +35,7 @@ class Users extends ChangeNotifier {
       fname : map["firstName"],
       lname: map['lastName'],
 
-      profilepicture: map["Profilepicture"].toString(),
+      profilepicture: map["profile"].toString(),
       phone : map["phone"],
 
     );

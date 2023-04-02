@@ -2573,8 +2573,23 @@ class _fillaformState extends State<fillaform> {
 
       "homeTown": addMember.homeTown,
     };
+    final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
-    clients.child("Members").set(userDataMap);
+    clients.child(_firebaseAuth).update({'profile': url.toString(),
+    "FirstName":firstname,
+    "LastName":lastname,
+    "Email":email,
+    "PhoneNumber":phone,
+    // "": rndnumber.toString(),
+    "placeofwork": addMember.placeofwork.toString(),
+    "Residence": addMember.residence,
+    "Region": addMember.Region,
+    "language": addMember.language,
+    "Occupation": addMember.Occupation,
+
+    "homeTown": addMember.homeTown,
+  }
+    );
   }
 }
 

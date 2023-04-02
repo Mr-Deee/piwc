@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:piwc/pages/login.dart';
+import 'package:piwc/pages/profile.dart';
 import 'package:piwc/pages/widgets/widget_selection.dart';
 import 'package:provider/provider.dart';
 
@@ -152,10 +153,13 @@ class _homepageState extends State<homepage> {
                                                         padding: const EdgeInsets.all(8.0),
                                                         child: GestureDetector(
                                                           onTap: () {
-
+                                                            Navigator.of(context).push(
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        MemberProfile()));
                                                           },
                                                           child: Widget_selection(
-                                                            image: 'assets/images/fo.png',
+                                                            image: 'assets/images/fillprofile.png',
                                                             title: 'My Profile',
                                                           ),
                                                         ),
