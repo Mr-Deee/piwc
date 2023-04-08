@@ -59,7 +59,7 @@ class _fillaformState extends State<fillaform> {
 
 
 
-  String initValue = "Select your Birth Date";
+  String initValue = "Birth Date";
   bool isDateSelected = false;
   DateTime? birthDate; // instance of DateTime
   String ?birthDateInString;
@@ -1224,7 +1224,7 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.man,
+                                                                      Icons.man_2_outlined,
                                                                       color: Colors
                                                                           .white
                                                                           .withOpacity(
@@ -1306,7 +1306,7 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.man,
+                                                                      Icons.woman,
                                                                       color: Colors
                                                                           .white
                                                                           .withOpacity(
@@ -2570,16 +2570,19 @@ class _fillaformState extends State<fillaform> {
       "Region": addMember.Region,
       "language": addMember.language,
       "Occupation": addMember.Occupation,
+      "Date Of Birth":birthDateInString,
 
       "homeTown": addMember.homeTown,
     };
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
-    clients.child(_firebaseAuth).update({'profile': url.toString(),
+    clients.child(_firebaseAuth).update({
+      'profile': url.toString(),
     "FirstName":firstname,
     "LastName":lastname,
     "Email":email,
     "PhoneNumber":phone,
+      "Date Of Birth":birthDateInString,
     // "": rndnumber.toString(),
     "placeofwork": addMember.placeofwork.toString(),
     "Residence": addMember.residence,
