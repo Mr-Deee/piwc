@@ -38,6 +38,7 @@ class _fillaformState extends State<fillaform> {
   TextEditingController fathersname = new TextEditingController();
   TextEditingController fathershomeTown = new TextEditingController();
   TextEditingController MothershomeTown = new TextEditingController();
+  TextEditingController MothersReligion = new TextEditingController();
   TextEditingController hometown = new TextEditingController();
 
   bool _residence = false;
@@ -1546,10 +1547,10 @@ class _fillaformState extends State<fillaform> {
                                                                         .9),
                                                                   ),
                                                                   controller:
-                                                                  MothershomeTown,
+                                                                  FathersReligion,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.mothershometown =
+                                                                    addMember.fatherReligion =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -1626,10 +1627,10 @@ class _fillaformState extends State<fillaform> {
                                                                         .9),
                                                                   ),
                                                                   controller:
-                                                                  MothershomeTown,
+                                                                  MothersReligion,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.mothershometown =
+                                                                    addMember.motherReligion =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
