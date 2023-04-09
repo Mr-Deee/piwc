@@ -36,6 +36,8 @@ class _fillaformState extends State<fillaform> {
   TextEditingController region = new TextEditingController();
   TextEditingController mothersname = new TextEditingController();
   TextEditingController fathersname = new TextEditingController();
+  TextEditingController fathershomeTown = new TextEditingController();
+  TextEditingController MothershomeTown = new TextEditingController();
   TextEditingController hometown = new TextEditingController();
 
   bool _residence = false;
@@ -1159,8 +1161,8 @@ class _fillaformState extends State<fillaform> {
                                                     onFocusChange: (value) {
                                                       if (!value) {
                                                         setState(() {
-                                                          _emailAutoValidate =
-                                                              true;
+                                                          //_emailAutoValidate =
+                                                             // true;
                                                         });
                                                       }
                                                     },
@@ -1368,7 +1370,7 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child: TextFormField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -1377,11 +1379,10 @@ class _fillaformState extends State<fillaform> {
                                                                             .9),
                                                                   ),
                                                                   controller:
-                                                                      fathersname,
+                                                                      fathershomeTown,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember
-                                                                            .fathername =
+                                                                    addMember.fathershometown=
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -1405,11 +1406,11 @@ class _fillaformState extends State<fillaform> {
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
-                                                                        'Fathers HomeTown',
+                                                                        'F.HomeTown',
                                                                     hintStyle:
                                                                         TextStyle(
                                                                       fontSize:
-                                                                          14,
+                                                                          13,
                                                                       color: Colors
                                                                           .white
                                                                           .withOpacity(
@@ -1419,7 +1420,7 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            //mothersname
+                                                            //Mothershometown
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
@@ -1459,11 +1460,10 @@ class _fillaformState extends State<fillaform> {
                                                                             .9),
                                                                   ),
                                                                   controller:
-                                                                      mothersname,
+                                                                      MothershomeTown,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember
-                                                                            .mothername =
+                                                                    addMember.mothershometown =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -1486,7 +1486,7 @@ class _fillaformState extends State<fillaform> {
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
-                                                                        'Mothers Name',
+                                                                        'M.Home',
                                                                     hintStyle:
                                                                         TextStyle(
                                                                       fontSize:
@@ -1500,9 +1500,174 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                               ),
                                                             ),
+
+                                                            
+
                                                           ],
                                                         ),
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                size.width /
+                                                                    8,
+                                                                width:
+                                                                size.width /
+                                                                    2.5,
+                                                                alignment:
+                                                                Alignment
+                                                                    .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                    right: size
+                                                                        .width /
+                                                                        30),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                      .1),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                  TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .9),
+                                                                  ),
+                                                                  controller:
+                                                                  MothershomeTown,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember.mothershometown =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                  TextInputType
+                                                                      .name,
+                                                                  decoration:
+                                                                  InputDecoration(
+                                                                    prefixIcon:
+                                                                    Icon(
+                                                                      Icons.circle_sharp,
+                                                                      color: Colors
+                                                                          .lightBlueAccent
+                                                                          .withOpacity(
+                                                                          .8),
+                                                                    ),
+                                                                    border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                    hintMaxLines:
+                                                                    1,
+                                                                    hintText:
+                                                                    'F.ReligiousGroup',
+                                                                    hintStyle:
+                                                                    TextStyle(
+                                                                      fontSize:
+                                                                      14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                          .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
 
+                                                            Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                size.width /
+                                                                    8,
+                                                                width:
+                                                                size.width /
+                                                                    2.5,
+                                                                alignment:
+                                                                Alignment
+                                                                    .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                    right: size
+                                                                        .width /
+                                                                        30),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                      .1),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                  TextStyle(
+                                                                    color: Colors
+                                                                        .white
+                                                                        .withOpacity(
+                                                                        .9),
+                                                                  ),
+                                                                  controller:
+                                                                  MothershomeTown,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember.mothershometown =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                  TextInputType
+                                                                      .name,
+                                                                  decoration:
+                                                                  InputDecoration(
+                                                                    prefixIcon:
+                                                                    Icon(
+                                                                      Icons.circle_sharp,
+                                                                      color: Colors
+                                                                          .lightBlueAccent
+                                                                          .withOpacity(
+                                                                          .8),
+                                                                    ),
+                                                                    border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                    hintMaxLines:
+                                                                    1,
+                                                                    hintText:
+                                                                    'M.ReligiousGroup',
+                                                                    hintStyle:
+                                                                    TextStyle(
+                                                                      fontSize:
+                                                                      14,
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                          .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                         //LocationDD(product: newProduct),
                                                       ],
                                                     ),

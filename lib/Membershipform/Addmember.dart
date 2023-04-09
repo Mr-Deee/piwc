@@ -20,6 +20,8 @@ class addedMember {
     this.accountNumber,
     this.mobile,
     this.agentname,
+   this.fatherReligion,
+    this.motherReligion,
     this.availablebalance,
   });
 
@@ -29,6 +31,8 @@ class addedMember {
   String? agentname;
   String? fathername;
   String? fathershometown;
+  String? fatherReligion;
+  String? motherReligion;
   String? mothershometown;
   bool ?Maritalstatus;
   String? SpouseName;
