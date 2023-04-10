@@ -38,8 +38,17 @@ class _fillaformState extends State<fillaform> {
   TextEditingController fathersname = new TextEditingController();
   TextEditingController fathershomeTown = new TextEditingController();
   TextEditingController MothershomeTown = new TextEditingController();
+  TextEditingController FatherReligion = new TextEditingController();
+
   TextEditingController MothersReligion = new TextEditingController();
   TextEditingController hometown = new TextEditingController();
+// Initial Selected Value
+  String MaritalStatusvalue = '';
+  var MaritalStatus = [
+    'Yes',
+    'No'
+
+  ];
 
   bool _residence = false;
   bool _emailAutoValidate = false;
@@ -412,7 +421,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextFormField(
                                                                 style: TextStyle(
                                                                   color: Colors
-                                                                      .white
+                                                                      .black
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
@@ -489,7 +498,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextFormField(
                                                                 style: TextStyle(
                                                                   color: Colors
-                                                                      .white
+                                                                      .black
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
@@ -527,7 +536,7 @@ class _fillaformState extends State<fillaform> {
                                                                       TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .5),
                                                                   ),
@@ -578,7 +587,7 @@ class _fillaformState extends State<fillaform> {
                                                               TextFormField(
                                                                 style: TextStyle(
                                                                   color: Colors
-                                                                      .white
+                                                                      .black
                                                                       .withOpacity(
                                                                       .9),
                                                                 ),
@@ -614,7 +623,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -657,7 +666,7 @@ class _fillaformState extends State<fillaform> {
                                                                   controller:region,
                                                                 style: TextStyle(
                                                                   color: Colors
-                                                                      .white
+                                                                      .black
                                                                       .withOpacity(
                                                                       .9),
                                                                 ),
@@ -671,7 +680,7 @@ class _fillaformState extends State<fillaform> {
                                                                 InputDecoration(
                                                                   prefixIcon:
                                                                   Icon(
-                                                                    Icons.house_outlined,
+                                                                    Icons.church,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -687,7 +696,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -734,7 +743,7 @@ class _fillaformState extends State<fillaform> {
                                                               child: TextField(
                                                                 style: TextStyle(
                                                                   color: Colors
-                                                                      .white
+                                                                      .black
                                                                       .withOpacity(
                                                                       .9),
                                                                 ),
@@ -767,7 +776,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -841,7 +850,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -922,7 +931,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -996,7 +1005,7 @@ class _fillaformState extends State<fillaform> {
                                                                   TextStyle(
                                                                     fontSize: 14,
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .5),
                                                                   ),
@@ -1073,7 +1082,7 @@ class _fillaformState extends State<fillaform> {
                                                                                   : initValue),
                                                                               style: TextStyle(
                                                                                 fontSize:13,
-                                                                                color: const Color(0xFFb1b2c4),
+                                                                                color: Colors.black,
                                                                               ),
                                                                             ),
                                                                           )
@@ -1229,7 +1238,7 @@ class _fillaformState extends State<fillaform> {
                                                                         Icon(
                                                                       Icons.man_2_outlined,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -1245,7 +1254,7 @@ class _fillaformState extends State<fillaform> {
                                                                       fontSize:
                                                                           14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
                                                                     ),
@@ -1311,7 +1320,7 @@ class _fillaformState extends State<fillaform> {
                                                                         Icon(
                                                                       Icons.woman,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -1327,7 +1336,7 @@ class _fillaformState extends State<fillaform> {
                                                                       fontSize:
                                                                           14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
                                                                     ),
@@ -1374,10 +1383,9 @@ class _fillaformState extends State<fillaform> {
                                                                 child: TextFormField(
                                                                   style:
                                                                       TextStyle(
-                                                                    color: Colors
-                                                                        .white
+                                                                    color: Colors.black
                                                                         .withOpacity(
-                                                                            .9),
+                                                                        .5),
                                                                   ),
                                                                   controller:
                                                                       fathershomeTown,
@@ -1397,7 +1405,7 @@ class _fillaformState extends State<fillaform> {
                                                                       Icons
                                                                           .home_sharp,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -1413,7 +1421,7 @@ class _fillaformState extends State<fillaform> {
                                                                       fontSize:
                                                                           13,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
                                                                     ),
@@ -1477,7 +1485,7 @@ class _fillaformState extends State<fillaform> {
                                                                         Icon(
                                                                       Icons.man,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -1492,10 +1500,9 @@ class _fillaformState extends State<fillaform> {
                                                                         TextStyle(
                                                                       fontSize:
                                                                           14,
-                                                                      color: Colors
-                                                                          .white
+                                                                      color: Colors.black
                                                                           .withOpacity(
-                                                                              .5),
+                                                                          .5),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1547,7 +1554,7 @@ class _fillaformState extends State<fillaform> {
                                                                         .9),
                                                                   ),
                                                                   controller:
-                                                                  FathersReligion,
+                                                                  FatherReligion,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember.fatherReligion =
@@ -1578,8 +1585,7 @@ class _fillaformState extends State<fillaform> {
                                                                     TextStyle(
                                                                       fontSize:
                                                                       14,
-                                                                      color: Colors
-                                                                          .white
+                                                                      color: Colors.black
                                                                           .withOpacity(
                                                                           .5),
                                                                     ),
@@ -1659,7 +1665,7 @@ class _fillaformState extends State<fillaform> {
                                                                       fontSize:
                                                                       14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                           .5),
                                                                     ),
@@ -2413,6 +2419,8 @@ class _fillaformState extends State<fillaform> {
                                                                  ),
                                                                ),
                                                              ),
+
+
                                                            ],
                                                          ),
 
