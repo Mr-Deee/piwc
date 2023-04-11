@@ -43,8 +43,16 @@ class _fillaformState extends State<fillaform> {
   TextEditingController MothersReligion = new TextEditingController();
   TextEditingController hometown = new TextEditingController();
 // Initial Selected Value
-  String MaritalStatusvalue = '';
+  String MaritalStatusvalue = 'Married';
   var MaritalStatus = [
+    'Married',
+    'Single',
+    'Other'
+
+  ];
+
+  String MarriageRegistered = 'Yes';
+  var MarriageRegisteredStatus = [
     'Yes',
     'No'
 
@@ -1016,6 +1024,87 @@ class _fillaformState extends State<fillaform> {
                                                         ],
                                                       ),
 
+
+                                                      //Marrital Status
+                                                      Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Column(
+                                                              children: [
+                                                                Text("Marital Status"),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: DropdownButton(
+
+                                                                    // Initial Value
+                                                                    value: MaritalStatusvalue == null ? null : MaritalStatusvalue,
+
+                                                                    // Down Arrow Icon
+                                                                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                                                                    // Array list of items
+                                                                    items: MaritalStatus.map((String items) {
+                                                                      return DropdownMenuItem(
+                                                                        value: items,
+                                                                        child: Text(items),
+                                                                      );
+                                                                    }).toList(),
+                                                                    // After selecting the desired option,it will
+                                                                    // change button value to selected value
+                                                                    onChanged: (  newValue) {
+                                                                      setState(() {
+                                                                        MaritalStatusvalue = newValue.toString() ;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          //Marriage Registered?
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Column(
+                                                              children: [
+                                                                Text("Marriage Registered?"),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all(8.0),
+                                                                  child: DropdownButton(
+
+                                                                    // Initial Value
+                                                                    value: MarriageRegistered == null ? null : MarriageRegistered,
+
+                                                                    // Down Arrow Icon
+                                                                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                                                                    // Array list of items
+                                                                    items: MarriageRegisteredStatus.map((String items) {
+                                                                      return DropdownMenuItem(
+                                                                        value: items,
+                                                                        child: Text(items),
+                                                                      );
+                                                                    }).toList(),
+                                                                    // After selecting the desired option,it will
+                                                                    // change button value to selected value
+                                                                    onChanged: (  newValue) {
+                                                                      setState(() {
+                                                                        MarriageRegistered = newValue.toString() ;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+
+
+
                                                       Row(
                                                         children: [
 
@@ -1695,6 +1784,7 @@ class _fillaformState extends State<fillaform> {
                                                     //   },
                                                     // ),
                                                   ),
+
                                                 ]),
 
                                             ExpansionTile(
@@ -2045,6 +2135,9 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                               ),
                                                             ),
+
+
+
                                                           ],
                                                         ),
 
@@ -2068,7 +2161,14 @@ class _fillaformState extends State<fillaform> {
                                                     //   },
                                                     // ),
                                                   ),
-                                                ]),
+
+
+
+                                              
+                                                ]
+                                                
+                                                
+                                            ),
 
 
                                              ExpansionTile(
