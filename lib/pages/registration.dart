@@ -378,7 +378,7 @@ class _registrationState extends State<registration> {
           message: "Registering,Please wait.....",
         );
       });
-  registerInfirestore(context);
+
 
   firebaseUser = (await _firebaseAuth
       .createUserWithEmailAndPassword(
@@ -409,7 +409,7 @@ class _registrationState extends State<registration> {
     // Admin.child(firebaseUser!.uid).set(userDataMap);
 
     currentfirebaseUser = firebaseUser;
-
+    registerInfirestore(context);
     displayToast("Congratulation, your account has been created", context);
 
     Navigator.of(context).pushAndRemoveUntil(
@@ -431,7 +431,7 @@ class _registrationState extends State<registration> {
 Future<void> registerInfirestore(BuildContext context) async {
   User? user = FirebaseAuth.instance.currentUser;
   if(user!=null) {
-    FirebaseFirestore.instance.collection('Members').doc(_email).set({
+    FirebaseFirestore.instance.collection('Members').doc(user.uid).set({
       'firstName': _firstName,
       'lastName': _lastname,
       'MobileNumber': _mobileNumber,

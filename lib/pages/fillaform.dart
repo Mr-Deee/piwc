@@ -49,6 +49,18 @@ class _fillaformState extends State<fillaform> {
     'Single',
     'Other'
 
+  ];  String FatherAliveStatusvalue = 'Yes';
+  var FatherAliveStatus = [
+    'Yes',
+    'No',
+
+
+  ];String MotherAliveStatusvalue = 'Yes';
+  var MotherAliveStatus = [
+    'Yes',
+    'No',
+
+
   ];
 
   String MarriageRegistered = 'Yes';
@@ -145,9 +157,10 @@ class _fillaformState extends State<fillaform> {
 
             String url = await uploadFile(image!);
             Occupationdb(context);
+            final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
             // newProduct.group = group;
-            _firestore.collection("Members").add({
+            _firestore.collection("Members").doc(_firebaseAuth).update({
               'image': url.toString(),
              "FirstName":Provider.of<Users>(context,listen: false).userInfo?.fname ??"",
              "LastName":Provider.of<Users>(context,listen: false).userInfo?.lname ??"",
@@ -159,6 +172,11 @@ class _fillaformState extends State<fillaform> {
               "Region": addMember.Region,
               "language": addMember.language,
               "Occupation": addMember.Occupation,
+              "Marriage-Registered":MarriageRegistered,
+              "Marrital Status": MaritalStatusvalue,
+              "Father-Alive": FatherAliveStatusvalue,
+              "Mother-Alive":MotherAliveStatusvalue,
+              "Date Of Birth":birthDateInString,
 
               "homeTown": addMember.homeTown,
 
@@ -1598,7 +1616,8 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                             ),
 
-                                                            
+
+
 
                                                           ],
                                                         ),
@@ -1765,6 +1784,83 @@ class _fillaformState extends State<fillaform> {
                                                           ],
                                                         ),
                                                         //LocationDD(product: newProduct),
+                                                              //Marrital Status
+                                                        Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Column(
+                                                                children: [
+                                                                  Text("Father-Alive?"),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
+                                                                    child: DropdownButton(
+
+                                                                      // Initial Value
+                                                                      value: FatherAliveStatusvalue == null ? null : FatherAliveStatusvalue,
+
+                                                                      // Down Arrow Icon
+                                                                      icon: const Icon(Icons.keyboard_arrow_down),
+
+                                                                      // Array list of items
+                                                                      items: FatherAliveStatus.map((String items) {
+                                                                        return DropdownMenuItem(
+                                                                          value: items,
+                                                                          child: Text(items),
+                                                                        );
+                                                                      }).toList(),
+                                                                      // After selecting the desired option,it will
+                                                                      // change button value to selected value
+                                                                      onChanged: (  newValue) {
+                                                                        setState(() {
+                                                                          FatherAliveStatusvalue = newValue.toString() ;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+
+                                                            //Marriage Registered?
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Column(
+                                                                children: [
+                                                                  Text("Mother-Alive?"),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.all(8.0),
+                                                                    child: DropdownButton(
+
+                                                                      // Initial Value
+                                                                      value: MotherAliveStatusvalue == null ? null : MotherAliveStatusvalue,
+
+                                                                      // Down Arrow Icon
+                                                                      icon: const Icon(Icons.keyboard_arrow_down),
+
+                                                                      // Array list of items
+                                                                      items: MotherAliveStatus.map((String items) {
+                                                                        return DropdownMenuItem(
+                                                                          value: items,
+                                                                          child: Text(items),
+                                                                        );
+                                                                      }).toList(),
+                                                                      // After selecting the desired option,it will
+                                                                      // change button value to selected value
+                                                                      onChanged: (  newValue) {
+                                                                        setState(() {
+                                                                          MotherAliveStatusvalue = newValue.toString() ;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
 
@@ -2832,22 +2928,30 @@ class _fillaformState extends State<fillaform> {
     var phone=Provider.of<Users>(context,listen: false).userInfo?.phone ??"";
     // String url = await uploadsFile();
     String url = await uploadFile(image!);
-    Map userDataMap = {
-      'profile': url.toString(),
-      "FirstName":firstname,
-      "LastName":lastname,
-      "Email":email,
-      "PhoneNumber":phone,
-      // "": rndnumber.toString(),
-      "placeofwork": addMember.placeofwork.toString(),
-      "Residence": addMember.residence,
-      "Region": addMember.Region,
-      "language": addMember.language,
-      "Occupation": addMember.Occupation,
-      "Date Of Birth":birthDateInString,
 
-      "homeTown": addMember.homeTown,
-    };
+    //final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
+
+    // FirebaseFirestore.instance
+    //     .collection('Members')
+    //     .doc(_firebaseAuth).update({
+    //   'profile': url.toString(),
+    //   "FirstName":firstname,
+    //   "LastName":lastname,
+    //   "Email":email,
+    //   "PhoneNumber":phone,
+    //   // "": rndnumber.toString(),
+    //   "placeofwork": addMember.placeofwork.toString(),
+    //   "Residence": addMember.residence,
+    //   "Region": addMember.Region,
+    //   "language": addMember.language,
+    //   "Occupation": addMember.Occupation,
+    //   "Date Of Birth":birthDateInString,
+    //   "Marriage-Registered":MarriageRegistered,
+    //   "Marrital Status": MaritalStatusvalue,
+    //   "Father-Alive": FatherAliveStatusvalue,
+    //   "Mother-Alive":MotherAliveStatusvalue,
+    //   "homeTown": addMember.homeTown,
+    // });
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
@@ -2856,6 +2960,10 @@ class _fillaformState extends State<fillaform> {
     "LastName":lastname,
     "Email":email,
     "PhoneNumber":phone,
+      "Marriage-Registered":MarriageRegistered,
+      "Marrital Status": MaritalStatusvalue,
+      "Father-Alive": FatherAliveStatusvalue,
+      "Mother-Alive":MotherAliveStatusvalue,
       "Date Of Birth":birthDateInString,
     // "": rndnumber.toString(),
     "placeofwork": addMember.placeofwork.toString(),
