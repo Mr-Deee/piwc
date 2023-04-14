@@ -72,7 +72,7 @@ class _homepageState extends State<homepage> {
                                         child: BackdropFilter(
 
                                             filter: ImageFilter.blur(
-                                                sigmaY: 400, sigmaX: 400),
+                                                sigmaY: 100, sigmaX: 100),
                                             child: SizedBox(
                                               width: size.width * .95,
                                               child: Column(
@@ -86,115 +86,91 @@ class _homepageState extends State<homepage> {
 
                                                             Column(
                                                               children: [
-                                                                Container(
+                                                              Row(
 
-                                                                  height: 70,
-                                                                  width: 283,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors. blue,
-                                                                    borderRadius: BorderRadius.circular(8),
-                                                                    boxShadow: const [
-                                                                    BoxShadow(
-                                                                      color: Colors.lightBlueAccent,
-                                                                      blurRadius: 2.0,
-                                                                      spreadRadius: 0.0,
-                                                                      offset: Offset(1.0, 1.0), // shadow direction: bottom right
-                                                                    ),]),
-                                                                  child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
-                                                                      SingleChildScrollView(
-                                                                        child: Row(
-
-                                                                            children: [
-                                                                              Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: Text("Hi"),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              if (Provider.of<Users>(context).userInfo?.fname != null)
-                                                                              Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: Text(Provider.of<Users>(context).userInfo!.fname!,style: TextStyle(color: Colors.black,fontSize: 21),),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-
-                                                                              Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.only(left:130,right:10,top: 8.0,bottom: 9),
-                                                                                    child: Container(
-
-                                                                                      child:IconButton(
-                                                                                        onPressed: () {
-
-                                                                                          showDialog<void>(
-                                                                                            context: context,
-                                                                                            barrierDismissible: false, // user must tap button!
-                                                                                            builder: (BuildContext context) {
-                                                                                              return AlertDialog(
-                                                                                                title: Text('Sign Out'),
-                                                                                                backgroundColor: Colors.white,
-                                                                                                content: SingleChildScrollView(
-                                                                                                  child: Column(
-                                                                                                    children: <Widget>[
-                                                                                                      Text('Are you certain you want to Sign Out?'),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                                actions: <Widget>[
-                                                                                                  TextButton(
-                                                                                                    child: Text(
-                                                                                                      'Yes',
-                                                                                                      style: TextStyle(color: Colors.black),
-                                                                                                    ),
-                                                                                                    onPressed: () {
-                                                                                                      print('yes');
-                                                                                                      FirebaseAuth.instance.signOut();
-                                                                                                      Navigator.pushNamedAndRemoveUntil(
-                                                                                                          context, login.idScreen, (route) => false);
-                                                                                                      // Navigator.of(context).pop();
-                                                                                                    },
-                                                                                                  ),
-                                                                                                  TextButton(
-                                                                                                    child: Text(
-                                                                                                      'Cancel',
-                                                                                                      style: TextStyle(color: Colors.red),
-                                                                                                    ),
-                                                                                                    onPressed: () {
-                                                                                                      Navigator.of(context).pop();
-                                                                                                    },
-                                                                                                  ),
-                                                                                                ],
-                                                                                              );
-                                                                                            },
-                                                                                          );
-                                                                                        },
-                                                                                        icon: const Icon(
-                                                                                          Icons.logout,
-                                                                                          color: Colors.black,
-                                                                                        ),
-                                                                                      ),
-
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-
-                                                                            ],
+                                                                      Column(
+                                                                        children: [
+                                                                          Padding(
+                                                                            padding: const EdgeInsets.all(14.0),
+                                                                            child: Text("Hi",style: TextStyle(fontSize: 12,color: Colors.black),),
                                                                           ),
+                                                                        ],
                                                                       ),
+                                                                      if (Provider.of<Users>(context).userInfo?.fname != null)
+                                                                        Column(
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Text(Provider.of<Users>(context).userInfo!.fname!,style: TextStyle(color: Colors.black,fontSize: 21),),
+                                                                            ),
+                                                                          ],
+                                                                        ),
 
+                                                                      Column(
+                                                                        children: [
+                                                                          Padding(
+                                                                            padding: const EdgeInsets.only(left:130,right:10,top: 8.0,bottom: 9),
+                                                                            child: Container(
+
+                                                                              child:IconButton(
+                                                                                onPressed: () {
+
+                                                                                  showDialog<void>(
+                                                                                    context: context,
+                                                                                    barrierDismissible: false, // user must tap button!
+                                                                                    builder: (BuildContext context) {
+                                                                                      return AlertDialog(
+                                                                                        title: Text('Sign Out'),
+                                                                                        backgroundColor: Colors.white,
+                                                                                        content: SingleChildScrollView(
+                                                                                          child: Column(
+                                                                                            children: <Widget>[
+                                                                                              Text('Are you certain you want to Sign Out?'),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                        actions: <Widget>[
+                                                                                          TextButton(
+                                                                                            child: Text(
+                                                                                              'Yes',
+                                                                                              style: TextStyle(color: Colors.black),
+                                                                                            ),
+                                                                                            onPressed: () {
+                                                                                              print('yes');
+                                                                                              FirebaseAuth.instance.signOut();
+                                                                                              Navigator.pushNamedAndRemoveUntil(
+                                                                                                  context, login.idScreen, (route) => false);
+                                                                                              // Navigator.of(context).pop();
+                                                                                            },
+                                                                                          ),
+                                                                                          TextButton(
+                                                                                            child: Text(
+                                                                                              'Cancel',
+                                                                                              style: TextStyle(color: Colors.red),
+                                                                                            ),
+                                                                                            onPressed: () {
+                                                                                              Navigator.of(context).pop();
+                                                                                            },
+                                                                                          ),
+                                                                                        ],
+                                                                                      );
+                                                                                    },
+                                                                                  );
+                                                                                },
+                                                                                icon: const Icon(
+                                                                                  Icons.logout,
+                                                                                  color: Colors.black,
+                                                                                ),
+                                                                              ),
+
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
 
                                                                     ],
                                                                   ),
-                                                                ),
 
                                                               ],
                                                             ),
