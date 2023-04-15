@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:math';
-import 'package:intl/intl.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:piwc/pages/utils/color_palette.dart';
 import 'package:provider/provider.dart';
@@ -47,41 +48,29 @@ class _fillaformState extends State<fillaform> {
 
   TextEditingController MothersReligion = new TextEditingController();
   TextEditingController hometown = new TextEditingController();
+
 // Initial Selected Value
   String MaritalStatusvalue = 'Married';
-  var MaritalStatus = [
-    'Married',
-    'Single',
-    'Other'
-
-  ];  String FatherAliveStatusvalue = 'Yes';
+  var MaritalStatus = ['Married', 'Single', 'Other'];
+  String FatherAliveStatusvalue = 'Yes';
   var FatherAliveStatus = [
     'Yes',
     'No',
-
-
-  ];String MotherAliveStatusvalue = 'Yes';
+  ];
+  String MotherAliveStatusvalue = 'Yes';
   var MotherAliveStatus = [
     'Yes',
-    'No',];
-
+    'No',
+  ];
 
   String ChiledGenderStatusvalue = 'Male';
   var ChiledGenderStatus = [
     'Male',
     'Female',
-
-
   ];
-
-
 
   String MarriageRegistered = 'Yes';
-  var MarriageRegisteredStatus = [
-    'Yes',
-    'No'
-
-  ];
+  var MarriageRegisteredStatus = ['Yes', 'No'];
   bool _residence = false;
   bool _emailAutoValidate = false;
   bool _addressAutoValidate = false;
@@ -100,13 +89,10 @@ class _fillaformState extends State<fillaform> {
   CollectionReference? imgRef;
   firebase_storage.Reference? ref;
 
-
-
-
   String initValue = "Birth Date";
   bool isDateSelected = false;
   DateTime? birthDate; // instance of DateTime
-  String ?birthDateInString;
+  String? birthDateInString;
 
   // final String? docID;
   String _randomString(int length) {
@@ -127,8 +113,8 @@ class _fillaformState extends State<fillaform> {
     }
     print(rndnumber);
   }
-  TextEditingController dateInput = TextEditingController();
 
+  TextEditingController dateInput = TextEditingController();
 
   @override
   void initState() {
@@ -136,19 +122,13 @@ class _fillaformState extends State<fillaform> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
-
     TextEditingController dateInput = TextEditingController();
 
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
-    Future<void> _selectDate(BuildContext context) async {
-}
-
+    Future<void> _selectDate(BuildContext context) async {}
 
     return Scaffold(
       floatingActionButton: Padding(
@@ -174,21 +154,29 @@ class _fillaformState extends State<fillaform> {
             // newProduct.group = group;
             _firestore.collection("Members").doc(_firebaseAuth).update({
               'image': url.toString(),
-             "FirstName":Provider.of<Users>(context,listen: false).userInfo?.fname ??"",
-             "LastName":Provider.of<Users>(context,listen: false).userInfo?.lname ??"",
-             "Email":Provider.of<Users>(context,listen: false).userInfo?.email ??"",
-             "PhoneNumber":Provider.of<Users>(context,listen: false).userInfo?.phone ??"",
+              "FirstName":
+                  Provider.of<Users>(context, listen: false).userInfo?.fname ??
+                      "",
+              "LastName":
+                  Provider.of<Users>(context, listen: false).userInfo?.lname ??
+                      "",
+              "Email":
+                  Provider.of<Users>(context, listen: false).userInfo?.email ??
+                      "",
+              "PhoneNumber":
+                  Provider.of<Users>(context, listen: false).userInfo?.phone ??
+                      "",
               // "": rndnumber.toString(),
               "placeofwork": addMember.placeofwork.toString(),
               "Residence": addMember.residence,
               "Region": addMember.Region,
               "language": addMember.language,
               "Occupation": addMember.Occupation,
-              "Marriage-Registered":MarriageRegistered,
+              "Marriage-Registered": MarriageRegistered,
               "Marrital Status": MaritalStatusvalue,
               "Father-Alive": FatherAliveStatusvalue,
-              "Mother-Alive":MotherAliveStatusvalue,
-              "Date Of Birth":birthDateInString,
+              "Mother-Alive": MotherAliveStatusvalue,
+              "Date Of Birth": birthDateInString,
 
               "homeTown": addMember.homeTown,
 
@@ -251,9 +239,10 @@ class _fillaformState extends State<fillaform> {
                                       child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
-                                           children: [
+                                          children: [
                                             ExpansionTile(
-                                              title: Text("Member Persnal Data"),
+                                              title:
+                                                  Text("Member Persnal Data"),
                                               children: <Widget>[
                                                 Focus(
                                                   onFocusChange: (value) {
@@ -273,16 +262,19 @@ class _fillaformState extends State<fillaform> {
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      right:
-                                                                          size.width /
-                                                                              30),
+                                                                  size.width /
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -296,15 +288,15 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
 
-                                                                initialValue: Provider.of<
-                                                                                Users>(
+                                                                initialValue: Provider.of<Users>(
                                                                             context)
                                                                         .userInfo
                                                                         ?.fname ??
@@ -313,9 +305,9 @@ class _fillaformState extends State<fillaform> {
                                                                 // onChanged: (rnnumber) {
                                                                 //   addMember.accountNumber ==rndnumber;
                                                                 // },
-                                                                    readOnly: true,
+                                                                readOnly: true,
 
-                                                                    decoration:
+                                                                decoration:
                                                                     InputDecoration(
                                                                   prefixIcon:
                                                                       Icon(
@@ -329,12 +321,14 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines: 1,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
                                                                       'First Name',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize: 14,
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -350,16 +344,19 @@ class _fillaformState extends State<fillaform> {
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      right:
-                                                                          size.width /
-                                                                              30),
+                                                                  size.width /
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -373,23 +370,23 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
 
-                                                                initialValue: Provider.of<
-                                                                                Users>(
+                                                                initialValue: Provider.of<Users>(
                                                                             context)
                                                                         .userInfo
                                                                         ?.lname ??
                                                                     '',
 
-                                                                    readOnly: true,
+                                                                readOnly: true,
 
-                                                                    // controller: lname,
+                                                                // controller: lname,
                                                                 // onChanged: (value){
                                                                 //   _lastname = value;
                                                                 // },
@@ -409,12 +406,14 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines: 1,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
                                                                       'Last Name',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize: 14,
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -434,16 +433,19 @@ class _fillaformState extends State<fillaform> {
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      right:
-                                                                          size.width /
-                                                                              30),
+                                                                  size.width /
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -457,7 +459,8 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
@@ -465,8 +468,7 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                                 readOnly: true,
 
-                                                                initialValue: Provider.of<
-                                                                                Users>(
+                                                                initialValue: Provider.of<Users>(
                                                                             context)
                                                                         .userInfo
                                                                         ?.phone ??
@@ -488,12 +490,14 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines: 1,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
                                                                       'Phone',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize: 14,
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -511,16 +515,19 @@ class _fillaformState extends State<fillaform> {
                                                                     .all(8.0),
                                                             child: Container(
                                                               height:
-                                                                  size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                                  EdgeInsets.only(
-                                                                      right:
-                                                                          size.width /
-                                                                              30),
+                                                                  size.width /
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Colors
@@ -534,15 +541,15 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
                                                                           .9),
                                                                 ),
 
-                                                                initialValue: Provider.of<
-                                                                                Users>(
+                                                                initialValue: Provider.of<Users>(
                                                                             context)
                                                                         .userInfo
                                                                         ?.email ??
@@ -567,12 +574,14 @@ class _fillaformState extends State<fillaform> {
                                                                   border:
                                                                       InputBorder
                                                                           .none,
-                                                                  hintMaxLines: 1,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
                                                                       'Email',
                                                                   hintStyle:
                                                                       TextStyle(
-                                                                    fontSize: 14,
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
@@ -584,11 +593,6 @@ class _fillaformState extends State<fillaform> {
                                                           ),
                                                         ],
                                                       ),
-                                                      
-                                                      
-                                                      
-                                                      
-                                                      
 
                                                       //Profession
 
@@ -596,227 +600,248 @@ class _fillaformState extends State<fillaform> {
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
                                                               child:
-                                                              TextFormField(
-                                                                style: TextStyle(
+                                                                  TextFormField(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
 
                                                                 controller:
-                                                                hometown,
+                                                                    hometown,
                                                                 onChanged:
                                                                     (value) {
-                                                                  addMember.homeTown=
+                                                                  addMember
+                                                                          .homeTown =
                                                                       value;
                                                                 },
 
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
+                                                                      Icon(
                                                                     Icons
                                                                         .holiday_village,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'HomeTown',
+                                                                      'HomeTown',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-
-
-
-
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
-                                                              child: TextFormField(
-                                                                  controller:region,
-                                                                style: TextStyle(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    region,
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
-                                                                onChanged: (value) {
-                                                                  addMember.Region =value;
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember
+                                                                          .Region =
+                                                                      value;
                                                                 },
 
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
-                                                                    Icons.church,
+                                                                      Icon(
+                                                                    Icons
+                                                                        .church,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'Region',
+                                                                      'Region',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-
-
-
                                                         ],
                                                       ),
                                                       //Language
                                                       Row(
                                                         children: [
-                                                            //Residential Address
-                                                              Padding(
+                                                          //Residential Address
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
                                                               child: TextField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
-                                                                controller: residence,
-                                                                onChanged:(value){
-
-                                                                  addMember.residence=value;
+                                                                controller:
+                                                                    residence,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember
+                                                                          .residence =
+                                                                      value;
                                                                 },
 
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
+                                                                      Icon(
                                                                     Icons
                                                                         .house_outlined,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'Residential Address',
+                                                                      'Residential Address',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
@@ -824,228 +849,249 @@ class _fillaformState extends State<fillaform> {
                                                           ),
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
                                                               child:
-                                                              TextFormField(
-                                                                style: TextStyle(
+                                                                  TextFormField(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .white
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
 
-                                                                controller: language,
+                                                                controller:
+                                                                    language,
                                                                 onChanged:
                                                                     (value) {
-                                                                  addMember.language=
+                                                                  addMember
+                                                                          .language =
                                                                       value;
                                                                 },
 
-
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
-                                                                    Icons.language,
+                                                                      Icon(
+                                                                    Icons
+                                                                        .language,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'Language',
+                                                                      'Language',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
-
-
                                                         ],
                                                       ),
 
-
-
                                                       Row(
                                                         children: [
-
                                                           //Occupation
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
-                                                              child: TextFormField(
-                                                                style: TextStyle(
+                                                              child:
+                                                                  TextFormField(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .white
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
-                                                                controller: occupation,
-                                                                onChanged:(value){
-
-                                                                  addMember.Occupation=value;
+                                                                controller:
+                                                                    occupation,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember
+                                                                          .Occupation =
+                                                                      value;
                                                                 },
 
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
+                                                                      Icon(
                                                                     Icons.work,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'Occupation',
+                                                                      'Occupation',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
 
-                                                           
-
-
                                                           //place Of Work
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Container(
                                                               height:
-                                                              size.width / 8,
-                                                              width: size.width /
-                                                                  2.5,
-                                                              alignment: Alignment
-                                                                  .center,
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  right:
                                                                   size.width /
-                                                                      30),
+                                                                      8,
+                                                              width:
+                                                                  size.width /
+                                                                      2.5,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      right: size
+                                                                              .width /
+                                                                          30),
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: Colors
                                                                     .black
                                                                     .withOpacity(
-                                                                    .1),
+                                                                        .1),
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    20),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
                                                               ),
                                                               child: TextField(
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .white
                                                                       .withOpacity(
-                                                                      .9),
+                                                                          .9),
                                                                 ),
-
-                                                                    controller:placeofwork,
-                                                                onChanged:(value){
-                                                                  addMember.placeofwork=value;
+                                                                controller:
+                                                                    placeofwork,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  addMember
+                                                                          .placeofwork =
+                                                                      value;
                                                                 },
-                                                              
-                                                                keyboardType:  TextInputType.name ,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .name,
                                                                 decoration:
-                                                                InputDecoration(
+                                                                    InputDecoration(
                                                                   prefixIcon:
-                                                                  Icon(
-                                                                    Icons.business,
+                                                                      Icon(
+                                                                    Icons
+                                                                        .business,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .8),
+                                                                            .8),
                                                                   ),
                                                                   border:
-                                                                  InputBorder
-                                                                      .none,
-                                                                  hintMaxLines: 1,
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintMaxLines:
+                                                                      1,
                                                                   hintText:
-                                                                  'Place Of Work',
+                                                                      'Place Of Work',
                                                                   hintStyle:
-                                                                  TextStyle(
-                                                                    fontSize: 14,
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                 ),
                                                               ),
@@ -1054,39 +1100,60 @@ class _fillaformState extends State<fillaform> {
                                                         ],
                                                       ),
 
-
                                                       //Marrital Status
                                                       Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
                                                           Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Column(
                                                               children: [
-                                                                Text("Marital Status"),
+                                                                Text(
+                                                                    "Marital Status"),
                                                                 Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: DropdownButton(
-
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      DropdownButton(
                                                                     // Initial Value
-                                                                    value: MaritalStatusvalue == null ? null : MaritalStatusvalue,
+                                                                    value: MaritalStatusvalue ==
+                                                                            null
+                                                                        ? null
+                                                                        : MaritalStatusvalue,
 
                                                                     // Down Arrow Icon
-                                                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                                                    icon: const Icon(
+                                                                        Icons
+                                                                            .keyboard_arrow_down),
 
                                                                     // Array list of items
-                                                                    items: MaritalStatus.map((String items) {
+                                                                    items: MaritalStatus
+                                                                        .map((String
+                                                                            items) {
                                                                       return DropdownMenuItem(
-                                                                        value: items,
-                                                                        child: Text(items),
+                                                                        value:
+                                                                            items,
+                                                                        child: Text(
+                                                                            items),
                                                                       );
                                                                     }).toList(),
                                                                     // After selecting the desired option,it will
                                                                     // change button value to selected value
-                                                                    onChanged: (  newValue) {
-                                                                      setState(() {
-                                                                        MaritalStatusvalue = newValue.toString() ;
+                                                                    onChanged:
+                                                                        (newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        MaritalStatusvalue =
+                                                                            newValue.toString();
                                                                       });
                                                                     },
                                                                   ),
@@ -1097,32 +1164,50 @@ class _fillaformState extends State<fillaform> {
 
                                                           //Marriage Registered?
                                                           Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             child: Column(
                                                               children: [
-                                                                Text("Marriage Registered?"),
+                                                                Text(
+                                                                    "Marriage Registered?"),
                                                                 Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: DropdownButton(
-
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      DropdownButton(
                                                                     // Initial Value
-                                                                    value: MarriageRegistered == null ? null : MarriageRegistered,
+                                                                    value: MarriageRegistered ==
+                                                                            null
+                                                                        ? null
+                                                                        : MarriageRegistered,
 
                                                                     // Down Arrow Icon
-                                                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                                                    icon: const Icon(
+                                                                        Icons
+                                                                            .keyboard_arrow_down),
 
                                                                     // Array list of items
-                                                                    items: MarriageRegisteredStatus.map((String items) {
+                                                                    items: MarriageRegisteredStatus
+                                                                        .map((String
+                                                                            items) {
                                                                       return DropdownMenuItem(
-                                                                        value: items,
-                                                                        child: Text(items),
+                                                                        value:
+                                                                            items,
+                                                                        child: Text(
+                                                                            items),
                                                                       );
                                                                     }).toList(),
                                                                     // After selecting the desired option,it will
                                                                     // change button value to selected value
-                                                                    onChanged: (  newValue) {
-                                                                      setState(() {
-                                                                        MarriageRegistered = newValue.toString() ;
+                                                                    onChanged:
+                                                                        (newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        MarriageRegistered =
+                                                                            newValue.toString();
                                                                       });
                                                                     },
                                                                   ),
@@ -1133,74 +1218,92 @@ class _fillaformState extends State<fillaform> {
                                                         ],
                                                       ),
 
-
-
                                                       Row(
                                                         children: [
-
                                                           Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Container(
                                                                 height:
-                                                                size.width / 8,
-                                                                width: size.width /
-                                                                    2.5,
-                                                                alignment: Alignment
-                                                                    .center,
-                                                                padding:
-                                                                EdgeInsets.only(
-                                                                    right:
                                                                     size.width /
-                                                                        30),
+                                                                        8,
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
+                                                                            30),
                                                                 decoration:
-                                                                BoxDecoration(
+                                                                    BoxDecoration(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .1),
+                                                                          .1),
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      20),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
                                                                 ),
-                                                                child:GestureDetector(
-                                                                  onTap: () async {
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap:
+                                                                      () async {
                                                                     final datePick = await showDatePicker(
-                                                                        context: context,
-                                                                        initialDate: new DateTime.now(),
-                                                                        firstDate: new DateTime(1900),
-                                                                        lastDate: new DateTime(2100));
-                                                                    if (datePick != null &&
-                                                                        datePick != birthDate) {
-                                                                      setState(() {
-                                                                        birthDate = datePick;
-                                                                        isDateSelected = true;
+                                                                        context:
+                                                                            context,
+                                                                        initialDate:
+                                                                            new DateTime
+                                                                                .now(),
+                                                                        firstDate:
+                                                                            new DateTime(
+                                                                                1900),
+                                                                        lastDate:
+                                                                            new DateTime(2100));
+                                                                    if (datePick !=
+                                                                            null &&
+                                                                        datePick !=
+                                                                            birthDate) {
+                                                                      setState(
+                                                                          () {
+                                                                        birthDate =
+                                                                            datePick;
+                                                                        isDateSelected =
+                                                                            true;
                                                                         birthDateInString =
-                                                                        "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
+                                                                            "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
                                                                       });
                                                                     }
                                                                   },
-                                                                  child: Padding(
-                                                                    padding: const EdgeInsets.all(10.0),
-                                                                    child: SingleChildScrollView(
-                                                                      child: Row(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .all(
+                                                                        10.0),
+                                                                    child:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          Row(
                                                                         children: [
                                                                           new Icon(
                                                                             Icons.calendar_today,
-                                                                            color:  Colors.black,
-                                                                            size:18,
+                                                                            color:
+                                                                                Colors.black,
+                                                                            size:
+                                                                                18,
                                                                           ),
                                                                           Padding(
-                                                                            padding: const EdgeInsets.all(8.0),
-                                                                            child: new Text(
-                                                                              (isDateSelected
-                                                                                  ? DateFormat.yMMMd()
-                                                                                  .format(birthDate!)
-                                                                                  : initValue),
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                new Text(
+                                                                              (isDateSelected ? DateFormat.yMMMd().format(birthDate!) : initValue),
                                                                               style: TextStyle(
-                                                                                fontSize:13,
+                                                                                fontSize: 13,
                                                                                 color: Colors.black,
                                                                               ),
                                                                             ),
@@ -1210,7 +1313,6 @@ class _fillaformState extends State<fillaform> {
                                                                     ),
                                                                   ),
                                                                 ),
-
 
                                                                 // Center(
                                                                 //   child: TextField(
@@ -1242,16 +1344,11 @@ class _fillaformState extends State<fillaform> {
                                                                 //       } else {}
                                                                 //     },
                                                                 //   ))
-
-
-                                                              )
-                                                          ),
+                                                              )),
 
                                                           //Residentiaal Address
-
                                                         ],
                                                       ),
-
                                                     ],
                                                   ),
                                                 ),
@@ -1291,7 +1388,7 @@ class _fillaformState extends State<fillaform> {
                                                       if (!value) {
                                                         setState(() {
                                                           //_emailAutoValidate =
-                                                             // true;
+                                                          // true;
                                                         });
                                                       }
                                                     },
@@ -1315,10 +1412,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -1331,7 +1427,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -1355,7 +1452,8 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.man_2_outlined,
+                                                                      Icons
+                                                                          .man_2_outlined,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
@@ -1397,10 +1495,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -1413,7 +1510,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -1437,7 +1535,8 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.woman,
+                                                                      Icons
+                                                                          .woman,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
@@ -1483,10 +1582,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -1499,18 +1597,21 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextFormField(
+                                                                child:
+                                                                    TextFormField(
                                                                   style:
                                                                       TextStyle(
-                                                                    color: Colors.black
+                                                                    color: Colors
+                                                                        .black
                                                                         .withOpacity(
-                                                                        .5),
+                                                                            .5),
                                                                   ),
                                                                   controller:
                                                                       fathershomeTown,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.fathershometown=
+                                                                    addMember
+                                                                            .fathershometown =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -1563,10 +1664,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -1579,7 +1679,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -1591,7 +1692,8 @@ class _fillaformState extends State<fillaform> {
                                                                       MothershomeTown,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.mothershometown =
+                                                                    addMember
+                                                                            .mothershometown =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -1619,175 +1721,176 @@ class _fillaformState extends State<fillaform> {
                                                                         TextStyle(
                                                                       fontSize:
                                                                           14,
-                                                                      color: Colors.black
+                                                                      color: Colors
+                                                                          .black
                                                                           .withOpacity(
-                                                                          .5),
+                                                                              .5),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-
-
-
-
                                                           ],
                                                         ),
                                                         Row(
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Container(
                                                                 height:
-                                                                size.width /
-                                                                    8,
+                                                                    size.width /
+                                                                        8,
                                                                 width:
-                                                                size.width /
-                                                                    2.5,
+                                                                    size.width /
+                                                                        2.5,
                                                                 alignment:
-                                                                Alignment
-                                                                    .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                    right: size
-                                                                        .width /
-                                                                        30),
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
+                                                                            30),
                                                                 decoration:
-                                                                BoxDecoration(
+                                                                    BoxDecoration(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .1),
+                                                                          .1),
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      20),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .9),
+                                                                            .9),
                                                                   ),
                                                                   controller:
-                                                                  FatherReligion,
+                                                                      FatherReligion,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.fatherReligion =
+                                                                    addMember
+                                                                            .fatherReligion =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
                                                                   keyboardType:
-                                                                  TextInputType
-                                                                      .name,
+                                                                      TextInputType
+                                                                          .name,
                                                                   decoration:
-                                                                  InputDecoration(
+                                                                      InputDecoration(
                                                                     prefixIcon:
-                                                                    Icon(
-                                                                      Icons.circle_sharp,
+                                                                        Icon(
+                                                                      Icons
+                                                                          .circle_sharp,
                                                                       color: Colors
                                                                           .lightBlueAccent
                                                                           .withOpacity(
-                                                                          .8),
+                                                                              .8),
                                                                     ),
                                                                     border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                        InputBorder
+                                                                            .none,
                                                                     hintMaxLines:
-                                                                    1,
+                                                                        1,
                                                                     hintText:
-                                                                    'F.ReligiousGroup',
+                                                                        'F.ReligiousGroup',
                                                                     hintStyle:
-                                                                    TextStyle(
+                                                                        TextStyle(
                                                                       fontSize:
-                                                                      14,
-                                                                      color: Colors.black
+                                                                          14,
+                                                                      color: Colors
+                                                                          .black
                                                                           .withOpacity(
-                                                                          .5),
+                                                                              .5),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Container(
                                                                 height:
-                                                                size.width /
-                                                                    8,
+                                                                    size.width /
+                                                                        8,
                                                                 width:
-                                                                size.width /
-                                                                    2.5,
+                                                                    size.width /
+                                                                        2.5,
                                                                 alignment:
-                                                                Alignment
-                                                                    .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                    right: size
-                                                                        .width /
-                                                                        30),
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
+                                                                            30),
                                                                 decoration:
-                                                                BoxDecoration(
+                                                                    BoxDecoration(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .1),
+                                                                          .1),
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      20),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .9),
+                                                                            .9),
                                                                   ),
                                                                   controller:
-                                                                  MothersReligion,
+                                                                      MothersReligion,
                                                                   onChanged:
                                                                       (value) {
-                                                                    addMember.motherReligion =
+                                                                    addMember
+                                                                            .motherReligion =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
                                                                   keyboardType:
-                                                                  TextInputType
-                                                                      .name,
+                                                                      TextInputType
+                                                                          .name,
                                                                   decoration:
-                                                                  InputDecoration(
+                                                                      InputDecoration(
                                                                     prefixIcon:
-                                                                    Icon(
-                                                                      Icons.circle_sharp,
+                                                                        Icon(
+                                                                      Icons
+                                                                          .circle_sharp,
                                                                       color: Colors
                                                                           .lightBlueAccent
                                                                           .withOpacity(
-                                                                          .8),
+                                                                              .8),
                                                                     ),
                                                                     border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                        InputBorder
+                                                                            .none,
                                                                     hintMaxLines:
-                                                                    1,
+                                                                        1,
                                                                     hintText:
-                                                                    'M.ReligiousGroup',
+                                                                        'M.ReligiousGroup',
                                                                     hintStyle:
-                                                                    TextStyle(
+                                                                        TextStyle(
                                                                       fontSize:
-                                                                      14,
+                                                                          14,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
-                                                                          .5),
+                                                                              .5),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1796,38 +1899,59 @@ class _fillaformState extends State<fillaform> {
                                                           ],
                                                         ),
                                                         //LocationDD(product: newProduct),
-                                                              //Marrital Status
+                                                        //Marrital Status
                                                         Row(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             Padding(
-                                                              padding: const EdgeInsets.all(8.0),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Column(
                                                                 children: [
-                                                                  Text("Father-Alive?"),
+                                                                  Text(
+                                                                      "Father-Alive?"),
                                                                   Padding(
-                                                                    padding: const EdgeInsets.all(8.0),
-                                                                    child: DropdownButton(
-
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        DropdownButton(
                                                                       // Initial Value
-                                                                      value: FatherAliveStatusvalue == null ? null : FatherAliveStatusvalue,
+                                                                      value: FatherAliveStatusvalue ==
+                                                                              null
+                                                                          ? null
+                                                                          : FatherAliveStatusvalue,
 
                                                                       // Down Arrow Icon
-                                                                      icon: const Icon(Icons.keyboard_arrow_down),
+                                                                      icon: const Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down),
 
                                                                       // Array list of items
-                                                                      items: FatherAliveStatus.map((String items) {
+                                                                      items: FatherAliveStatus.map(
+                                                                          (String
+                                                                              items) {
                                                                         return DropdownMenuItem(
-                                                                          value: items,
-                                                                          child: Text(items),
+                                                                          value:
+                                                                              items,
+                                                                          child:
+                                                                              Text(items),
                                                                         );
                                                                       }).toList(),
                                                                       // After selecting the desired option,it will
                                                                       // change button value to selected value
-                                                                      onChanged: (  newValue) {
-                                                                        setState(() {
-                                                                          FatherAliveStatusvalue = newValue.toString() ;
+                                                                      onChanged:
+                                                                          (newValue) {
+                                                                        setState(
+                                                                            () {
+                                                                          FatherAliveStatusvalue =
+                                                                              newValue.toString();
                                                                         });
                                                                       },
                                                                     ),
@@ -1838,32 +1962,49 @@ class _fillaformState extends State<fillaform> {
 
                                                             //Marriage Registered?
                                                             Padding(
-                                                              padding: const EdgeInsets.all(8.0),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Column(
                                                                 children: [
-                                                                  Text("Mother-Alive?"),
+                                                                  Text(
+                                                                      "Mother-Alive?"),
                                                                   Padding(
-                                                                    padding: const EdgeInsets.all(8.0),
-                                                                    child: DropdownButton(
-
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        DropdownButton(
                                                                       // Initial Value
-                                                                      value: MotherAliveStatusvalue == null ? null : MotherAliveStatusvalue,
+                                                                      value: MotherAliveStatusvalue ==
+                                                                              null
+                                                                          ? null
+                                                                          : MotherAliveStatusvalue,
 
                                                                       // Down Arrow Icon
-                                                                      icon: const Icon(Icons.keyboard_arrow_down),
+                                                                      icon: const Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down),
 
                                                                       // Array list of items
-                                                                      items: MotherAliveStatus.map((String items) {
+                                                                      items: MotherAliveStatus.map(
+                                                                          (String
+                                                                              items) {
                                                                         return DropdownMenuItem(
-                                                                          value: items,
-                                                                          child: Text(items),
+                                                                          value:
+                                                                              items,
+                                                                          child:
+                                                                              Text(items),
                                                                         );
                                                                       }).toList(),
                                                                       // After selecting the desired option,it will
                                                                       // change button value to selected value
-                                                                      onChanged: (  newValue) {
-                                                                        setState(() {
-                                                                          MotherAliveStatusvalue = newValue.toString() ;
+                                                                      onChanged:
+                                                                          (newValue) {
+                                                                        setState(
+                                                                            () {
+                                                                          MotherAliveStatusvalue =
+                                                                              newValue.toString();
                                                                         });
                                                                       },
                                                                     ),
@@ -1892,7 +2033,6 @@ class _fillaformState extends State<fillaform> {
                                                     //   },
                                                     // ),
                                                   ),
-
                                                 ]),
 
                                             ExpansionTile(
@@ -1927,10 +2067,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -1943,7 +2082,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -1966,10 +2106,11 @@ class _fillaformState extends State<fillaform> {
                                                                   decoration:
                                                                       InputDecoration(
                                                                     prefixIcon:
-                                                                        Icon(Icons.child_care_rounded,
+                                                                        Icon(
+                                                                      Icons
+                                                                          .child_care_rounded,
                                                                       color: Colors
                                                                           .black
-
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -1995,32 +2136,49 @@ class _fillaformState extends State<fillaform> {
                                                             ),
 //Gender of child
                                                             Padding(
-                                                              padding: const EdgeInsets.all(8.0),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Column(
                                                                 children: [
-                                                                  Text("Gender"),
+                                                                  Text(
+                                                                      "Gender"),
                                                                   Padding(
-                                                                    padding: const EdgeInsets.all(8.0),
-                                                                    child: DropdownButton(
-
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        DropdownButton(
                                                                       // Initial Value
-                                                                      value: ChiledGenderStatusvalue == null ? null : ChiledGenderStatusvalue,
+                                                                      value: ChiledGenderStatusvalue ==
+                                                                              null
+                                                                          ? null
+                                                                          : ChiledGenderStatusvalue,
 
                                                                       // Down Arrow Icon
-                                                                      icon: const Icon(Icons.keyboard_arrow_down),
+                                                                      icon: const Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down),
 
                                                                       // Array list of items
-                                                                      items: ChiledGenderStatus.map((String items) {
+                                                                      items: ChiledGenderStatus.map(
+                                                                          (String
+                                                                              items) {
                                                                         return DropdownMenuItem(
-                                                                          value: items,
-                                                                          child: Text(items),
+                                                                          value:
+                                                                              items,
+                                                                          child:
+                                                                              Text(items),
                                                                         );
                                                                       }).toList(),
                                                                       // After selecting the desired option,it will
                                                                       // change button value to selected value
-                                                                      onChanged: (  newValue) {
-                                                                        setState(() {
-                                                                          ChiledGenderStatusvalue = newValue.toString() ;
+                                                                      onChanged:
+                                                                          (newValue) {
+                                                                        setState(
+                                                                            () {
+                                                                          ChiledGenderStatusvalue =
+                                                                              newValue.toString();
                                                                         });
                                                                       },
                                                                     ),
@@ -2031,10 +2189,9 @@ class _fillaformState extends State<fillaform> {
                                                           ],
                                                         ),
 
+                                                        //firstor second child
 
-                                                            //firstor second child
-
-                                                            Row(
+                                                        Row(
                                                           children: [
                                                             Padding(
                                                               padding:
@@ -2050,10 +2207,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -2066,7 +2222,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -2090,7 +2247,8 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.child_friendly,
+                                                                      Icons
+                                                                          .child_friendly,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
@@ -2131,10 +2289,9 @@ class _fillaformState extends State<fillaform> {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right: size
-                                                                                .width /
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
                                                                             30),
                                                                 decoration:
                                                                     BoxDecoration(
@@ -2147,7 +2304,8 @@ class _fillaformState extends State<fillaform> {
                                                                           .circular(
                                                                               20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
@@ -2171,7 +2329,8 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.child_friendly,
+                                                                      Icons
+                                                                          .child_friendly,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
@@ -2197,9 +2356,6 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                               ),
                                                             ),
-
-
-
                                                           ],
                                                         ),
                                                         //third and forth
@@ -2207,79 +2363,80 @@ class _fillaformState extends State<fillaform> {
                                                           children: [
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Container(
                                                                 height:
-                                                                size.width /
-                                                                    8,
+                                                                    size.width /
+                                                                        8,
                                                                 width:
-                                                                size.width /
-                                                                    2.5,
+                                                                    size.width /
+                                                                        2.5,
                                                                 alignment:
-                                                                Alignment
-                                                                    .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                    right: size
-                                                                        .width /
-                                                                        30),
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
+                                                                            30),
                                                                 decoration:
-                                                                BoxDecoration(
+                                                                    BoxDecoration(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .1),
+                                                                          .1),
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      20),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .9),
+                                                                            .9),
                                                                   ),
                                                                   controller:
-                                                                  thirdchild,
+                                                                      thirdchild,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember
-                                                                        .thirdchild =
+                                                                            .thirdchild =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
                                                                   keyboardType:
-                                                                  TextInputType
-                                                                      .name,
+                                                                      TextInputType
+                                                                          .name,
                                                                   decoration:
-                                                                  InputDecoration(
+                                                                      InputDecoration(
                                                                     prefixIcon:
-                                                                    Icon(
-                                                                      Icons.child_friendly,
+                                                                        Icon(
+                                                                      Icons
+                                                                          .child_friendly,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
-                                                                          .8),
+                                                                              .8),
                                                                     ),
                                                                     border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                        InputBorder
+                                                                            .none,
                                                                     hintMaxLines:
-                                                                    1,
+                                                                        1,
                                                                     hintText:
-                                                                    '3rd child',
+                                                                        '3rd child',
                                                                     hintStyle:
-                                                                    TextStyle(
+                                                                        TextStyle(
                                                                       fontSize:
-                                                                      14,
+                                                                          14,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
-                                                                          .5),
+                                                                              .5),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -2288,87 +2445,85 @@ class _fillaformState extends State<fillaform> {
                                                             //mothersname
                                                             Padding(
                                                               padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Container(
                                                                 height:
-                                                                size.width /
-                                                                    8,
+                                                                    size.width /
+                                                                        8,
                                                                 width:
-                                                                size.width /
-                                                                    2.5,
+                                                                    size.width /
+                                                                        2.5,
                                                                 alignment:
-                                                                Alignment
-                                                                    .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                    right: size
-                                                                        .width /
-                                                                        30),
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: EdgeInsets.only(
+                                                                    right:
+                                                                        size.width /
+                                                                            30),
                                                                 decoration:
-                                                                BoxDecoration(
+                                                                    BoxDecoration(
                                                                   color: Colors
                                                                       .black
                                                                       .withOpacity(
-                                                                      .1),
+                                                                          .1),
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      20),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
                                                                 ),
-                                                                child: TextField(
+                                                                child:
+                                                                    TextField(
                                                                   style:
-                                                                  TextStyle(
+                                                                      TextStyle(
                                                                     color: Colors
                                                                         .black
                                                                         .withOpacity(
-                                                                        .9),
+                                                                            .9),
                                                                   ),
                                                                   controller:
-                                                                  forthchild,
+                                                                      forthchild,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember
-                                                                        .fourthchild =
+                                                                            .fourthchild =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
                                                                   keyboardType:
-                                                                  TextInputType
-                                                                      .name,
+                                                                      TextInputType
+                                                                          .name,
                                                                   decoration:
-                                                                  InputDecoration(
+                                                                      InputDecoration(
                                                                     prefixIcon:
-                                                                    Icon(
-                                                                      Icons.child_friendly,
+                                                                        Icon(
+                                                                      Icons
+                                                                          .child_friendly,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
-                                                                          .8),
+                                                                              .8),
                                                                     ),
                                                                     border:
-                                                                    InputBorder
-                                                                        .none,
+                                                                        InputBorder
+                                                                            .none,
                                                                     hintMaxLines:
-                                                                    1,
+                                                                        1,
                                                                     hintText:
-                                                                    '4th Child',
+                                                                        '4th Child',
                                                                     hintStyle:
-                                                                    TextStyle(
+                                                                        TextStyle(
                                                                       fontSize:
-                                                                      14,
+                                                                          14,
                                                                       color: Colors
                                                                           .black
                                                                           .withOpacity(
-                                                                          .5),
+                                                                              .5),
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-
-
-
                                                           ],
                                                         ),
 
@@ -2392,17 +2547,8 @@ class _fillaformState extends State<fillaform> {
                                                     //   },
                                                     // ),
                                                   ),
+                                                ]),
 
-
-
-                                              
-                                                ]
-                                                
-                                                
-                                            ),
-
-
-                                    
                                             //Username
                                             // SingleChildScrollView(
                                             //   scrollDirection: Axis.horizontal,
@@ -2572,9 +2718,6 @@ class _fillaformState extends State<fillaform> {
     return downloadUrl;
   }
 
-
-
-
   getImageFromCamera() async {
     final picker = ImagePicker();
     final dateTime = DateTime.now();
@@ -2679,13 +2822,15 @@ class _fillaformState extends State<fillaform> {
     );
   }
 
-
   Occupationdb(context) async {
-
-    var firstname =Provider.of<Users>(context,listen: false).userInfo?.fname ??"";
-    var lastname=Provider.of<Users>(context,listen: false).userInfo?.lname ??"";
-    var email=Provider.of<Users>(context,listen: false).userInfo?.email ??"";
-    var phone=Provider.of<Users>(context,listen: false).userInfo?.phone ??"";
+    var firstname =
+        Provider.of<Users>(context, listen: false).userInfo?.fname ?? "";
+    var lastname =
+        Provider.of<Users>(context, listen: false).userInfo?.lname ?? "";
+    var email =
+        Provider.of<Users>(context, listen: false).userInfo?.email ?? "";
+    var phone =
+        Provider.of<Users>(context, listen: false).userInfo?.phone ?? "";
     // String url = await uploadsFile();
     String url = await uploadFile(image!);
 
@@ -2716,25 +2861,29 @@ class _fillaformState extends State<fillaform> {
 
     clients.child(_firebaseAuth).update({
       'profile': url.toString(),
-    "FirstName":firstname,
-    "LastName":lastname,
-    "Email":email,
-    "PhoneNumber":phone,
-      "Marriage-Registered":MarriageRegistered,
+      "FirstName": firstname,
+      "LastName": lastname,
+      "Email": email,
+      "PhoneNumber": phone,
+      "Marriage-Registered": MarriageRegistered,
       "Marrital Status": MaritalStatusvalue,
       "Father-Alive": FatherAliveStatusvalue,
-      "Mother-Alive":MotherAliveStatusvalue,
-      "Date Of Birth":birthDateInString,
-    // "": rndnumber.toString(),
-    "placeofwork": addMember.placeofwork.toString(),
-    "Residence": addMember.residence,
-    "Region": addMember.Region,
-    "language": addMember.language,
-    "Occupation": addMember.Occupation,
+      "Mother-Alive": MotherAliveStatusvalue,
+      "Date Of Birth": birthDateInString,
+      "Child Gender": gender
+      "FirstChild":firstchild,
+      "SecondChild":secondchild,
+      "ThirdChild":thirdchild,
+      "FourthChild":forthchild,
+      // "": rndnumber.toString(),
+      "placeofwork": addMember.placeofwork.toString(),
+      "Residence": addMember.residence,
+      "Region": addMember.Region,
+      "language": addMember.language,
+      "Occupation": addMember.Occupation,
 
-    "homeTown": addMember.homeTown,
-  }
-    );
+      "homeTown": addMember.homeTown,
+    });
   }
 }
 
