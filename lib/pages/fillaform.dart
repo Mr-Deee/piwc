@@ -34,6 +34,10 @@ class _fillaformState extends State<fillaform> {
   TextEditingController occupation = new TextEditingController();
   TextEditingController language = new TextEditingController();
   TextEditingController region = new TextEditingController();
+  TextEditingController firstchild = new TextEditingController();
+  TextEditingController secondchild = new TextEditingController();
+  TextEditingController forthchild = new TextEditingController();
+  TextEditingController fifthchild = new TextEditingController();
   TextEditingController mothersname = new TextEditingController();
   TextEditingController fathersname = new TextEditingController();
   TextEditingController fathershomeTown = new TextEditingController();
@@ -2068,11 +2072,11 @@ class _fillaformState extends State<fillaform> {
                                                                             .9),
                                                                   ),
                                                                   controller:
-                                                                      fathersname,
+                                                                      firstchild,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember
-                                                                            .fathername =
+                                                                            .firstchild =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -2083,8 +2087,7 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons
-                                                                          .home_sharp,
+                                                                      Icons.child_friendly,
                                                                       color: Colors
                                                                           .white
                                                                           .withOpacity(
@@ -2096,13 +2099,13 @@ class _fillaformState extends State<fillaform> {
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
-                                                                        'Fathers HomeTown',
+                                                                        '1st Child',
                                                                     hintStyle:
                                                                         TextStyle(
                                                                       fontSize:
                                                                           14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
                                                                     ),

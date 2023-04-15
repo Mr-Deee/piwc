@@ -1,6 +1,10 @@
 class addedMember {
   addedMember({
     this.fname,
+    this.firstchild,
+    this.secondchild,
+    this.thirdchild,
+    this.fourthchild,
     this.lname,
     this.fathername,
     this.mothername,
@@ -44,6 +48,11 @@ class addedMember {
   String? homeTown;
   String? residence;
   String? language;
+  String? firstchild;
+  String? secondchild;
+  String? thirdchild;
+  String? fourthchild;
+
 
   String? Occupation;
   String? PlaceofWork;
