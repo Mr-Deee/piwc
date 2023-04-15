@@ -36,6 +36,7 @@ class _fillaformState extends State<fillaform> {
   TextEditingController region = new TextEditingController();
   TextEditingController firstchild = new TextEditingController();
   TextEditingController secondchild = new TextEditingController();
+  TextEditingController thirdchild = new TextEditingController();
   TextEditingController forthchild = new TextEditingController();
   TextEditingController fifthchild = new TextEditingController();
   TextEditingController mothersname = new TextEditingController();
@@ -1334,7 +1335,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .9),
                                                                   ),
@@ -1416,7 +1417,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .9),
                                                                   ),
@@ -1582,7 +1583,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .9),
                                                                   ),
@@ -1668,7 +1669,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                   TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .9),
                                                                   ),
@@ -1747,7 +1748,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                   TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                         .9),
                                                                   ),
@@ -1984,7 +1985,7 @@ class _fillaformState extends State<fillaform> {
                                                                       fontSize:
                                                                           14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
                                                                     ),
@@ -2030,8 +2031,10 @@ class _fillaformState extends State<fillaform> {
                                                           ],
                                                         ),
 
-                                                        //Mother hometown
-                                                        Row(
+
+                                                            //firstor second child
+
+                                                            Row(
                                                           children: [
                                                             Padding(
                                                               padding:
@@ -2067,7 +2070,7 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .9),
                                                                   ),
@@ -2089,7 +2092,7 @@ class _fillaformState extends State<fillaform> {
                                                                         Icon(
                                                                       Icons.child_friendly,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -2148,16 +2151,16 @@ class _fillaformState extends State<fillaform> {
                                                                   style:
                                                                       TextStyle(
                                                                     color: Colors
-                                                                        .white
+                                                                        .black
                                                                         .withOpacity(
                                                                             .9),
                                                                   ),
                                                                   controller:
-                                                                      mothersname,
+                                                                      secondchild,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember
-                                                                            .mothername =
+                                                                            .secondchild =
                                                                         value;
                                                                   },
                                                                   // obscureText: true,
@@ -2168,9 +2171,9 @@ class _fillaformState extends State<fillaform> {
                                                                       InputDecoration(
                                                                     prefixIcon:
                                                                         Icon(
-                                                                      Icons.man,
+                                                                      Icons.child_friendly,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .8),
                                                                     ),
@@ -2180,15 +2183,184 @@ class _fillaformState extends State<fillaform> {
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
-                                                                        'Mothers Name',
+                                                                        '2nd Child',
                                                                     hintStyle:
                                                                         TextStyle(
                                                                       fontSize:
                                                                           14,
                                                                       color: Colors
-                                                                          .white
+                                                                          .black
                                                                           .withOpacity(
                                                                               .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+
+
+
+                                                          ],
+                                                        ),
+                                                        //third and forth
+                                                        Row(
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                size.width /
+                                                                    8,
+                                                                width:
+                                                                size.width /
+                                                                    2.5,
+                                                                alignment:
+                                                                Alignment
+                                                                    .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                    right: size
+                                                                        .width /
+                                                                        30),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                      .1),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                  TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        .9),
+                                                                  ),
+                                                                  controller:
+                                                                  thirdchild,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                        .thirdchild =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                  TextInputType
+                                                                      .name,
+                                                                  decoration:
+                                                                  InputDecoration(
+                                                                    prefixIcon:
+                                                                    Icon(
+                                                                      Icons.child_friendly,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                          .8),
+                                                                    ),
+                                                                    border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                    hintMaxLines:
+                                                                    1,
+                                                                    hintText:
+                                                                    '3rd child',
+                                                                    hintStyle:
+                                                                    TextStyle(
+                                                                      fontSize:
+                                                                      14,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                          .5),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            //mothersname
+                                                            Padding(
+                                                              padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                              child: Container(
+                                                                height:
+                                                                size.width /
+                                                                    8,
+                                                                width:
+                                                                size.width /
+                                                                    2.5,
+                                                                alignment:
+                                                                Alignment
+                                                                    .center,
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                    right: size
+                                                                        .width /
+                                                                        30),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                      .1),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      20),
+                                                                ),
+                                                                child: TextField(
+                                                                  style:
+                                                                  TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        .9),
+                                                                  ),
+                                                                  controller:
+                                                                  forthchild,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    addMember
+                                                                        .fourthchild =
+                                                                        value;
+                                                                  },
+                                                                  // obscureText: true,
+                                                                  keyboardType:
+                                                                  TextInputType
+                                                                      .name,
+                                                                  decoration:
+                                                                  InputDecoration(
+                                                                    prefixIcon:
+                                                                    Icon(
+                                                                      Icons.child_friendly,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                          .8),
+                                                                    ),
+                                                                    border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                    hintMaxLines:
+                                                                    1,
+                                                                    hintText:
+                                                                    '4th Child',
+                                                                    hintStyle:
+                                                                    TextStyle(
+                                                                      fontSize:
+                                                                      14,
+                                                                      color: Colors
+                                                                          .black
+                                                                          .withOpacity(
+                                                                          .5),
                                                                     ),
                                                                   ),
                                                                 ),
