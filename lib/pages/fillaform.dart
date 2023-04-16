@@ -35,6 +35,7 @@ class _fillaformState extends State<fillaform> {
   TextEditingController occupation = new TextEditingController();
   TextEditingController language = new TextEditingController();
   TextEditingController region = new TextEditingController();
+  TextEditingController nochildren = new TextEditingController();
   TextEditingController firstchild = new TextEditingController();
   TextEditingController secondchild = new TextEditingController();
   TextEditingController thirdchild = new TextEditingController();
@@ -2092,7 +2093,7 @@ class _fillaformState extends State<fillaform> {
                                                                             .9),
                                                                   ),
                                                                   controller:
-                                                                      fathersname,
+                                                                      nochildren,
                                                                   onChanged:
                                                                       (value) {
                                                                     addMember
@@ -2116,7 +2117,7 @@ class _fillaformState extends State<fillaform> {
                                                                     ),
                                                                     border:
                                                                         InputBorder
-                                                                            .none,
+                                                                        .none,
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
@@ -2870,7 +2871,8 @@ class _fillaformState extends State<fillaform> {
       "Father-Alive": FatherAliveStatusvalue,
       "Mother-Alive": MotherAliveStatusvalue,
       "Date Of Birth": birthDateInString,
-      "Child Gender": gender
+      "Child Gender": ChiledGenderStatusvalue,
+      "Number Of Children": nochildren,
       "FirstChild":firstchild,
       "SecondChild":secondchild,
       "ThirdChild":thirdchild,

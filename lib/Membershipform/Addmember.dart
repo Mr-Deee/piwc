@@ -12,6 +12,7 @@ class addedMember {
     this.language,
     this.Occupation,
     this.PlaceofWork,
+    this.Noofchildren,
     this.residence,
     this.placeofwork,
     this.group,
@@ -30,6 +31,7 @@ class addedMember {
   });
 
   String? fname;
+  String? Noofchildren;
   String? group;
   String? lname;
   String? agentname;
