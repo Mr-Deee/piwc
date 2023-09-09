@@ -66,36 +66,119 @@ class _registrationState extends State<registration> {
                             filter: ImageFilter.blur(sigmaY: 100, sigmaX: 70),
                             child: SizedBox(
                               width: size.width * .96,
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: size.width * .1,
-                                      bottom: size.width * .1,
-                                    ),
-                                    child: SizedBox(
-                                      height: 70,
-                                      child: Image.asset(
-                                        'assets/images/logo.png',
-                                        // #Image Url: https://unsplash.com/photos/bOBM8CB4ZC4
-                                        fit: BoxFit.fitHeight,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        top: size.width * .1,
+                                        bottom: size.width * .1,
+                                      ),
+                                      child: SizedBox(
+                                        height: 70,
+                                        child: Image.asset(
+                                          'assets/images/logo.png',
+                                          // #Image Url: https://unsplash.com/photos/bOBM8CB4ZC4
+                                          fit: BoxFit.fitHeight,
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  //Username
+                                    //Username
 
-                              Row(
+                                Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: size.width / 8,
+                                              width: size.width /2.4,
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.only(right: size.width / 30),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black.withOpacity(.1),
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              child: TextField(
+                                                style: TextStyle(
+                                                  color: Colors.white.withOpacity(.9),
+                                                ),
+                                                controller: fname,
+                                                onChanged: (value){
+                                                  _firstName = value;
+                                                },
+                                                // obscureText: isPassword,
+                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                decoration: InputDecoration(
+                                                  prefixIcon: Icon(
+                                                    Icons.account_circle_outlined,
+                                                    color: Colors.white.withOpacity(.8),
+                                                  ),
+                                                  border: InputBorder.none,
+                                                  hintMaxLines: 1,
+                                                  hintText:'First Name',
+                                                  hintStyle: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white.withOpacity(.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: size.width / 8,
+                                              width: size.width / 2.4,
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.only(right: size.width / 30),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black.withOpacity(.1),
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              child: TextField(
+                                                style: TextStyle(
+                                                  color: Colors.white.withOpacity(.9),
+                                                ),
+                                                controller: lname,
+                                                onChanged: (value){
+                                                  _lastname = value;
+                                                },
+                                                // obscureText: isPassword,
+                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                                decoration: InputDecoration(
+                                                  prefixIcon: Icon(
+                                                    Icons.account_circle_outlined,
+                                                    color: Colors.white.withOpacity(.8),
+                                                  ),
+                                                  border: InputBorder.none,
+                                                  hintMaxLines: 1,
+                                                  hintText:'Last Name',
+                                                  hintStyle: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white.withOpacity(.5),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+
+                                    //email
+                                    Row(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
                                             height: size.width / 8,
-                                            width: size.width /2.4,
+                                            width: size.width / 2.4,
                                             alignment: Alignment.center,
-                                            padding: EdgeInsets.only(right: size.width / 30),
+                                            padding: EdgeInsets.only(
+                                                right: size.width / 30),
                                             decoration: BoxDecoration(
                                               color: Colors.black.withOpacity(.1),
                                               borderRadius: BorderRadius.circular(20),
@@ -104,20 +187,20 @@ class _registrationState extends State<registration> {
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(.9),
                                               ),
-                                              controller: fname,
+                                              controller: email,
                                               onChanged: (value){
-                                                _firstName = value;
+                                                _email = value;
                                               },
                                               // obscureText: isPassword,
-                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                              keyboardType:  TextInputType.emailAddress ,
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
-                                                  Icons.account_circle_outlined,
+                                                  Icons.email,
                                                   color: Colors.white.withOpacity(.8),
                                                 ),
                                                 border: InputBorder.none,
                                                 hintMaxLines: 1,
-                                                hintText:'First Name',
+                                                hintText: 'Email...',
                                                 hintStyle: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white.withOpacity(.5),
@@ -132,7 +215,8 @@ class _registrationState extends State<registration> {
                                             height: size.width / 8,
                                             width: size.width / 2.4,
                                             alignment: Alignment.center,
-                                            padding: EdgeInsets.only(right: size.width / 30),
+                                            padding: EdgeInsets.only(
+                                                right: size.width / 30),
                                             decoration: BoxDecoration(
                                               color: Colors.black.withOpacity(.1),
                                               borderRadius: BorderRadius.circular(20),
@@ -141,20 +225,20 @@ class _registrationState extends State<registration> {
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(.9),
                                               ),
-                                              controller: lname,
+                                              controller: phone,
                                               onChanged: (value){
-                                                _lastname = value;
+                                                _mobileNumber = value;
                                               },
-                                              // obscureText: isPassword,
-                                              // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+
+                                          keyboardType:  TextInputType.phone ,
                                               decoration: InputDecoration(
                                                 prefixIcon: Icon(
-                                                  Icons.account_circle_outlined,
+                                                  Icons.phone,
                                                   color: Colors.white.withOpacity(.8),
                                                 ),
                                                 border: InputBorder.none,
                                                 hintMaxLines: 1,
-                                                hintText:'Last Name',
+                                                hintText: 'Phone Number...',
                                                 hintStyle: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.white.withOpacity(.5),
@@ -166,187 +250,105 @@ class _registrationState extends State<registration> {
                                       ],
                                     ),
 
-
-                                  //email
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: size.width / 8,
-                                          width: size.width / 2.4,
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.only(
-                                              right: size.width / 30),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(.1),
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          child: TextField(
-                                            style: TextStyle(
-                                              color: Colors.white.withOpacity(.9),
-                                            ),
-                                            controller: email,
-                                            onChanged: (value){
-                                              _email = value;
-                                            },
-                                            // obscureText: isPassword,
-                                            keyboardType:  TextInputType.emailAddress ,
-                                            decoration: InputDecoration(
-                                              prefixIcon: Icon(
-                                                Icons.email,
-                                                color: Colors.white.withOpacity(.8),
-                                              ),
-                                              border: InputBorder.none,
-                                              hintMaxLines: 1,
-                                              hintText: 'Email...',
-                                              hintStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white.withOpacity(.5),
-                                              ),
-                                            ),
-                                          ),
+                                    //pass
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        height: size.width / 8,
+                                        width: size.width / 1.25,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            right: size.width / 30),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(.1),
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: size.width / 8,
-                                          width: size.width / 2.4,
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.only(
-                                              right: size.width / 30),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(.1),
-                                            borderRadius: BorderRadius.circular(20),
+                                        child: TextField(
+                                          style: TextStyle(
+                                            color: Colors.white.withOpacity(.9),
                                           ),
-                                          child: TextField(
-                                            style: TextStyle(
-                                              color: Colors.white.withOpacity(.9),
+                                          controller: password,
+                                          obscureText: true,
+                                          onChanged: (value){
+                                            _password=value;
+                                          },
+                                          // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                          decoration: InputDecoration(
+                                            prefixIcon: Icon(
+                                              Icons.password,
+                                              color: Colors.white.withOpacity(.8),
                                             ),
-                                            controller: phone,
-                                            onChanged: (value){
-                                              _mobileNumber = value;
-                                            },
-
-                                        keyboardType:  TextInputType.phone ,
-                                            decoration: InputDecoration(
-                                              prefixIcon: Icon(
-                                                Icons.phone,
-                                                color: Colors.white.withOpacity(.8),
-                                              ),
-                                              border: InputBorder.none,
-                                              hintMaxLines: 1,
-                                              hintText: 'Phone Number...',
-                                              hintStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white.withOpacity(.5),
-                                              ),
+                                            border: InputBorder.none,
+                                            hintMaxLines: 1,
+                                            hintText: 'Password...',
+                                            hintStyle: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white.withOpacity(.5),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  //pass
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: size.width / 8,
-                                      width: size.width / 1.25,
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.only(
-                                          right: size.width / 30),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(.1),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: TextField(
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(.9),
-                                        ),
-                                        controller: password,
-                                        obscureText: true,
-                                        onChanged: (value){
-                                          _password=value;
-                                        },
-                                        // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
-                                        decoration: InputDecoration(
-                                          prefixIcon: Icon(
-                                            Icons.password,
-                                            color: Colors.white.withOpacity(.8),
-                                          ),
-                                          border: InputBorder.none,
-                                          hintMaxLines: 1,
-                                          hintText: 'Password...',
-                                          hintStyle: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white.withOpacity(.5),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
 
 
 
 
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Forgotten password!',
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Forgotten password!',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                HapticFeedback.lightImpact();
+                                                Fluttertoast.showToast(
+                                                  msg:
+                                                  'Forgotten password! button pressed',
+                                                );
+                                              },
+                                          ),
+                                        ),
+
+                                      ],
+                                    ),
+                                    SizedBox(height: size.width * .1),
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () {
+                                        registerInfirestore(context);
+                                        registerNewUser(context);
+                                        HapticFeedback.lightImpact();
+
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(
+                                          bottom: size.width * .05,
+                                        ),
+                                        height: size.width / 8,
+                                        width: size.width / 1.25,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(.1),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Text(
+                                          'Sign-up',
                                           style: TextStyle(
                                             color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
                                           ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              HapticFeedback.lightImpact();
-                                              Fluttertoast.showToast(
-                                                msg:
-                                                'Forgotten password! button pressed',
-                                              );
-                                            },
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-                                  SizedBox(height: size.width * .1),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () {
-                                      registerInfirestore(context);
-                                      registerNewUser(context);
-                                      HapticFeedback.lightImpact();
-
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                        bottom: size.width * .05,
-                                      ),
-                                      height: size.width / 8,
-                                      width: size.width / 1.25,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(.1),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Text(
-                                        'Sign-up',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),

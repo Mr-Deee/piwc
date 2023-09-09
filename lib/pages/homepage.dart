@@ -270,22 +270,7 @@ class _homepageState extends State<homepage> {
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AttendanceQRCodeScreen()));
-                                              },
-                                              child: Widget_selection(
-                                                image:
-                                                    'assets/images/fillprofile.png',
-                                                title: 'SCAN QR',
-                                              ),
-                                            ),
-                                          ),
+
                                         ],
                                       ),
                                     ))))

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:piwc/pages/generateqr.dart';
 
 import 'model/Users.dart';
 void main() async{
@@ -29,7 +30,7 @@ void main() async{
   await Firebase.initializeApp();
 }
 DatabaseReference clients = FirebaseDatabase.instance.ref().child("Clients");
-DatabaseReference Doctor = FirebaseDatabase.instance.ref().child("Doctors");
+DatabaseReference Doctor = FirebaseDatabase.instance.ref().child("Admin");
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
 
         routes: {
           login.idScreen: (context) => login(),
+          "/generateqr":(context)=>AttendanceQRCodeScreen(),
           homepage.idScreen:(context)=> homepage(),
          registration.idScreen: (context) => registration(),
 

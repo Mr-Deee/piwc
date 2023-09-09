@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class AttendanceQRCodeScreen extends StatefulWidget {
   @override
@@ -21,11 +22,13 @@ class _AttendanceQRCodeScreenState extends State<AttendanceQRCodeScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            QrImage(
+          children: [
+            // Remove the QrImage from the Column
+        Container(  // Wrap QrImage in a Container or any appropriate widget
+        child:  QrImageView(
               data: qrCodeData,
               size: 200.0,
-            ),
+            ),),
             SizedBox(height: 20.0),
             Text(
               'QR Code ID: $qrCodeId',
@@ -36,7 +39,7 @@ class _AttendanceQRCodeScreenState extends State<AttendanceQRCodeScreen> {
               onPressed: () {
                 // Generate a random QR Code ID (you can use any logic to generate IDs)
                 String newQrCodeId =
-                    DateTime.now().millisecondsSinceEpoch.toString();
+                DateTime.now().millisecondsSinceEpoch.toString();
 
                 // Generate a new QR code data (you can use any logic for the data)
                 String newQrCodeData = 'Attendance for $newQrCodeId';
@@ -60,6 +63,7 @@ class _AttendanceQRCodeScreenState extends State<AttendanceQRCodeScreen> {
       ),
     );
   }
+
 }
 
 void main() {

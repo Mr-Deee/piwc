@@ -34,12 +34,11 @@ class Users extends ChangeNotifier {
       id:map['id'],
       email : map["email"],
       username : map["UserName"],
-      fname : map["firstName"],
-      lname: map['lastName'],
+      fname : map["FirstName"],
+      lname: map['LastName'],
       Occupasion: map['Occupation'],
-
       profilepicture: map["profile"].toString(),
-      phone : map["phone"],
+      phone : map["PhoneNumber"],
 
     );
   }

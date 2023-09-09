@@ -338,8 +338,10 @@ class _loginState extends State<login> {
             email: email.text.trim(),
             password: password.text.trim());
 
-
-        if (clients != null) {
+        if (email.text == "piwcmobile@gmail.com") {
+          Navigator.of(context).pushNamed("/generateqr");
+        }
+        else if (clients != null) {
           Navigator.of(context).pushNamed(homepage.idScreen);
 
 
