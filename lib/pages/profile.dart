@@ -22,9 +22,9 @@ class _MemberProfileState extends State<MemberProfile> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    var firstname = Provider.of<Users>(context).userInfo!.fname!;
-    var lastname = Provider.of<Users>(context).userInfo!.lname!;
-    var email = Provider.of<Users>(context).userInfo!.email!;
+    var firstname = Provider.of<Users>(context).userInfo?.fname!;
+    var lastname = Provider.of<Users>(context).userInfo?.lname!;
+    var email = Provider.of<Users>(context).userInfo?.email!;
     var Occupation = Provider.of<Users>(context).userInfo!.Occupasion!;
 
     // var education = Provider.of<otherUsermodel>(context).otherinfo!.Education;
