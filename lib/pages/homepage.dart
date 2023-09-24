@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:piwc/pages/login.dart';
 import 'package:piwc/pages/profile.dart';
 import 'package:piwc/pages/ScanQR.dart';
-import 'package:piwc/pages/generateqr.dart';
 
 import 'package:piwc/pages/widgets/widget_selection.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +30,7 @@ class _homepageState extends State<homepage> {
     AssistantMethods.getCurrentOnlineUserInfo(context);
     // TODO: implement initState
     super.initState();
+    AssistantMethods.getCurrentOnlineUserInfo(context);
   }
 
   @override

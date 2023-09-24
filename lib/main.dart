@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:piwc/pages/generateqr.dart';
+// import 'package:piwc/pages/generateqr.dart';
 
 import 'model/Users.dart';
 void main() async{
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
 
         routes: {
           login.idScreen: (context) => login(),
-          "/generateqr":(context)=>AttendanceQRCodeScreen(),
+          // "/generateqr":(context)=>AttendanceQRCodeScreen(),
           homepage.idScreen:(context)=> homepage(),
          registration.idScreen: (context) => registration(),
 

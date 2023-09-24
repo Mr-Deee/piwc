@@ -32,16 +32,32 @@ class _ScanQRState extends State<ScanQR> {
     var email = Provider.of<Users>(context).userInfo?.email!;
     var Occupation = Provider.of<Users>(context).userInfo?.Occupasion!;
 
-    addnewattendance()async{
-
+    Future<void> addNewAttendance() async {
       // Write the scanned QR code data to Firebase
-      await firestore.collection('Attendance').doc(result as String?).update({
-        'DateChecked':formattedDate,
-        'username':firstname,
+      await firestore.collection('Attendance').add({
+        'DateChecked': formattedDate,
+        'username': firstname,
         'email': email,
         'timestamp': FieldValue.serverTimestamp(),
       });
-    }
+
+      // Show a pop-up (dialog) with a "Thanks" message
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Thanks'),
+              content: Text('Attendance recorded. Thanks!'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                ),
+              ],
+            );
+          },);}
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance Scanner'),
@@ -58,11 +74,12 @@ class _ScanQRState extends State<ScanQR> {
                   });
 
                   // Write the scanned QR code data to Firebase
-                  await firestore.collection('Attendance').add({
-                    'date':formattedDate,
-                    'data': barcode.code,
-                    'timestamp': FieldValue.serverTimestamp(),
-                  });
+                  // await firestore.collection('Attendance').add({
+                  //   'name':firstname,
+                  //   'date':formattedDate,
+                  //   'data': barcode.code,
+                  //   'timestamp': FieldValue.serverTimestamp(),
+                  // });
 
                   // Perform any other actions you need with the scanned data
                   print('Scanned QR Code: ${barcode.code}');
@@ -100,7 +117,7 @@ class _ScanQRState extends State<ScanQR> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your floating button action here
-          addnewattendance();
+          addNewAttendance();
         },
         child: Icon(Icons.add_task), // You can replace 'Icons.add' with your desired image
       ),
