@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 User? firebaseUser;
 
-
 User? currentfirebaseUser;
 
 class Users extends ChangeNotifier {
@@ -13,33 +12,39 @@ class Users extends ChangeNotifier {
   String? fname;
   String? username;
   String? profilepicture;
-  String?phone;
+  String? phone;
   String? lname;
-  String? Occupasion;
+  String? placeofwork;
+  String? occupasion;
+  String? fullname;
+  String? homeTown;
 
   Users({
     this.id,
     this.email,
-    this.Occupasion,
+    this.occupasion,
+    this.homeTown,
     this.username,
+    this.placeofwork,
     this.fname,
+    this.fullname,
     this.lname,
-
     this.profilepicture,
     this.phone,
   });
 
   static Users fromMap(Map<String, dynamic> map) {
     return Users(
-      id:map['id'],
-      email : map["email"],
-      username : map["UserName"],
-      fname : map["FirstName"],
+      id: map['id'],
+      email: map["email"],
+      username: map["UserName"],
+      fname: map["FirstName"],
       lname: map['LastName'],
-      Occupasion: map['Occupation'],
+      occupasion: map['Occupation'],
       profilepicture: map["profile"].toString(),
-      phone : map["PhoneNumber"],
-
+      phone: map["PhoneNumber"],
+      homeTown: map["homeTown"],
+      fullname: map["fullName"],
     );
   }
 
@@ -52,6 +57,3 @@ class Users extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-
-

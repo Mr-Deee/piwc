@@ -18,19 +18,17 @@ class _ScanQRState extends State<ScanQR> {
   Barcode? result;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
   @override
   Widget build(BuildContext context) {
-
     DateTime now = DateTime.now();
 
-
     // Format the date as a string (e.g., "2023-09-21")
-    String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    String formattedDate =
+        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     var firstname = Provider.of<Users>(context).userInfo?.fname!;
     var lastname = Provider.of<Users>(context).userInfo?.lname!;
     var email = Provider.of<Users>(context).userInfo?.email!;
-    var Occupation = Provider.of<Users>(context).userInfo?.Occupasion!;
+    var Occupation = Provider.of<Users>(context).userInfo?.occupasion!;
 
     Future<void> addNewAttendance() async {
       // Write the scanned QR code data to Firebase
@@ -43,21 +41,24 @@ class _ScanQRState extends State<ScanQR> {
 
       // Show a pop-up (dialog) with a "Thanks" message
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Thanks'),
-              content: Text('Attendance recorded. Thanks!'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                ),
-              ],
-            );
-          },);}
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Thanks'),
+            content: Text('Attendance recorded. Thanks!'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance Scanner'),
@@ -108,8 +109,6 @@ class _ScanQRState extends State<ScanQR> {
               Column(children: [
                 Text(email ?? "loading"),
               ]),
-
-
             ],
           )
         ],
@@ -119,11 +118,11 @@ class _ScanQRState extends State<ScanQR> {
           // Add your floating button action here
           addNewAttendance();
         },
-        child: Icon(Icons.add_task), // You can replace 'Icons.add' with your desired image
+        child: Icon(Icons
+            .add_task), // You can replace 'Icons.add' with your desired image
       ),
     );
   }
-
 
   @override
   void dispose() {

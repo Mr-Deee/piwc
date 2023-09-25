@@ -647,7 +647,11 @@ class _fillaformState extends State<fillaform> {
                                                                           .homeTown =
                                                                       value;
                                                                 },
-
+                                                                initialValue: Provider.of<Users>(
+                                                                            context)
+                                                                        .userInfo!
+                                                                        .homeTown ??
+                                                                    "",
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
@@ -2117,7 +2121,7 @@ class _fillaformState extends State<fillaform> {
                                                                     ),
                                                                     border:
                                                                         InputBorder
-                                                                        .none,
+                                                                            .none,
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
@@ -2873,10 +2877,10 @@ class _fillaformState extends State<fillaform> {
       "Date Of Birth": birthDateInString,
       "Child Gender": ChiledGenderStatusvalue,
       "Number Of Children": nochildren,
-      "FirstChild":firstchild,
-      "SecondChild":secondchild,
-      "ThirdChild":thirdchild,
-      "FourthChild":forthchild,
+      "FirstChild": firstchild,
+      "SecondChild": secondchild,
+      "ThirdChild": thirdchild,
+      "FourthChild": forthchild,
       // "": rndnumber.toString(),
       "placeofwork": addMember.placeofwork.toString(),
       "Residence": addMember.residence,
