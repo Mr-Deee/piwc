@@ -32,7 +32,6 @@ class fillaform extends StatefulWidget {
 class _fillaformState extends State<fillaform> {
   TextEditingController residence = new TextEditingController();
   TextEditingController placeofwork = new TextEditingController();
-  TextEditingController occupation = new TextEditingController();
   TextEditingController language = new TextEditingController();
   TextEditingController region = new TextEditingController();
   TextEditingController nochildren = new TextEditingController();
@@ -126,6 +125,7 @@ class _fillaformState extends State<fillaform> {
   @override
   Widget build(BuildContext context) {
     TextEditingController dateInput = TextEditingController();
+    TextEditingController occupation = new TextEditingController(text:Provider.of<Users>(context, listen: false).userInfo?.Occupasion!);
 
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
@@ -883,9 +883,8 @@ class _fillaformState extends State<fillaform> {
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
+                                                                      .black
+                                                                     
                                                                 ),
 
                                                                 controller:
@@ -971,9 +970,8 @@ class _fillaformState extends State<fillaform> {
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
+                                                                      .black
+                                                                     
                                                                 ),
                                                                 controller:
                                                                     occupation,
@@ -983,7 +981,7 @@ class _fillaformState extends State<fillaform> {
                                                                           .Occupation =
                                                                       value;
                                                                 },
-
+                                                            // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
@@ -1052,9 +1050,8 @@ class _fillaformState extends State<fillaform> {
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          .9),
+                                                                      .black
+
                                                                 ),
                                                                 controller:
                                                                     placeofwork,
@@ -1354,30 +1351,7 @@ class _fillaformState extends State<fillaform> {
                                                   ),
                                                 ),
 
-                                                // Focus(
-                                                //   onFocusChange: (value) {
-                                                //     if (!value) {
-                                                //       setState(() {
-                                                //         _emailAutoValidate = true;
-                                                //       });
-                                                //     }
-                                                //   },
-                                                //   child: TextFormField(
-                                                //     autovalidate: _emailAutoValidate,
-                                                //     controller: _email,
-                                                //     textInputAction: TextInputAction.next,
-                                                //     decoration: InputDecoration(
-                                                //         hintText: "enter email",
-                                                //         labelText: "Email",
-                                                //         border: OutlineInputBorder()),
-                                                //     validator: (value) {
-                                                //       if (value.isEmpty) {
-                                                //         return "Email field cannot be empty.";
-                                                //       }
-                                                //       return null;
-                                                //     },
-                                                //   ),
-                                                // ),
+
                                               ],
                                             ),
 
@@ -2596,74 +2570,13 @@ class _fillaformState extends State<fillaform> {
                                                     padding: EdgeInsets.all(22),
                                                     child: Container(
 
-                                                        //   decoration:  BoxDecoration(
-                                                        // border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor),
-                                                        //       boxShadow: [
-                                                        //         BoxShadow(
-                                                        //             spreadRadius: 20,
-                                                        //             blurRadius: 10,
-                                                        //             color: Colors.black.withOpacity(0.1),
-                                                        //             offset: const Offset(0, 10))
-                                                        //       ],
-                                                        //       shape: BoxShape.circle,
-                                                        //       image:  DecorationImage(
-                                                        //           fit: BoxFit.cover,
-                                                        //           image: FileImage(_image))),
 
                                                         child: Center(
                                                             child: ImagePro())
-                                                        //   : Container(
-                                                        // margin: EdgeInsets
-                                                        //     .all(3),
-                                                        // decoration: BoxDecoration(
-                                                        //     image: DecorationImage(
-                                                        //         image: FileImage(_image[
-                                                        //         index -
-                                                        //             1]),
-                                                        //         fit: BoxFit
-                                                        //             .cover)),
-                                                        //  );
-                                                        ////}),
+
                                                         ),
 
-                                                    //             // FloatingActionButton(
-                                                    //             //   onPressed:
-                                                    //             //       chooseImage,
-                                                    //             //   tooltip:
-                                                    //             //       'Pick Image',
-                                                    //             //   child: Icon(Icons
-                                                    //             //       .add_a_photo),
-                                                    //             // ),
-                                                    //           ],
-                                                    //         ),
-                                                    // ),
 
-                                                    // Container(
-                                                    //   color: ColorPalette.timberGreen
-                                                    //       .withOpacity(0.1),
-                                                    //   child: (newProduct.image == null)
-                                                    //       ? Center(
-                                                    //     child: Icon(
-                                                    //       Icons.image,
-                                                    //       color: ColorPalette
-                                                    //           .nileBlue
-                                                    //           .withOpacity(0.5),
-                                                    //     ),
-                                                    //   )
-                                                    //       : CachedNetworkImage(
-                                                    //     fit: BoxFit.cover,
-                                                    //     imageUrl: newProduct.image!,
-                                                    //     errorWidget:
-                                                    //         (context, s, a) {
-                                                    //       return Icon(
-                                                    //         Icons.image,
-                                                    //         color: ColorPalette
-                                                    //             .nileBlue
-                                                    //             .withOpacity(0.5),
-                                                    //       );
-                                                    //     },
-                                                    //   ),
-                                                    // ),
                                                   ),
                                                 ),
                                               ),
@@ -2835,29 +2748,7 @@ class _fillaformState extends State<fillaform> {
     // String url = await uploadsFile();
     String url = await uploadFile(image!);
 
-    //final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
-    // FirebaseFirestore.instance
-    //     .collection('Members')
-    //     .doc(_firebaseAuth).update({
-    //   'profile': url.toString(),
-    //   "FirstName":firstname,
-    //   "LastName":lastname,
-    //   "Email":email,
-    //   "PhoneNumber":phone,
-    //   // "": rndnumber.toString(),
-    //   "placeofwork": addMember.placeofwork.toString(),
-    //   "Residence": addMember.residence,
-    //   "Region": addMember.Region,
-    //   "language": addMember.language,
-    //   "Occupation": addMember.Occupation,
-    //   "Date Of Birth":birthDateInString,
-    //   "Marriage-Registered":MarriageRegistered,
-    //   "Marrital Status": MaritalStatusvalue,
-    //   "Father-Alive": FatherAliveStatusvalue,
-    //   "Mother-Alive":MotherAliveStatusvalue,
-    //   "homeTown": addMember.homeTown,
-    // });
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
