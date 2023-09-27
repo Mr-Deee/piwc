@@ -25,10 +25,10 @@ class _ScanQRState extends State<ScanQR> {
     // Format the date as a string (e.g., "2023-09-21")
     String formattedDate =
         "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    var firstname = Provider.of<Users>(context).userInfo?.fname!;
-    var lastname = Provider.of<Users>(context).userInfo?.lname!;
-    var email = Provider.of<Users>(context).userInfo?.email!;
-    var Occupation = Provider.of<Users>(context).userInfo?.Occupation!;
+    var firstname = Provider.of<Users>(context).userInfo?.fname ?? "";
+    var lastname = Provider.of<Users>(context).userInfo?.lname ?? "";
+    var email = Provider.of<Users>(context).userInfo?.email ?? "";
+    var Occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
 
     Future<void> addNewAttendance() async {
       // Write the scanned QR code data to Firebase
