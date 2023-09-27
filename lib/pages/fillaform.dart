@@ -129,6 +129,9 @@ class _fillaformState extends State<fillaform> {
     TextEditingController dateInput = TextEditingController();
     String initialRegion =
         Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
+
+        String hometown= Provider.of<Users>(context,listen:false) .userInfo  ?.lname ??
+                                                                      "HomeTown",
     region.text = initialRegion;
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
@@ -152,7 +155,7 @@ class _fillaformState extends State<fillaform> {
                 });
 
             // String url = await uploadFile(image!);
-            Occupationdb(context);
+            biodatadb(context);
             final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
             // newProduct.group = group;
@@ -669,8 +672,7 @@ class _fillaformState extends State<fillaform> {
                                                                           .none,
                                                                   hintMaxLines:
                                                                       1,
-                                                                  hintText:
-                                                                      'HomeTown',
+                                                                  hintText: ""
                                                                   hintStyle:
                                                                       TextStyle(
                                                                     fontSize:
@@ -2716,33 +2718,23 @@ class _fillaformState extends State<fillaform> {
     );
   }
 
-  Occupationdb(context) async {
-    // var firstname =
-    //     Provider.of<Users>(context, listen: false).userInfo?.fname ?? "";
-    // var lastname =
-    //     Provider.of<Users>(context, listen: false).userInfo?.lname ?? "";
-    // var email =
-    //     Provider.of<Users>(context, listen: false).userInfo?.email ?? "";
-    // var phone =
-    //     Provider.of<Users>(context, listen: false).userInfo?.phone ?? "";
-    // String url = await uploadsFile();
-    // String url = await uploadFile(image!);
-
+  Future biodatadb(context) async {
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
-      "Marriage-Registered": MarriageRegistered,
-      "Marrital Status": MaritalStatusvalue,
-      "Father-Alive": FatherAliveStatusvalue,
-      "Mother-Alive": MotherAliveStatusvalue,
-      "Date Of Birth": birthDateInString,
-      "Child Gender": ChiledGenderStatusvalue,
-      "Number Of Children": nochildren,
-      "FirstChild": firstchild,
-      "SecondChild": secondchild,
-      "ThirdChild": thirdchild,
-      "FourthChild": forthchild,
-      "Region": region,
+      // "Marriage-Registered": MarriageRegistered,
+      // "Marrital Status": MaritalStatusvalue,
+      // "Father-Alive": FatherAliveStatusvalue,
+      // "Mother-Alive": MotherAliveStatusvalue,
+      // "Date Of Birth": birthDateInString,
+      // "Child Gender": ChiledGenderStatusvalue,
+      // "Number Of Children": nochildren,
+      // "FirstChild": firstchild,
+      // "SecondChild": secondchild,
+      // "ThirdChild": thirdchild,
+      // "FourthChild": forthchild,
+      // "Region": region,
+      "HomeTown": hometown.toString()
       // "": rndnumber.toString(),
       // "placeofwork": addMember.placeofwork,
       // "Residence": addMember.residence,
