@@ -672,7 +672,7 @@ class _fillaformState extends State<fillaform> {
                                                                   hintText: Provider.of<Users>(
                                                                               context)
                                                                           .userInfo
-                                                                          ?.lname ??
+                                                                          ?.hometown ??
                                                                       "HomeTown",
                                                                   hintStyle:
                                                                       TextStyle(
@@ -756,8 +756,11 @@ class _fillaformState extends State<fillaform> {
                                                                           .none,
                                                                   hintMaxLines:
                                                                       1,
-                                                                  hintText:
-                                                                      'Region',
+                                                                  hintText: Provider.of<Users>(
+                                                                              context)
+                                                                          .userInfo
+                                                                          ?.Region ??
+                                                                      "Region",
                                                                   hintStyle:
                                                                       TextStyle(
                                                                     fontSize:
@@ -2723,19 +2726,19 @@ class _fillaformState extends State<fillaform> {
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
-      // "Marriage-Registered": MarriageRegistered,
-      // "Marrital Status": MaritalStatusvalue,
-      // "Father-Alive": FatherAliveStatusvalue,
-      // "Mother-Alive": MotherAliveStatusvalue,
-      // "Date Of Birth": birthDateInString,
-      // "Child Gender": ChiledGenderStatusvalue,
-      // "Number Of Children": nochildren,
-      // "FirstChild": firstchild,
-      // "SecondChild": secondchild,
-      // "ThirdChild": thirdchild,
-      // "FourthChild": forthchild,
-      // "Region": region,
-      "HomeTown": hometown.toString()
+      "Marriage-Registered": MarriageRegistered,
+      "Marrital Status": MaritalStatusvalue,
+      "Father-Alive": FatherAliveStatusvalue,
+      "Mother-Alive": MotherAliveStatusvalue,
+      "Date Of Birth": birthDateInString,
+      "Child Gender": ChiledGenderStatusvalue,
+      "Number Of Children": nochildren,
+      "FirstChild": firstchild,
+      "SecondChild": secondchild,
+      "ThirdChild": thirdchild,
+      "FourthChild": forthchild,
+      "Region": region.text,
+      "HomeTown": hometown.text,
       // "": rndnumber.toString(),
       // "placeofwork": addMember.placeofwork,
       // "Residence": addMember.residence,
