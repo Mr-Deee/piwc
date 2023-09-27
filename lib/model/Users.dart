@@ -16,6 +16,7 @@ class Users extends ChangeNotifier {
   String?phone;
   String? lname;
   String? Occupasion;
+  String? Region;
 
   Users({
     this.id,
@@ -23,6 +24,7 @@ class Users extends ChangeNotifier {
     this.Occupasion,
     this.username,
     this.fname,
+    this.Region,
     this.lname,
 
     this.profilepicture,
@@ -36,6 +38,7 @@ class Users extends ChangeNotifier {
       username : map["UserName"],
       fname : map["FirstName"],
       lname: map['LastName'],
+      Region: map["Region"],
       Occupasion: map['Occupation'],
       profilepicture: map["profile"].toString(),
       phone : map["PhoneNumber"],

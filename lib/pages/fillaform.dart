@@ -30,7 +30,10 @@ class fillaform extends StatefulWidget {
 }
 
 class _fillaformState extends State<fillaform> {
+
   TextEditingController residence = new TextEditingController();
+  TextEditingController occupation = TextEditingController();
+
   TextEditingController placeofwork = new TextEditingController();
   TextEditingController language = new TextEditingController();
   TextEditingController region = new TextEditingController();
@@ -120,13 +123,14 @@ class _fillaformState extends State<fillaform> {
   void initState() {
     dateInput.text = ""; //set the initial value of text field
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController dateInput = TextEditingController();
-    TextEditingController occupation = new TextEditingController(text:Provider.of<Users>(context, listen: false).userInfo?.Occupasion!);
-
+    String initialRegion = Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
+    region.text=initialRegion;
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
     Future<void> _selectDate(BuildContext context) async {}
@@ -148,7 +152,7 @@ class _fillaformState extends State<fillaform> {
                   );
                 });
 
-            String url = await uploadFile(image!);
+            // String url = await uploadFile(image!);
             Occupationdb(context);
             final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
@@ -713,9 +717,8 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                controller:
-                                                                    region,
-                                                                style:
+                                                                      controller: region,
+                                                                        style:
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .black
@@ -724,9 +727,7 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                                 onChanged:
                                                                     (value) {
-                                                                  addMember
-                                                                          .Region =
-                                                                      value;
+                                                                      Provider.of<Users>(context, listen: false).userInfo?.Region = value;
                                                                 },
 
                                                                 // obscureText: isPassword,
@@ -2746,17 +2747,17 @@ class _fillaformState extends State<fillaform> {
     var phone =
         Provider.of<Users>(context, listen: false).userInfo?.phone ?? "";
     // String url = await uploadsFile();
-    String url = await uploadFile(image!);
+    // String url = await uploadFile(image!);
 
 
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
-      'profile': url.toString(),
-      "FirstName": firstname,
-      "LastName": lastname,
-      "Email": email,
-      "PhoneNumber": phone,
+      // 'profile': url.toString(),
+      // "FirstName": firstname,
+      // "LastName": lastname,
+      // "Email": email,
+      // "PhoneNumber": phone,
       "Marriage-Registered": MarriageRegistered,
       "Marrital Status": MaritalStatusvalue,
       "Father-Alive": FatherAliveStatusvalue,
@@ -2769,13 +2770,13 @@ class _fillaformState extends State<fillaform> {
       "ThirdChild":thirdchild,
       "FourthChild":forthchild,
       // "": rndnumber.toString(),
-      "placeofwork": addMember.placeofwork.toString(),
-      "Residence": addMember.residence,
-      "Region": addMember.Region,
-      "language": addMember.language,
-      "Occupation": addMember.Occupation,
-
-      "homeTown": addMember.homeTown,
+      // "placeofwork": addMember.placeofwork,
+      // "Residence": addMember.residence,
+      "Region": region,
+      // "language": addMember.language,
+      // "Occupation": addMember.Occupation,
+      //
+      // "homeTown": addMember.homeTown,
     });
   }
 }
