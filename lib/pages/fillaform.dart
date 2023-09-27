@@ -129,9 +129,6 @@ class _fillaformState extends State<fillaform> {
     TextEditingController dateInput = TextEditingController();
     String initialRegion =
         Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
-
-        String hometown= Provider.of<Users>(context,listen:false) .userInfo  ?.lname ??
-                                                                      "HomeTown",
     region.text = initialRegion;
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
@@ -672,7 +669,11 @@ class _fillaformState extends State<fillaform> {
                                                                           .none,
                                                                   hintMaxLines:
                                                                       1,
-                                                                  hintText: ""
+                                                                  hintText: Provider.of<Users>(
+                                                                              context)
+                                                                          .userInfo
+                                                                          ?.lname ??
+                                                                      "HomeTown",
                                                                   hintStyle:
                                                                       TextStyle(
                                                                     fontSize:
