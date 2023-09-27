@@ -71,143 +71,148 @@ class _homepageState extends State<homepage> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 28.0, left: 28, right: 28),
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .all(
-                                                                      14.0),
-                                                              child: Text(
-                                                                "Hi",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        if (Provider.of<Users>(
-                                                                    context)
-                                                                .userInfo
-                                                                ?.fname !=
-                                                            null)
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
                                                           Column(
                                                             children: [
                                                               Padding(
                                                                 padding:
                                                                     const EdgeInsets
                                                                             .all(
-                                                                        8.0),
+                                                                        14.0),
                                                                 child: Text(
-                                                                  Provider.of<Users>(
-                                                                          context)
-                                                                      .userInfo!
-                                                                      .fname!,
+                                                                  "Hi",
                                                                   style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
                                                                       fontSize:
-                                                                          21),
+                                                                          12,
+                                                                      color: Colors
+                                                                          .black),
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
-                                                        Column(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 130,
-                                                                      right: 10,
-                                                                      top: 8.0,
-                                                                      bottom:
-                                                                          9),
-                                                              child: Container(
+                                                          if (Provider.of<Users>(
+                                                                      context)
+                                                                  .userInfo
+                                                                  ?.fname !=
+                                                              null)
+                                                            Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child: Text(
+                                                                    Provider.of<Users>(
+                                                                            context)
+                                                                        .userInfo!
+                                                                        .fname!,
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            21),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            130,
+                                                                        right:
+                                                                            10,
+                                                                        top:
+                                                                            8.0,
+                                                                        bottom:
+                                                                            9),
                                                                 child:
-                                                                    IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    showDialog<
-                                                                        void>(
-                                                                      context:
-                                                                          context,
-                                                                      barrierDismissible:
-                                                                          false, // user must tap button!
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        return AlertDialog(
-                                                                          title:
-                                                                              Text('Sign Out'),
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          content:
-                                                                              SingleChildScrollView(
-                                                                            child:
-                                                                                Column(
-                                                                              children: <Widget>[
-                                                                                Text('Are you certain you want to Sign Out?'),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          actions: <
-                                                                              Widget>[
-                                                                            TextButton(
-                                                                              child: Text(
-                                                                                'Yes',
-                                                                                style: TextStyle(color: Colors.black),
+                                                                    Container(
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      showDialog<
+                                                                          void>(
+                                                                        context:
+                                                                            context,
+                                                                        barrierDismissible:
+                                                                            false, // user must tap button!
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            title:
+                                                                                Text('Sign Out'),
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            content:
+                                                                                SingleChildScrollView(
+                                                                              child: Column(
+                                                                                children: <Widget>[
+                                                                                  Text('Are you certain you want to Sign Out?'),
+                                                                                ],
                                                                               ),
-                                                                              onPressed: () {
-                                                                                print('yes');
-                                                                                FirebaseAuth.instance.signOut();
-                                                                                Navigator.pushNamedAndRemoveUntil(context, login.idScreen, (route) => false);
-                                                                                // Navigator.of(context).pop();
-                                                                              },
                                                                             ),
-                                                                            TextButton(
-                                                                              child: Text(
-                                                                                'Cancel',
-                                                                                style: TextStyle(color: Colors.red),
+                                                                            actions: <Widget>[
+                                                                              TextButton(
+                                                                                child: Text(
+                                                                                  'Yes',
+                                                                                  style: TextStyle(color: Colors.black),
+                                                                                ),
+                                                                                onPressed: () {
+                                                                                  print('yes');
+                                                                                  FirebaseAuth.instance.signOut();
+                                                                                  Navigator.pushNamedAndRemoveUntil(context, login.idScreen, (route) => false);
+                                                                                  // Navigator.of(context).pop();
+                                                                                },
                                                                               ),
-                                                                              onPressed: () {
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                            ),
-                                                                          ],
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                  icon:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .logout,
-                                                                    color: Colors
-                                                                        .black,
+                                                                              TextButton(
+                                                                                child: Text(
+                                                                                  'Cancel',
+                                                                                  style: TextStyle(color: Colors.red),
+                                                                                ),
+                                                                                onPressed: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    icon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .logout,
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           Padding(
@@ -270,7 +275,6 @@ class _homepageState extends State<homepage> {
                                               ),
                                             ),
                                           ),
-
                                         ],
                                       ),
                                     ))))

@@ -30,7 +30,6 @@ class fillaform extends StatefulWidget {
 }
 
 class _fillaformState extends State<fillaform> {
-
   TextEditingController residence = new TextEditingController();
   TextEditingController occupation = TextEditingController();
 
@@ -123,14 +122,14 @@ class _fillaformState extends State<fillaform> {
   void initState() {
     dateInput.text = ""; //set the initial value of text field
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController dateInput = TextEditingController();
-    String initialRegion = Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
-    region.text=initialRegion;
+    String initialRegion =
+        Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
+    region.text = initialRegion;
     Size size = MediaQuery.of(context).size;
     DateTime selectedDate = DateTime.now();
     Future<void> _selectDate(BuildContext context) async {}
@@ -717,8 +716,9 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                      controller: region,
-                                                                        style:
+                                                                controller:
+                                                                    region,
+                                                                style:
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .black
@@ -727,7 +727,12 @@ class _fillaformState extends State<fillaform> {
                                                                 ),
                                                                 onChanged:
                                                                     (value) {
-                                                                      Provider.of<Users>(context, listen: false).userInfo?.Region = value;
+                                                                  Provider.of<Users>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .userInfo
+                                                                      ?.Region = value;
                                                                 },
 
                                                                 // obscureText: isPassword,
@@ -881,12 +886,9 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                     
-                                                                ),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
 
                                                                 controller:
                                                                     language,
@@ -968,12 +970,9 @@ class _fillaformState extends State<fillaform> {
                                                               ),
                                                               child:
                                                                   TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                     
-                                                                ),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
                                                                 controller:
                                                                     occupation,
                                                                 onChanged:
@@ -982,7 +981,7 @@ class _fillaformState extends State<fillaform> {
                                                                           .Occupation =
                                                                       value;
                                                                 },
-                                                            // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
+                                                                // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
                                                                 // obscureText: isPassword,
                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
                                                                 decoration:
@@ -1048,12 +1047,9 @@ class _fillaformState extends State<fillaform> {
                                                                             20),
                                                               ),
                                                               child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-
-                                                                ),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black),
                                                                 controller:
                                                                     placeofwork,
                                                                 onChanged:
@@ -1351,8 +1347,6 @@ class _fillaformState extends State<fillaform> {
                                                     ],
                                                   ),
                                                 ),
-
-
                                               ],
                                             ),
 
@@ -2092,7 +2086,7 @@ class _fillaformState extends State<fillaform> {
                                                                     ),
                                                                     border:
                                                                         InputBorder
-                                                                        .none,
+                                                                            .none,
                                                                     hintMaxLines:
                                                                         1,
                                                                     hintText:
@@ -2570,14 +2564,8 @@ class _fillaformState extends State<fillaform> {
                                                   child: Container(
                                                     padding: EdgeInsets.all(22),
                                                     child: Container(
-
-
                                                         child: Center(
-                                                            child: ImagePro())
-
-                                                        ),
-
-
+                                                            child: ImagePro())),
                                                   ),
                                                 ),
                                               ),
@@ -2603,15 +2591,6 @@ class _fillaformState extends State<fillaform> {
   io.File? image;
 
   Future<String> uploadFile(io.File image) async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (BuildContext context)
-    //     {
-    //       //return ;
-    //     }
-    // );
-
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final myUid = user?.uid;
@@ -2738,26 +2717,20 @@ class _fillaformState extends State<fillaform> {
   }
 
   Occupationdb(context) async {
-    var firstname =
-        Provider.of<Users>(context, listen: false).userInfo?.fname ?? "";
-    var lastname =
-        Provider.of<Users>(context, listen: false).userInfo?.lname ?? "";
-    var email =
-        Provider.of<Users>(context, listen: false).userInfo?.email ?? "";
-    var phone =
-        Provider.of<Users>(context, listen: false).userInfo?.phone ?? "";
+    // var firstname =
+    //     Provider.of<Users>(context, listen: false).userInfo?.fname ?? "";
+    // var lastname =
+    //     Provider.of<Users>(context, listen: false).userInfo?.lname ?? "";
+    // var email =
+    //     Provider.of<Users>(context, listen: false).userInfo?.email ?? "";
+    // var phone =
+    //     Provider.of<Users>(context, listen: false).userInfo?.phone ?? "";
     // String url = await uploadsFile();
     // String url = await uploadFile(image!);
-
 
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
     clients.child(_firebaseAuth).update({
-      // 'profile': url.toString(),
-      // "FirstName": firstname,
-      // "LastName": lastname,
-      // "Email": email,
-      // "PhoneNumber": phone,
       "Marriage-Registered": MarriageRegistered,
       "Marrital Status": MaritalStatusvalue,
       "Father-Alive": FatherAliveStatusvalue,
@@ -2765,14 +2738,15 @@ class _fillaformState extends State<fillaform> {
       "Date Of Birth": birthDateInString,
       "Child Gender": ChiledGenderStatusvalue,
       "Number Of Children": nochildren,
-      "FirstChild":firstchild,
-      "SecondChild":secondchild,
-      "ThirdChild":thirdchild,
-      "FourthChild":forthchild,
+      "FirstChild": firstchild,
+      "SecondChild": secondchild,
+      "ThirdChild": thirdchild,
+      "FourthChild": forthchild,
+      "Region": region,
       // "": rndnumber.toString(),
       // "placeofwork": addMember.placeofwork,
       // "Residence": addMember.residence,
-      "Region": region,
+
       // "language": addMember.language,
       // "Occupation": addMember.Occupation,
       //
