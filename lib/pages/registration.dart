@@ -396,7 +396,7 @@ class _registrationState extends State<registration> {
 
       {
     //save use into to database
-
+    await firebaseUser?.sendEmailVerification();
     Map userDataMap = {
       "firstName": fname.text.trim(),
       "lastName": lname.text.trim(),
@@ -413,6 +413,8 @@ class _registrationState extends State<registration> {
     currentfirebaseUser = firebaseUser;
     registerInfirestore(context);
     displayToast("Congratulation, your account has been created", context);
+    displayToast("A verification has been sent to your mail", context);
+
 
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => login()),
