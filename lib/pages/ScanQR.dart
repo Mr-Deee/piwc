@@ -65,27 +65,38 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          Expanded(
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: (QRViewController controller) {
-                controller.scannedDataStream.listen((barcode) async {
-                  setState(() {
-                    result = barcode;
-                  });
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            margin: EdgeInsets.all(16.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: QRView(
+                  key: qrKey,
+                  onQRViewCreated: (QRViewController controller) {
+                    controller.scannedDataStream.listen((barcode) async {
+                      setState(() {
+                        result = barcode;
+                      });
 
-                  // Write the scanned QR code data to Firebase
-                  // await firestore.collection('Attendance').add({
-                  //   'name':firstname,
-                  //   'date':formattedDate,
-                  //   'data': barcode.code,
-                  //   'timestamp': FieldValue.serverTimestamp(),
-                  // });
+                      // Write the scanned QR code data to Firebase
+                      // await firestore.collection('Attendance').add({
+                      //   'name':firstname,
+                      //   'date':formattedDate,
+                      //   'data': barcode.code,
+                      //   'timestamp': FieldValue.serverTimestamp(),
+                      // });
 
-                  // Perform any other actions you need with the scanned data
-                  print('Scanned QR Code: ${barcode.code}');
-                });
-              },
+                      // Perform any other actions you need with the scanned data
+                      print('Scanned QR Code: ${barcode.code}');
+                    });
+                  },
+                ),
+              ),
             ),
           ),
           if (result != null)
