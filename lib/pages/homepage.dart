@@ -235,7 +235,7 @@ class _homepageState extends State<homepage> {
                                                     child: Widget_selection(
                                                       image:
                                                           'assets/images/fo.png',
-                                                      title: 'Fill A Form',
+                                                      title: 'Update  Details',
                                                     ),
                                                   ),
                                                 ),
@@ -269,9 +269,11 @@ class _homepageState extends State<homepage> {
                                                             ScanQR()));
                                               },
                                               child: Widget_selection(
+
                                                 image:
-                                                    'assets/images/fillprofile.png',
+                                                    'assets/images/QR.png',
                                                 title: 'SCAN QR',
+
                                               ),
                                             ),
                                           ),

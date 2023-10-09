@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:math';
-
+import '../model/assistantmethods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../Membershipform/Addmember.dart';
 import '../main.dart';
 import '../model/Users.dart';
+
 import '../progressdialog.dart';
 
 class fillaform extends StatefulWidget {
@@ -28,6 +29,8 @@ class fillaform extends StatefulWidget {
   @override
   State<fillaform> createState() => _fillaformState();
 }
+
+
 
 class _fillaformState extends State<fillaform> {
   TextEditingController residence = new TextEditingController();
@@ -120,13 +123,14 @@ class _fillaformState extends State<fillaform> {
 
   @override
   void initState() {
-    dateInput.text = ""; //set the initial value of text field
+    // TODO: implement initState
     super.initState();
+    // AssistantMethods.getCurrentOnlineUserInfo(Context);
   }
-
   @override
   Widget build(BuildContext context) {
     TextEditingController dateInput = TextEditingController();
+    String initValue =  Provider.of<Users>(context, listen: false).userInfo?.DOB ?? "Select Date";
     String initialRegion =
         Provider.of<Users>(context, listen: false).userInfo?.Region ?? "";
     region.text = initialRegion;
@@ -154,46 +158,77 @@ class _fillaformState extends State<fillaform> {
             // String url = await uploadFile(image!);
             biodatadb(context);
             final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
+            final userInfo = Provider.of<Users>(context, listen: false).userInfo;
+            final docRef = _firestore.collection("Members").doc(_firebaseAuth);
 
-            // newProduct.group = group;
-            _firestore.collection("Members").doc(_firebaseAuth).update({
-              'image': url.toString(),
-              "FirstName":
-                  Provider.of<Users>(context, listen: false).userInfo?.fname ??
-                      "",
-              "LastName":
-                  Provider.of<Users>(context, listen: false).userInfo?.lname ??
-                      "",
-              "Email":
-                  Provider.of<Users>(context, listen: false).userInfo?.email ??
-                      "",
-              "PhoneNumber":
-                  Provider.of<Users>(context, listen: false).userInfo?.phone ??
-                      "",
-              // "": rndnumber.toString(),
-              "placeofwork": addMember.placeofwork.toString(),
-              "Residence": addMember.residence,
-              "Region": addMember.Region,
-              "language": addMember.language,
-              "Occupation": addMember.Occupation,
-              "Marriage-Registered": MarriageRegistered,
-              "Marrital Status": MaritalStatusvalue,
-              "Father-Alive": FatherAliveStatusvalue,
-              "Mother-Alive": MotherAliveStatusvalue,
-              "Date Of Birth": birthDateInString,
+// Create an empty update object
+            final Map<String, dynamic> updateData = {};
 
-              "homeTown": addMember.homeTown,
+// Conditionally add fields to the updateData only if they have changed
+            if (url != null) {
+              updateData['image'] = url.toString();
+            }
 
-              //newProduct.toMap()
-            }).then((value) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
+            if (userInfo?.fname != null) {
+              updateData['FirstName'] = userInfo!.fname;
+            }
 
-              //showTextToast('Added Sucessfully!');
-            }).catchError((e) {
-              // showTextToast('Failed!');
-            });
-            // Navigator.of(context).pop();
+            if (userInfo?.lname != null) {
+              updateData['LastName'] = userInfo!.lname;
+            }
+
+            if (userInfo?.email != null) {
+              updateData['Email'] = userInfo!.email;
+            }
+
+            if (userInfo?.phone != null) {
+              updateData['PhoneNumber'] = userInfo!.phone;
+            }
+
+            if (addMember.placeofwork != null) {
+              updateData['placeofwork'] = addMember.placeofwork.toString();
+            }
+
+            if (birthDateInString != null) {
+              updateData['DOB'] = birthDateInString;
+            }
+
+            if (addMember.residence != null) {
+              updateData['Residence'] = addMember.residence;
+            }
+
+            if (addMember.Region != null) {
+              updateData['Region'] = addMember.Region;
+            }
+
+            if (addMember.language != null) {
+              updateData['language'] = addMember.language;
+            }
+
+            if (addMember.Occupation != null) {
+              updateData['Occupation'] = addMember.Occupation;
+            }
+
+            if (addMember.homeTown != null) {
+              updateData['homeTown'] = addMember.homeTown;
+            }
+
+// Check if there are any fields to update
+            if (updateData.isNotEmpty) {
+              docRef.update(updateData).then((value) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                // showTextToast('Added Successfully!');
+              }).catchError((e) {
+                // Handle and log errors here.
+                // showTextToast('Failed!');
+              });
+            } else {
+              // No fields have changed, you can handle this case accordingly.
+              // For example, you might want to show a message to the user.
+              // print('No data to update');
+            }
+
           },
           splashColor: ColorPalette.bondyBlue,
           backgroundColor: Colors.white,
@@ -203,2375 +238,3404 @@ class _fillaformState extends State<fillaform> {
           ),
         ),
       ),
-      body: Container(
-        color: ColorPalette.pacificBlue,
-        child: SafeArea(
-          child: Container(
-            color: ColorPalette.aquaHaze,
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 0),
-                    child: SizedBox(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              children: [
-                                Container(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 40,
+      body: Center(
+        child: Container(
+          color: ColorPalette.pacificBlue,
+          child: SafeArea(
+            child: Container(
+              color: ColorPalette.aquaHaze,
+              height: double.infinity,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(top:78.0),
+                child: Column(
+
+
+                  children: [
+
+
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.1,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+
+                                  initialValue: Provider.of<Users>(
+                                      context)
+                                      .userInfo
+                                      ?.fname ??
+                                      '',
+
+                                  // onChanged: (rnnumber) {
+                                  //   addMember.accountNumber ==rndnumber;
+                                  // },
+                                  readOnly: true,
+
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .account_circle_outlined,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
                                     ),
-                                    margin: const EdgeInsets.only(top: 75),
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffd5e2e3),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(16),
-                                        topRight: Radius.circular(16),
-                                      ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    'First Name',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .5),
                                     ),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.3,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+
+                                  initialValue: Provider.of<Users>(
+                                      context)
+                                      .userInfo
+                                      ?.lname ??
+                                      '',
+
+                                  readOnly: true,
+
+                                  // controller: lname,
+                                  // onChanged: (value){
+                                  //   _lastname = value;
+                                  // },
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .account_circle_outlined,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    'Last Name',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.1,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+                                  readOnly: true,
+
+                                  initialValue: Provider.of<Users>(
+                                      context)
+                                      .userInfo
+                                      ?.phone ??
+                                      '',
+
+                                  // onChanged: (rndnumber) {
+                                  //   addMember.accountNumber ==rndnumber;
+                                  // },
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons.phone,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    'Phone',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            //Email
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.3,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+
+                                  initialValue: Provider.of<Users>(
+                                      context)
+                                      .userInfo
+                                      ?.email ??
+                                      '',
+                                  // controller: lname,
+                                  // onChanged: (value){
+                                  //   _lastname = value;
+                                  // },
+                                  readOnly: true,
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons.email,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    'Email',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        //Profession
+
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.1,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  // initialValue: addMember.homeTown,
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+
+                                  controller:hometown,
+                                  onChanged:
+                                      (value) {
+                                    addMember
+                                        .homeTown =
+                                        value;
+                                  },
+
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .holiday_village,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText: Provider.of<Users>(
+                                        context)
+                                        .userInfo
+                                        ?.hometown ??
+                                        "HomeTown",
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //Residential Address
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.3,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child: TextField(
+                                  style:
+                                  TextStyle(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .9),
+                                  ),
+                                  controller:
+                                  residence,
+                                  onChanged:
+                                      (value) {
+                                    addMember
+                                        .residence =
+                                        value;
+                                  },
+
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .house_outlined,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    Provider.of<Users>(
+                                        context)
+                                        .userInfo
+                                        ?.Residence ??
+                                        'Residential Address',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //Language
+                        Row(
+                          children: [
+
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.1,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style: TextStyle(
+                                      color: Colors
+                                          .black),
+
+                                  controller:
+                                  language,
+                                  onChanged:
+                                      (value) {
+                                    addMember
+                                        .language =
+                                        value;
+                                  },
+
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .language,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:Provider.of<Users>(
+                                        context)
+                                        .userInfo
+                                        ?.languge ??
+                                    'Language',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+
+
+                            Padding(
+
+                                padding: EdgeInsets.all(8.0),
+                                child: Container(
+                                  height:
+                                  size.width /
+                                      8,
+                                  width:
+                                  size.width /
+                                      2.3,
+                                  alignment:
+                                  Alignment
+                                      .center,
+                                  padding: EdgeInsets.only(
+                                      right:
+                                      size.width /
+                                          30),
+                                  decoration:
+                                  BoxDecoration(
+                                    color: Colors
+                                        .black
+                                        .withOpacity(
+                                        .1),
+                                    borderRadius:
+                                    BorderRadius
+                                        .circular(
+                                        20),
+                                  ),
+                                  child:
+                                  GestureDetector(
+                                    onTap:
+                                        () async {
+                                      final datePick = await showDatePicker(
+                                          context:
+                                          context,
+                                          initialDate:
+                                          new DateTime
+                                              .now(),
+                                          firstDate:
+                                          new DateTime(
+                                              1900),
+                                          lastDate:
+                                          new DateTime(2100));
+                                      if (datePick !=
+                                          null &&
+                                          datePick !=
+                                              birthDate) {
+                                        setState(
+                                                () {
+                                              birthDate =
+                                                  datePick;
+                                              isDateSelected =
+                                              true;
+                                              birthDateInString =
+                                              "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
+                                            });
+                                      }
+                                    },
+                                    child:
+                                    Padding(
+                                      padding: const EdgeInsets
+                                          .all(
+                                          10.0),
+                                      child:
+                                      SingleChildScrollView(
+                                        child:
+                                        Row(
                                           children: [
-                                            ExpansionTile(
-                                              title:
-                                                  Text("Member Persnal Data"),
-                                              children: <Widget>[
-                                                Focus(
-                                                  onFocusChange: (value) {
-                                                    if (!value) {
-                                                      setState(() {
-                                                        _residence = true;
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-
-                                                                initialValue: Provider.of<Users>(
-                                                                            context)
-                                                                        .userInfo
-                                                                        ?.fname ??
-                                                                    '',
-
-                                                                // onChanged: (rnnumber) {
-                                                                //   addMember.accountNumber ==rndnumber;
-                                                                // },
-                                                                readOnly: true,
-
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .account_circle_outlined,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'First Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-
-                                                                initialValue: Provider.of<Users>(
-                                                                            context)
-                                                                        .userInfo
-                                                                        ?.lname ??
-                                                                    '',
-
-                                                                readOnly: true,
-
-                                                                // controller: lname,
-                                                                // onChanged: (value){
-                                                                //   _lastname = value;
-                                                                // },
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .account_circle_outlined,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Last Name',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                readOnly: true,
-
-                                                                initialValue: Provider.of<Users>(
-                                                                            context)
-                                                                        .userInfo
-                                                                        ?.phone ??
-                                                                    '',
-
-                                                                // onChanged: (rndnumber) {
-                                                                //   addMember.accountNumber ==rndnumber;
-                                                                // },
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.phone,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Phone',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          //Email
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-
-                                                                initialValue: Provider.of<Users>(
-                                                                            context)
-                                                                        .userInfo
-                                                                        ?.email ??
-                                                                    '',
-                                                                // controller: lname,
-                                                                // onChanged: (value){
-                                                                //   _lastname = value;
-                                                                // },
-                                                                readOnly: true,
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.email,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Email',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      //Profession
-
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-
-                                                                controller:
-                                                                    hometown,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .homeTown =
-                                                                      value;
-                                                                },
-
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .holiday_village,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText: Provider.of<Users>(
-                                                                              context)
-                                                                          .userInfo
-                                                                          ?.hometown ??
-                                                                      "HomeTown",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                controller:
-                                                                    region,
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                onChanged:
-                                                                    (value) {
-                                                                  Provider.of<Users>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .userInfo
-                                                                      ?.Region = value;
-                                                                },
-
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .church,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText: Provider.of<Users>(
-                                                                              context)
-                                                                          .userInfo
-                                                                          ?.Region ??
-                                                                      "Region",
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      //Language
-                                                      Row(
-                                                        children: [
-                                                          //Residential Address
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .9),
-                                                                ),
-                                                                controller:
-                                                                    residence,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .residence =
-                                                                      value;
-                                                                },
-
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .house_outlined,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Residential Address',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-
-                                                                controller:
-                                                                    language,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .language =
-                                                                      value;
-                                                                },
-
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .language,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Language',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: [
-                                                          //Occupation
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child:
-                                                                  TextFormField(
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                                controller:
-                                                                    occupation,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .Occupation =
-                                                                      value;
-                                                                },
-                                                                // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
-                                                                // obscureText: isPassword,
-                                                                // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons.work,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Occupation',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-
-                                                          //place Of Work
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height:
-                                                                  size.width /
-                                                                      8,
-                                                              width:
-                                                                  size.width /
-                                                                      2.5,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      right: size
-                                                                              .width /
-                                                                          30),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        .1),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: TextField(
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                                controller:
-                                                                    placeofwork,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  addMember
-                                                                          .placeofwork =
-                                                                      value;
-                                                                },
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  prefixIcon:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .business,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .8),
-                                                                  ),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintMaxLines:
-                                                                      1,
-                                                                  hintText:
-                                                                      'Place Of Work',
-                                                                  hintStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      //Marrital Status
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Column(
-                                                              children: [
-                                                                Text(
-                                                                    "Marital Status"),
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child:
-                                                                      DropdownButton(
-                                                                    // Initial Value
-                                                                    value: MaritalStatusvalue ==
-                                                                            null
-                                                                        ? null
-                                                                        : MaritalStatusvalue,
-
-                                                                    // Down Arrow Icon
-                                                                    icon: const Icon(
-                                                                        Icons
-                                                                            .keyboard_arrow_down),
-
-                                                                    // Array list of items
-                                                                    items: MaritalStatus
-                                                                        .map((String
-                                                                            items) {
-                                                                      return DropdownMenuItem(
-                                                                        value:
-                                                                            items,
-                                                                        child: Text(
-                                                                            items),
-                                                                      );
-                                                                    }).toList(),
-                                                                    // After selecting the desired option,it will
-                                                                    // change button value to selected value
-                                                                    onChanged:
-                                                                        (newValue) {
-                                                                      setState(
-                                                                          () {
-                                                                        MaritalStatusvalue =
-                                                                            newValue.toString();
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-
-                                                          //Marriage Registered?
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Column(
-                                                              children: [
-                                                                Text(
-                                                                    "Marriage Registered?"),
-                                                                Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child:
-                                                                      DropdownButton(
-                                                                    // Initial Value
-                                                                    value: MarriageRegistered ==
-                                                                            null
-                                                                        ? null
-                                                                        : MarriageRegistered,
-
-                                                                    // Down Arrow Icon
-                                                                    icon: const Icon(
-                                                                        Icons
-                                                                            .keyboard_arrow_down),
-
-                                                                    // Array list of items
-                                                                    items: MarriageRegisteredStatus
-                                                                        .map((String
-                                                                            items) {
-                                                                      return DropdownMenuItem(
-                                                                        value:
-                                                                            items,
-                                                                        child: Text(
-                                                                            items),
-                                                                      );
-                                                                    }).toList(),
-                                                                    // After selecting the desired option,it will
-                                                                    // change button value to selected value
-                                                                    onChanged:
-                                                                        (newValue) {
-                                                                      setState(
-                                                                          () {
-                                                                        MarriageRegistered =
-                                                                            newValue.toString();
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-
-                                                      Row(
-                                                        children: [
-                                                          Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    GestureDetector(
-                                                                  onTap:
-                                                                      () async {
-                                                                    final datePick = await showDatePicker(
-                                                                        context:
-                                                                            context,
-                                                                        initialDate:
-                                                                            new DateTime
-                                                                                .now(),
-                                                                        firstDate:
-                                                                            new DateTime(
-                                                                                1900),
-                                                                        lastDate:
-                                                                            new DateTime(2100));
-                                                                    if (datePick !=
-                                                                            null &&
-                                                                        datePick !=
-                                                                            birthDate) {
-                                                                      setState(
-                                                                          () {
-                                                                        birthDate =
-                                                                            datePick;
-                                                                        isDateSelected =
-                                                                            true;
-                                                                        birthDateInString =
-                                                                            "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .all(
-                                                                        10.0),
-                                                                    child:
-                                                                        SingleChildScrollView(
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          new Icon(
-                                                                            Icons.calendar_today,
-                                                                            color:
-                                                                                Colors.black,
-                                                                            size:
-                                                                                18,
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                new Text(
-                                                                              (isDateSelected ? DateFormat.yMMMd().format(birthDate!) : initValue),
-                                                                              style: TextStyle(
-                                                                                fontSize: 13,
-                                                                                color: Colors.black,
-                                                                              ),
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-
-                                                                // Center(
-                                                                //   child: TextField(
-                                                                //     controller: dateInput,
-                                                                //     //editing controller of this TextField
-                                                                //     decoration: InputDecoration(
-                                                                //
-                                                                //         icon: Icon(Icons.calendar_today), //icon of text field
-                                                                //         labelText: "Enter Date",
-                                                                //       //label text of field
-                                                                //     ),
-                                                                //     readOnly: true,
-                                                                //     //set it true, so that user will not able to edit text
-                                                                //     onTap: () async {
-                                                                //       DateTime? pickedDate = await showDatePicker(
-                                                                //           context: context,
-                                                                //           initialDate: DateTime.now(),
-                                                                //           firstDate: DateTime(1950),
-                                                                //           //DateTime.now() - not to allow to choose before today.
-                                                                //           lastDate: DateTime(2100));
-                                                                //
-                                                                //       if (pickedDate != null) {
-                                                                //         print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                                                //         String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                                                //         print(formattedDate); //formatted date output using intl package =>  2021-03-16
-                                                                //         setState(() {
-                                                                //           dateInput.text = formattedDate; //set output date to TextField value.
-                                                                //         });
-                                                                //       } else {}
-                                                                //     },
-                                                                //   ))
-                                                              )),
-
-                                                          //Residentiaal Address
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                            new Icon(
+                                              Icons.calendar_today,
+                                              color:
+                                              Colors.black,
+                                              size:
+                                              18,
                                             ),
-
-                                            ExpansionTile(
-                                                title: Text("Parent Data"),
-                                                children: <Widget>[
-                                                  Focus(
-                                                    onFocusChange: (value) {
-                                                      if (!value) {
-                                                        setState(() {
-                                                          //_emailAutoValidate =
-                                                          // true;
-                                                        });
-                                                      }
-                                                    },
-                                                    child: //FathersHometown
-                                                        Column(
-                                                      children: [
-                                                        //Fathersname
-                                                        Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .9),
-                                                                  ),
-                                                                  controller:
-                                                                      fathersname,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .fathername =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .man_2_outlined,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'Fathers Name',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-
-                                                            //mothersname
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .9),
-                                                                  ),
-                                                                  controller:
-                                                                      mothersname,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .mothername =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .woman,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'Mothers Name',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-
-                                                        //Mother hometown
-                                                        Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextFormField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .5),
-                                                                  ),
-                                                                  controller:
-                                                                      fathershomeTown,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .fathershometown =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .home_sharp,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'F.HomeTown',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          13,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            //Mothershometown
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .9),
-                                                                  ),
-                                                                  controller:
-                                                                      MothershomeTown,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .mothershometown =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons.man,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'M.Home',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .9),
-                                                                  ),
-                                                                  controller:
-                                                                      FatherReligion,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .fatherReligion =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .circle_sharp,
-                                                                      color: Colors
-                                                                          .lightBlueAccent
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'F.ReligiousGroup',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height:
-                                                                    size.width /
-                                                                        8,
-                                                                width:
-                                                                    size.width /
-                                                                        2.5,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets.only(
-                                                                    right:
-                                                                        size.width /
-                                                                            30),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          .1),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                ),
-                                                                child:
-                                                                    TextField(
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black
-                                                                        .withOpacity(
-                                                                            .9),
-                                                                  ),
-                                                                  controller:
-                                                                      MothersReligion,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addMember
-                                                                            .motherReligion =
-                                                                        value;
-                                                                  },
-                                                                  // obscureText: true,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    prefixIcon:
-                                                                        Icon(
-                                                                      Icons
-                                                                          .circle_sharp,
-                                                                      color: Colors
-                                                                          .lightBlueAccent
-                                                                          .withOpacity(
-                                                                              .8),
-                                                                    ),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    hintMaxLines:
-                                                                        1,
-                                                                    hintText:
-                                                                        'M.ReligiousGroup',
-                                                                    hintStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                              .5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        //LocationDD(product: newProduct),
-                                                        //Marrital Status
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Column(
-                                                                children: [
-                                                                  Text(
-                                                                      "Father-Alive?"),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            8.0),
-                                                                    child:
-                                                                        DropdownButton(
-                                                                      // Initial Value
-                                                                      value: FatherAliveStatusvalue ==
-                                                                              null
-                                                                          ? null
-                                                                          : FatherAliveStatusvalue,
-
-                                                                      // Down Arrow Icon
-                                                                      icon: const Icon(
-                                                                          Icons
-                                                                              .keyboard_arrow_down),
-
-                                                                      // Array list of items
-                                                                      items: FatherAliveStatus.map(
-                                                                          (String
-                                                                              items) {
-                                                                        return DropdownMenuItem(
-                                                                          value:
-                                                                              items,
-                                                                          child:
-                                                                              Text(items),
-                                                                        );
-                                                                      }).toList(),
-                                                                      // After selecting the desired option,it will
-                                                                      // change button value to selected value
-                                                                      onChanged:
-                                                                          (newValue) {
-                                                                        setState(
-                                                                            () {
-                                                                          FatherAliveStatusvalue =
-                                                                              newValue.toString();
-                                                                        });
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-
-                                                            //Marriage Registered?
-                                                            // Padding(
-                                                            //   padding:
-                                                            //       const EdgeInsets
-                                                            //           .all(8.0),
-                                                            //   child: Column(
-                                                            //     children: [
-                                                            //       Text(
-                                                            //           "Mother-Alive?"),
-                                                            //       Padding(
-                                                            //         padding:
-                                                            //             const EdgeInsets.all(
-                                                            //                 8.0),
-                                                            //         child:
-                                                            //             DropdownButton(
-                                                            //           // Initial Value
-                                                            //           value: MotherAliveStatusvalue ==
-                                                            //                   null
-                                                            //               ? null
-                                                            //               : MotherAliveStatusvalue,
-                                                            //
-                                                            //           // Down Arrow Icon
-                                                            //           icon: const Icon(
-                                                            //               Icons
-                                                            //                   .keyboard_arrow_down),
-                                                            //
-                                                            //           // Array list of items
-                                                            //           items: MotherAliveStatus.map(
-                                                            //               (String
-                                                            //                   items) {
-                                                            //             return DropdownMenuItem(
-                                                            //               value:
-                                                            //                   items,
-                                                            //               child:
-                                                            //                   Text(items),
-                                                            //             );
-                                                            //           }).toList(),
-                                                            //           // After selecting the desired option,it will
-                                                            //           // change button value to selected value
-                                                            //           onChanged:
-                                                            //               (newValue) {
-                                                            //             setState(
-                                                            //                 () {
-                                                            //               MotherAliveStatusvalue =
-                                                            //                   newValue.toString();
-                                                            //             });
-                                                            //           },
-                                                            //         ),
-                                                            //       ),
-                                                            //     ],
-                                                            //   ),
-                                                            // ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                  ),
-                                                ]),
-
-//                                             ExpansionTile(
-//                                                 title: Text("Children Data"),
-//                                                 children: <Widget>[
-//                                                   Focus(
-//                                                     onFocusChange: (value) {
-//                                                       if (!value) {
-//                                                         setState(() {
-//                                                           _emailAutoValidate =
-//                                                               true;
-//                                                         });
-//                                                       }
-//                                                     },
-//                                                     child: //FathersHometown
-//                                                         Column(
-//                                                       children: [
-//                                                         //Fathersname
-//                                                         Row(
-//                                                           children: [
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Container(
-//                                                                 height:
-//                                                                     size.width /
-//                                                                         8,
-//                                                                 width:
-//                                                                     size.width /
-//                                                                         2.5,
-//                                                                 alignment:
-//                                                                     Alignment
-//                                                                         .center,
-//                                                                 padding: EdgeInsets.only(
-//                                                                     right:
-//                                                                         size.width /
-//                                                                             30),
-//                                                                 decoration:
-//                                                                     BoxDecoration(
-//                                                                   color: Colors
-//                                                                       .black
-//                                                                       .withOpacity(
-//                                                                           .1),
-//                                                                   borderRadius:
-//                                                                       BorderRadius
-//                                                                           .circular(
-//                                                                               20),
-//                                                                 ),
-//                                                                 child:
-//                                                                     TextField(
-//                                                                   style:
-//                                                                       TextStyle(
-//                                                                     color: Colors
-//                                                                         .black
-//                                                                         .withOpacity(
-//                                                                             .9),
-//                                                                   ),
-//                                                                   controller:
-//                                                                       nochildren,
-//                                                                   onChanged:
-//                                                                       (value) {
-//                                                                     addMember
-//                                                                             .fathername =
-//                                                                         value;
-//                                                                   },
-//                                                                   // obscureText: true,
-//                                                                   keyboardType:
-//                                                                       TextInputType
-//                                                                           .name,
-//                                                                   decoration:
-//                                                                       InputDecoration(
-//                                                                     prefixIcon:
-//                                                                         Icon(
-//                                                                       Icons
-//                                                                           .child_care_rounded,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .8),
-//                                                                     ),
-//                                                                     border:
-//                                                                         InputBorder
-//                                                                             .none,
-//                                                                     hintMaxLines:
-//                                                                         1,
-//                                                                     hintText:
-//                                                                         'No. Children',
-//                                                                     hintStyle:
-//                                                                         TextStyle(
-//                                                                       fontSize:
-//                                                                           14,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .5),
-//                                                                     ),
-//                                                                   ),
-//                                                                 ),
-//                                                               ),
-//                                                             ),
-// //Gender of child
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Column(
-//                                                                 children: [
-//                                                                   Text(
-//                                                                       "Gender"),
-//                                                                   Padding(
-//                                                                     padding:
-//                                                                         const EdgeInsets.all(
-//                                                                             8.0),
-//                                                                     child:
-//                                                                         DropdownButton(
-//                                                                       // Initial Value
-//                                                                       value: ChiledGenderStatusvalue ==
-//                                                                               null
-//                                                                           ? null
-//                                                                           : ChiledGenderStatusvalue,
-//
-//                                                                       // Down Arrow Icon
-//                                                                       icon: const Icon(
-//                                                                           Icons
-//                                                                               .keyboard_arrow_down),
-//
-//                                                                       // Array list of items
-//                                                                       items: ChiledGenderStatus.map(
-//                                                                           (String
-//                                                                               items) {
-//                                                                         return DropdownMenuItem(
-//                                                                           value:
-//                                                                               items,
-//                                                                           child:
-//                                                                               Text(items),
-//                                                                         );
-//                                                                       }).toList(),
-//                                                                       // After selecting the desired option,it will
-//                                                                       // change button value to selected value
-//                                                                       onChanged:
-//                                                                           (newValue) {
-//                                                                         setState(
-//                                                                             () {
-//                                                                           ChiledGenderStatusvalue =
-//                                                                               newValue.toString();
-//                                                                         });
-//                                                                       },
-//                                                                     ),
-//                                                                   ),
-//                                                                 ],
-//                                                               ),
-//                                                             ),
-//                                                           ],
-//                                                         ),
-//
-//                                                         //firstor second child
-//
-//                                                         Row(
-//                                                           children: [
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Container(
-//                                                                 height:
-//                                                                     size.width /
-//                                                                         8,
-//                                                                 width:
-//                                                                     size.width /
-//                                                                         2.5,
-//                                                                 alignment:
-//                                                                     Alignment
-//                                                                         .center,
-//                                                                 padding: EdgeInsets.only(
-//                                                                     right:
-//                                                                         size.width /
-//                                                                             30),
-//                                                                 decoration:
-//                                                                     BoxDecoration(
-//                                                                   color: Colors
-//                                                                       .black
-//                                                                       .withOpacity(
-//                                                                           .1),
-//                                                                   borderRadius:
-//                                                                       BorderRadius
-//                                                                           .circular(
-//                                                                               20),
-//                                                                 ),
-//                                                                 child:
-//                                                                     TextField(
-//                                                                   style:
-//                                                                       TextStyle(
-//                                                                     color: Colors
-//                                                                         .black
-//                                                                         .withOpacity(
-//                                                                             .9),
-//                                                                   ),
-//                                                                   controller:
-//                                                                       firstchild,
-//                                                                   onChanged:
-//                                                                       (value) {
-//                                                                     addMember
-//                                                                             .firstchild =
-//                                                                         value;
-//                                                                   },
-//                                                                   // obscureText: true,
-//                                                                   keyboardType:
-//                                                                       TextInputType
-//                                                                           .name,
-//                                                                   decoration:
-//                                                                       InputDecoration(
-//                                                                     prefixIcon:
-//                                                                         Icon(
-//                                                                       Icons
-//                                                                           .child_friendly,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .8),
-//                                                                     ),
-//                                                                     border:
-//                                                                         InputBorder
-//                                                                             .none,
-//                                                                     hintMaxLines:
-//                                                                         1,
-//                                                                     hintText:
-//                                                                         '1st Child',
-//                                                                     hintStyle:
-//                                                                         TextStyle(
-//                                                                       fontSize:
-//                                                                           14,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .5),
-//                                                                     ),
-//                                                                   ),
-//                                                                 ),
-//                                                               ),
-//                                                             ),
-//                                                             //mothersname
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Container(
-//                                                                 height:
-//                                                                     size.width /
-//                                                                         8,
-//                                                                 width:
-//                                                                     size.width /
-//                                                                         2.5,
-//                                                                 alignment:
-//                                                                     Alignment
-//                                                                         .center,
-//                                                                 padding: EdgeInsets.only(
-//                                                                     right:
-//                                                                         size.width /
-//                                                                             30),
-//                                                                 decoration:
-//                                                                     BoxDecoration(
-//                                                                   color: Colors
-//                                                                       .black
-//                                                                       .withOpacity(
-//                                                                           .1),
-//                                                                   borderRadius:
-//                                                                       BorderRadius
-//                                                                           .circular(
-//                                                                               20),
-//                                                                 ),
-//                                                                 child:
-//                                                                     TextField(
-//                                                                   style:
-//                                                                       TextStyle(
-//                                                                     color: Colors
-//                                                                         .black
-//                                                                         .withOpacity(
-//                                                                             .9),
-//                                                                   ),
-//                                                                   controller:
-//                                                                       secondchild,
-//                                                                   onChanged:
-//                                                                       (value) {
-//                                                                     addMember
-//                                                                             .secondchild =
-//                                                                         value;
-//                                                                   },
-//                                                                   // obscureText: true,
-//                                                                   keyboardType:
-//                                                                       TextInputType
-//                                                                           .name,
-//                                                                   decoration:
-//                                                                       InputDecoration(
-//                                                                     prefixIcon:
-//                                                                         Icon(
-//                                                                       Icons
-//                                                                           .child_friendly,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .8),
-//                                                                     ),
-//                                                                     border:
-//                                                                         InputBorder
-//                                                                             .none,
-//                                                                     hintMaxLines:
-//                                                                         1,
-//                                                                     hintText:
-//                                                                         '2nd Child',
-//                                                                     hintStyle:
-//                                                                         TextStyle(
-//                                                                       fontSize:
-//                                                                           14,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .5),
-//                                                                     ),
-//                                                                   ),
-//                                                                 ),
-//                                                               ),
-//                                                             ),
-//                                                           ],
-//                                                         ),
-//                                                         //third and forth
-//                                                         Row(
-//                                                           children: [
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Container(
-//                                                                 height:
-//                                                                     size.width /
-//                                                                         8,
-//                                                                 width:
-//                                                                     size.width /
-//                                                                         2.5,
-//                                                                 alignment:
-//                                                                     Alignment
-//                                                                         .center,
-//                                                                 padding: EdgeInsets.only(
-//                                                                     right:
-//                                                                         size.width /
-//                                                                             30),
-//                                                                 decoration:
-//                                                                     BoxDecoration(
-//                                                                   color: Colors
-//                                                                       .black
-//                                                                       .withOpacity(
-//                                                                           .1),
-//                                                                   borderRadius:
-//                                                                       BorderRadius
-//                                                                           .circular(
-//                                                                               20),
-//                                                                 ),
-//                                                                 child:
-//                                                                     TextField(
-//                                                                   style:
-//                                                                       TextStyle(
-//                                                                     color: Colors
-//                                                                         .black
-//                                                                         .withOpacity(
-//                                                                             .9),
-//                                                                   ),
-//                                                                   controller:
-//                                                                       thirdchild,
-//                                                                   onChanged:
-//                                                                       (value) {
-//                                                                     addMember
-//                                                                             .thirdchild =
-//                                                                         value;
-//                                                                   },
-//                                                                   // obscureText: true,
-//                                                                   keyboardType:
-//                                                                       TextInputType
-//                                                                           .name,
-//                                                                   decoration:
-//                                                                       InputDecoration(
-//                                                                     prefixIcon:
-//                                                                         Icon(
-//                                                                       Icons
-//                                                                           .child_friendly,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .8),
-//                                                                     ),
-//                                                                     border:
-//                                                                         InputBorder
-//                                                                             .none,
-//                                                                     hintMaxLines:
-//                                                                         1,
-//                                                                     hintText:
-//                                                                         '3rd child',
-//                                                                     hintStyle:
-//                                                                         TextStyle(
-//                                                                       fontSize:
-//                                                                           14,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .5),
-//                                                                     ),
-//                                                                   ),
-//                                                                 ),
-//                                                               ),
-//                                                             ),
-//                                                             //mothersname
-//                                                             Padding(
-//                                                               padding:
-//                                                                   const EdgeInsets
-//                                                                       .all(8.0),
-//                                                               child: Container(
-//                                                                 height:
-//                                                                     size.width /
-//                                                                         8,
-//                                                                 width:
-//                                                                     size.width /
-//                                                                         2.5,
-//                                                                 alignment:
-//                                                                     Alignment
-//                                                                         .center,
-//                                                                 padding: EdgeInsets.only(
-//                                                                     right:
-//                                                                         size.width /
-//                                                                             30),
-//                                                                 decoration:
-//                                                                     BoxDecoration(
-//                                                                   color: Colors
-//                                                                       .black
-//                                                                       .withOpacity(
-//                                                                           .1),
-//                                                                   borderRadius:
-//                                                                       BorderRadius
-//                                                                           .circular(
-//                                                                               20),
-//                                                                 ),
-//                                                                 child:
-//                                                                     TextField(
-//                                                                   style:
-//                                                                       TextStyle(
-//                                                                     color: Colors
-//                                                                         .black
-//                                                                         .withOpacity(
-//                                                                             .9),
-//                                                                   ),
-//                                                                   controller:
-//                                                                       forthchild,
-//                                                                   onChanged:
-//                                                                       (value) {
-//                                                                     addMember
-//                                                                             .fourthchild =
-//                                                                         value;
-//                                                                   },
-//                                                                   // obscureText: true,
-//                                                                   keyboardType:
-//                                                                       TextInputType
-//                                                                           .name,
-//                                                                   decoration:
-//                                                                       InputDecoration(
-//                                                                     prefixIcon:
-//                                                                         Icon(
-//                                                                       Icons
-//                                                                           .child_friendly,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .8),
-//                                                                     ),
-//                                                                     border:
-//                                                                         InputBorder
-//                                                                             .none,
-//                                                                     hintMaxLines:
-//                                                                         1,
-//                                                                     hintText:
-//                                                                         '4th Child',
-//                                                                     hintStyle:
-//                                                                         TextStyle(
-//                                                                       fontSize:
-//                                                                           14,
-//                                                                       color: Colors
-//                                                                           .black
-//                                                                           .withOpacity(
-//                                                                               .5),
-//                                                                     ),
-//                                                                   ),
-//                                                                 ),
-//                                                               ),
-//                                                             ),
-//                                                           ],
-//                                                         ),
-//
-//                                                         //LocationDD(product: newProduct),
-//                                                       ],
-//                                                     ),
-//
-//                                                     // TextFormField(
-//                                                     //   autovalidate: _emailAutoValidate,
-//                                                     //   controller: _email,
-//                                                     //   textInputAction: TextInputAction.next,
-//                                                     //   decoration: InputDecoration(
-//                                                     //       hintText: "enter email",
-//                                                     //       labelText: "Email",
-//                                                     //       border: OutlineInputBorder()),
-//                                                     //   validator: (value) {
-//                                                     //     if (value.isEmpty) {
-//                                                     //       return "Email field cannot be empty.";
-//                                                     //     }
-//                                                     //     return null;
-//                                                     //   },
-//                                                     // ),
-//                                                   ),
-//                                                 ]),
-
-                                            //Username
-                                            // SingleChildScrollView(
-                                            //   scrollDirection: Axis.horizontal,
-                                            //   child: Row(
-                                            //     children: [
-                                            //
-                                            //
-                                            //     ],
-                                            //   ),
-                                            // ),
-
-                                            //Hometown
-                                          ]),
-                                    )),
-                                Align(
-                                    alignment: Alignment.topCenter,
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: SizedBox(
-                                          height: 100,
-                                          width: 100,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            child: Container(
-                                              color: Colors.lightBlueAccent,
-                                              child: SizedBox(
-                                                height: 250,
-                                                child: Card(
-                                                  elevation: 8,
-                                                  shadowColor: Colors.grey,
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(
-                                                                100),
-                                                          ),
-                                                          side: BorderSide(
-                                                              width: 2,
-                                                              color: Colors
-                                                                  .white24)),
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(22),
-                                                    child: Container(
-                                                        child: Center(
-                                                            child: ImagePro())),
-                                                  ),
+                                            Padding(
+                                              padding:
+                                              const EdgeInsets.all(8.0),
+                                              child:
+                                              new Text(
+                                                (isDateSelected ? DateFormat.yMMMd().format(birthDate!) : initValue),
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.black,
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        )))
-                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Center(
+                                  //   child: TextField(
+                                  //     controller: dateInput,
+                                  //     //editing controller of this TextField
+                                  //     decoration: InputDecoration(
+                                  //
+                                  //         icon: Icon(Icons.calendar_today), //icon of text field
+                                  //         labelText: "Enter Date",
+                                  //       //label text of field
+                                  //     ),
+                                  //     readOnly: true,
+                                  //     //set it true, so that user will not able to edit text
+                                  //     onTap: () async {
+                                  //       DateTime? pickedDate = await showDatePicker(
+                                  //           context: context,
+                                  //           initialDate: DateTime.now(),
+                                  //           firstDate: DateTime(1950),
+                                  //           //DateTime.now() - not to allow to choose before today.
+                                  //           lastDate: DateTime(2100));
+                                  //
+                                  //       if (pickedDate != null) {
+                                  //         print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                  //         String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  //         print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                                  //         setState(() {
+                                  //           dateInput.text = formattedDate; //set output date to TextField value.
+                                  //         });
+                                  //       } else {}
+                                  //     },
+                                  //   ))
+                                )),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            //Occupation
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.1,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child:
+                                TextFormField(
+                                  style: TextStyle(
+                                      color: Colors
+                                          .black),
+                                  controller:
+                                  occupation,
+                                  onChanged:
+                                      (value) {
+                                    addMember
+                                        .Occupation =
+                                        value;
+                                  },
+                                  // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
+                                  // obscureText: isPassword,
+                                  // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons.work,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    Provider.of<Users>(
+                                        context)
+                                        .userInfo
+                                        ?.Occupation ??'Occupation',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+
+                            //place Of Work
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height:
+                                size.width /
+                                    8,
+                                width:
+                                size.width /
+                                    2.3,
+                                alignment:
+                                Alignment
+                                    .center,
+                                padding: EdgeInsets
+                                    .only(
+                                    right: size
+                                        .width /
+                                        30),
+                                decoration:
+                                BoxDecoration(
+                                  color: Colors
+                                      .black
+                                      .withOpacity(
+                                      .1),
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      20),
+                                ),
+                                child: TextField(
+                                  style: TextStyle(
+                                      color: Colors
+                                          .black),
+                                  controller:
+                                  placeofwork,
+                                  onChanged:
+                                      (value) {
+                                    addMember
+                                        .placeofwork =
+                                        value;
+                                  },
+                                  keyboardType:
+                                  TextInputType
+                                      .name,
+                                  decoration:
+                                  InputDecoration(
+                                    prefixIcon:
+                                    Icon(
+                                      Icons
+                                          .business,
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          .8),
+                                    ),
+                                    border:
+                                    InputBorder
+                                        .none,
+                                    hintMaxLines:
+                                    1,
+                                    hintText:
+                                    Provider.of<Users>(
+                                        context)
+                                        .userInfo
+                                        ?.placeofwork ??'Place Of Work',
+                                    hintStyle:
+                                    TextStyle(
+                                      fontSize:
+                                      14,
+                                      color: Colors
+                                          .black
+
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        //Marrital Status
+                        Row(
+                          crossAxisAlignment:
+                          CrossAxisAlignment
+                              .start,
+                          mainAxisAlignment:
+                          MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                      "Marital Status"),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .all(
+                                        8.0),
+                                    child:
+                                    DropdownButton(
+                                      // Initial Value
+                                      value: MaritalStatusvalue ==
+                                          null
+                                          ? null
+                                          : MaritalStatusvalue,
+
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                          Icons
+                                              .keyboard_arrow_down),
+
+                                      // Array list of items
+                                      items: MaritalStatus
+                                          .map((String
+                                      items) {
+                                        return DropdownMenuItem(
+                                          value:
+                                          items,
+                                          child: Text(
+                                              items),
+                                        );
+                                      }).toList(),
+                                      // After selecting the desired option,it will
+                                      // change button value to selected value
+                                      onChanged:
+                                          (newValue) {
+                                        setState(
+                                                () {
+                                              MaritalStatusvalue =
+                                                  newValue.toString();
+                                            });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            //Marriage Registered?
+                            Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                      "Marriage Registered?"),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .all(
+                                        8.0),
+                                    child:
+                                    DropdownButton(
+                                      // Initial Value
+                                      value: MarriageRegistered ==
+                                          null
+                                          ? null
+                                          : MarriageRegistered,
+
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                          Icons
+                                              .keyboard_arrow_down),
+
+                                      // Array list of items
+                                      items: MarriageRegisteredStatus
+                                          .map((String
+                                      items) {
+                                        return DropdownMenuItem(
+                                          value:
+                                          items,
+                                          child: Text(
+                                              items),
+                                        );
+                                      }).toList(),
+                                      // After selecting the desired option,it will
+                                      // change button value to selected value
+                                      onChanged:
+                                          (newValue) {
+                                        setState(
+                                                () {
+                                              MarriageRegistered =
+                                                  newValue.toString();
+                                            });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+
+
+                            //Residentiaal Address
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
+//                 Expanded(
+//                   flex: 1,
+//                   child: Padding(
+//                     padding: EdgeInsets.symmetric(horizontal: 0),
+//                     child: SizedBox(
+//                       child: Row(
+//                         children: [
+//
+//
+// //                           Expanded(
+// //                             child: Stack(
+// //                               children: [
+// //                                 Container(
+// //                                     height: double.infinity,
+// //                                     width: double.infinity,
+// //                                     padding: const EdgeInsets.symmetric(
+// //                                       horizontal: 20,
+// //                                       vertical: 40,
+// //                                     ),
+// //                                     margin: const EdgeInsets.only(top: 75),
+// //                                     decoration: const BoxDecoration(
+// //                                       color: Color(0xffd5e2e3),
+// //                                       borderRadius: BorderRadius.only(
+// //                                         topLeft: Radius.circular(16),
+// //                                         topRight: Radius.circular(16),
+// //                                       ),
+// //                                     ),
+// //                                     child: SingleChildScrollView(
+// //                                       child: Column(
+// //                                           mainAxisAlignment:
+// //                                               MainAxisAlignment.spaceEvenly,
+// //                                           children: [
+// //                                             ExpansionTile(
+// //                                               title:
+// //                                                   Text("Member Persnal Data"),
+// //                                               children: <Widget>[
+// //                                                 Focus(
+// //                                                   onFocusChange: (value) {
+// //                                                     if (!value) {
+// //                                                       setState(() {
+// //                                                         _residence = true;
+// //                                                       });
+// //                                                     }
+// //                                                   },
+// //                                                   child: Column(
+// //                                                     children: [
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //
+// //                                                                 initialValue: Provider.of<Users>(
+// //                                                                             context)
+// //                                                                         .userInfo
+// //                                                                         ?.fname ??
+// //                                                                     '',
+// //
+// //                                                                 // onChanged: (rnnumber) {
+// //                                                                 //   addMember.accountNumber ==rndnumber;
+// //                                                                 // },
+// //                                                                 readOnly: true,
+// //
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .account_circle_outlined,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'First Name',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //
+// //                                                                 initialValue: Provider.of<Users>(
+// //                                                                             context)
+// //                                                                         .userInfo
+// //                                                                         ?.lname ??
+// //                                                                     '',
+// //
+// //                                                                 readOnly: true,
+// //
+// //                                                                 // controller: lname,
+// //                                                                 // onChanged: (value){
+// //                                                                 //   _lastname = value;
+// //                                                                 // },
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .account_circle_outlined,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Last Name',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //                                                                 readOnly: true,
+// //
+// //                                                                 initialValue: Provider.of<Users>(
+// //                                                                             context)
+// //                                                                         .userInfo
+// //                                                                         ?.phone ??
+// //                                                                     '',
+// //
+// //                                                                 // onChanged: (rndnumber) {
+// //                                                                 //   addMember.accountNumber ==rndnumber;
+// //                                                                 // },
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons.phone,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Phone',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //
+// //                                                           //Email
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //
+// //                                                                 initialValue: Provider.of<Users>(
+// //                                                                             context)
+// //                                                                         .userInfo
+// //                                                                         ?.email ??
+// //                                                                     '',
+// //                                                                 // controller: lname,
+// //                                                                 // onChanged: (value){
+// //                                                                 //   _lastname = value;
+// //                                                                 // },
+// //                                                                 readOnly: true,
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons.email,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Email',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //
+// //                                                       //Profession
+// //
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //
+// //                                                                 controller:
+// //                                                                     hometown,
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   addMember
+// //                                                                           .homeTown =
+// //                                                                       value;
+// //                                                                 },
+// //
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .holiday_village,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText: Provider.of<Users>(
+// //                                                                               context)
+// //                                                                           .userInfo
+// //                                                                           ?.hometown ??
+// //                                                                       "HomeTown",
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 controller:
+// //                                                                     region,
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   Provider.of<Users>(
+// //                                                                           context,
+// //                                                                           listen:
+// //                                                                               false)
+// //                                                                       .userInfo
+// //                                                                       ?.Region = value;
+// //                                                                 },
+// //
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .church,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText: Provider.of<Users>(
+// //                                                                               context)
+// //                                                                           .userInfo
+// //                                                                           ?.Region ??
+// //                                                                       "Region",
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //                                                       //Language
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           //Residential Address
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child: TextField(
+// //                                                                 style:
+// //                                                                     TextStyle(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .9),
+// //                                                                 ),
+// //                                                                 controller:
+// //                                                                     residence,
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   addMember
+// //                                                                           .residence =
+// //                                                                       value;
+// //                                                                 },
+// //
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .house_outlined,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Residential Address',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style: TextStyle(
+// //                                                                     color: Colors
+// //                                                                         .black),
+// //
+// //                                                                 controller:
+// //                                                                     language,
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   addMember
+// //                                                                           .language =
+// //                                                                       value;
+// //                                                                 },
+// //
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .language,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Language',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           //Occupation
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child:
+// //                                                                   TextFormField(
+// //                                                                 style: TextStyle(
+// //                                                                     color: Colors
+// //                                                                         .black),
+// //                                                                 controller:
+// //                                                                     occupation,
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   addMember
+// //                                                                           .Occupation =
+// //                                                                       value;
+// //                                                                 },
+// //                                                                 // initialValue: Provider.of<Users>(context, listen: false).userInfo?.Occupasion!,
+// //                                                                 // obscureText: isPassword,
+// //                                                                 // keyboardType: isEmail ? TextInputType.name : TextInputType.text,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons.work,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Occupation',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //
+// //                                                           //place Of Work
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Container(
+// //                                                               height:
+// //                                                                   size.width /
+// //                                                                       8,
+// //                                                               width:
+// //                                                                   size.width /
+// //                                                                       2.5,
+// //                                                               alignment:
+// //                                                                   Alignment
+// //                                                                       .center,
+// //                                                               padding: EdgeInsets
+// //                                                                   .only(
+// //                                                                       right: size
+// //                                                                               .width /
+// //                                                                           30),
+// //                                                               decoration:
+// //                                                                   BoxDecoration(
+// //                                                                 color: Colors
+// //                                                                     .black
+// //                                                                     .withOpacity(
+// //                                                                         .1),
+// //                                                                 borderRadius:
+// //                                                                     BorderRadius
+// //                                                                         .circular(
+// //                                                                             20),
+// //                                                               ),
+// //                                                               child: TextField(
+// //                                                                 style: TextStyle(
+// //                                                                     color: Colors
+// //                                                                         .black),
+// //                                                                 controller:
+// //                                                                     placeofwork,
+// //                                                                 onChanged:
+// //                                                                     (value) {
+// //                                                                   addMember
+// //                                                                           .placeofwork =
+// //                                                                       value;
+// //                                                                 },
+// //                                                                 keyboardType:
+// //                                                                     TextInputType
+// //                                                                         .name,
+// //                                                                 decoration:
+// //                                                                     InputDecoration(
+// //                                                                   prefixIcon:
+// //                                                                       Icon(
+// //                                                                     Icons
+// //                                                                         .business,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .8),
+// //                                                                   ),
+// //                                                                   border:
+// //                                                                       InputBorder
+// //                                                                           .none,
+// //                                                                   hintMaxLines:
+// //                                                                       1,
+// //                                                                   hintText:
+// //                                                                       'Place Of Work',
+// //                                                                   hintStyle:
+// //                                                                       TextStyle(
+// //                                                                     fontSize:
+// //                                                                         14,
+// //                                                                     color: Colors
+// //                                                                         .black
+// //                                                                         .withOpacity(
+// //                                                                             .5),
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ),
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //
+// //                                                       //Marrital Status
+// //                                                       Row(
+// //                                                         crossAxisAlignment:
+// //                                                             CrossAxisAlignment
+// //                                                                 .start,
+// //                                                         mainAxisAlignment:
+// //                                                             MainAxisAlignment
+// //                                                                 .spaceBetween,
+// //                                                         children: [
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Column(
+// //                                                               children: [
+// //                                                                 Text(
+// //                                                                     "Marital Status"),
+// //                                                                 Padding(
+// //                                                                   padding:
+// //                                                                       const EdgeInsets
+// //                                                                               .all(
+// //                                                                           8.0),
+// //                                                                   child:
+// //                                                                       DropdownButton(
+// //                                                                     // Initial Value
+// //                                                                     value: MaritalStatusvalue ==
+// //                                                                             null
+// //                                                                         ? null
+// //                                                                         : MaritalStatusvalue,
+// //
+// //                                                                     // Down Arrow Icon
+// //                                                                     icon: const Icon(
+// //                                                                         Icons
+// //                                                                             .keyboard_arrow_down),
+// //
+// //                                                                     // Array list of items
+// //                                                                     items: MaritalStatus
+// //                                                                         .map((String
+// //                                                                             items) {
+// //                                                                       return DropdownMenuItem(
+// //                                                                         value:
+// //                                                                             items,
+// //                                                                         child: Text(
+// //                                                                             items),
+// //                                                                       );
+// //                                                                     }).toList(),
+// //                                                                     // After selecting the desired option,it will
+// //                                                                     // change button value to selected value
+// //                                                                     onChanged:
+// //                                                                         (newValue) {
+// //                                                                       setState(
+// //                                                                           () {
+// //                                                                         MaritalStatusvalue =
+// //                                                                             newValue.toString();
+// //                                                                       });
+// //                                                                     },
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ],
+// //                                                             ),
+// //                                                           ),
+// //
+// //                                                           //Marriage Registered?
+// //                                                           Padding(
+// //                                                             padding:
+// //                                                                 const EdgeInsets
+// //                                                                     .all(8.0),
+// //                                                             child: Column(
+// //                                                               children: [
+// //                                                                 Text(
+// //                                                                     "Marriage Registered?"),
+// //                                                                 Padding(
+// //                                                                   padding:
+// //                                                                       const EdgeInsets
+// //                                                                               .all(
+// //                                                                           8.0),
+// //                                                                   child:
+// //                                                                       DropdownButton(
+// //                                                                     // Initial Value
+// //                                                                     value: MarriageRegistered ==
+// //                                                                             null
+// //                                                                         ? null
+// //                                                                         : MarriageRegistered,
+// //
+// //                                                                     // Down Arrow Icon
+// //                                                                     icon: const Icon(
+// //                                                                         Icons
+// //                                                                             .keyboard_arrow_down),
+// //
+// //                                                                     // Array list of items
+// //                                                                     items: MarriageRegisteredStatus
+// //                                                                         .map((String
+// //                                                                             items) {
+// //                                                                       return DropdownMenuItem(
+// //                                                                         value:
+// //                                                                             items,
+// //                                                                         child: Text(
+// //                                                                             items),
+// //                                                                       );
+// //                                                                     }).toList(),
+// //                                                                     // After selecting the desired option,it will
+// //                                                                     // change button value to selected value
+// //                                                                     onChanged:
+// //                                                                         (newValue) {
+// //                                                                       setState(
+// //                                                                           () {
+// //                                                                         MarriageRegistered =
+// //                                                                             newValue.toString();
+// //                                                                       });
+// //                                                                     },
+// //                                                                   ),
+// //                                                                 ),
+// //                                                               ],
+// //                                                             ),
+// //                                                           ),
+// //                                                         ],
+// //                                                       ),
+// //
+// //                                                       Row(
+// //                                                         children: [
+// //                                                           Padding(
+// //                                                               padding:
+// //                                                                   const EdgeInsets
+// //                                                                       .all(8.0),
+// //                                                               child: Container(
+// //                                                                 height:
+// //                                                                     size.width /
+// //                                                                         8,
+// //                                                                 width:
+// //                                                                     size.width /
+// //                                                                         2.5,
+// //                                                                 alignment:
+// //                                                                     Alignment
+// //                                                                         .center,
+// //                                                                 padding: EdgeInsets.only(
+// //                                                                     right:
+// //                                                                         size.width /
+// //                                                                             30),
+// //                                                                 decoration:
+// //                                                                     BoxDecoration(
+// //                                                                   color: Colors
+// //                                                                       .black
+// //                                                                       .withOpacity(
+// //                                                                           .1),
+// //                                                                   borderRadius:
+// //                                                                       BorderRadius
+// //                                                                           .circular(
+// //                                                                               20),
+// //                                                                 ),
+// //                                                                 child:
+// //                                                                     GestureDetector(
+// //                                                                   onTap:
+// //                                                                       () async {
+// //                                                                     final datePick = await showDatePicker(
+// //                                                                         context:
+// //                                                                             context,
+// //                                                                         initialDate:
+// //                                                                             new DateTime
+// //                                                                                 .now(),
+// //                                                                         firstDate:
+// //                                                                             new DateTime(
+// //                                                                                 1900),
+// //                                                                         lastDate:
+// //                                                                             new DateTime(2100));
+// //                                                                     if (datePick !=
+// //                                                                             null &&
+// //                                                                         datePick !=
+// //                                                                             birthDate) {
+// //                                                                       setState(
+// //                                                                           () {
+// //                                                                         birthDate =
+// //                                                                             datePick;
+// //                                                                         isDateSelected =
+// //                                                                             true;
+// //                                                                         birthDateInString =
+// //                                                                             "${birthDate!.month}/${birthDate!.day}/${birthDate!.year}";
+// //                                                                       });
+// //                                                                     }
+// //                                                                   },
+// //                                                                   child:
+// //                                                                       Padding(
+// //                                                                     padding: const EdgeInsets
+// //                                                                             .all(
+// //                                                                         10.0),
+// //                                                                     child:
+// //                                                                         SingleChildScrollView(
+// //                                                                       child:
+// //                                                                           Row(
+// //                                                                         children: [
+// //                                                                           new Icon(
+// //                                                                             Icons.calendar_today,
+// //                                                                             color:
+// //                                                                                 Colors.black,
+// //                                                                             size:
+// //                                                                                 18,
+// //                                                                           ),
+// //                                                                           Padding(
+// //                                                                             padding:
+// //                                                                                 const EdgeInsets.all(8.0),
+// //                                                                             child:
+// //                                                                                 new Text(
+// //                                                                               (isDateSelected ? DateFormat.yMMMd().format(birthDate!) : initValue),
+// //                                                                               style: TextStyle(
+// //                                                                                 fontSize: 13,
+// //                                                                                 color: Colors.black,
+// //                                                                               ),
+// //                                                                             ),
+// //                                                                           )
+// //                                                                         ],
+// //                                                                       ),
+// //                                                                     ),
+// //                                                                   ),
+// //                                                                 ),
+// //
+// //                                                                 // Center(
+// //                                                                 //   child: TextField(
+// //                                                                 //     controller: dateInput,
+// //                                                                 //     //editing controller of this TextField
+// //                                                                 //     decoration: InputDecoration(
+// //                                                                 //
+// //                                                                 //         icon: Icon(Icons.calendar_today), //icon of text field
+// //                                                                 //         labelText: "Enter Date",
+// //                                                                 //       //label text of field
+// //                                                                 //     ),
+// //                                                                 //     readOnly: true,
+// //                                                                 //     //set it true, so that user will not able to edit text
+// //                                                                 //     onTap: () async {
+// //                                                                 //       DateTime? pickedDate = await showDatePicker(
+// //                                                                 //           context: context,
+// //                                                                 //           initialDate: DateTime.now(),
+// //                                                                 //           firstDate: DateTime(1950),
+// //                                                                 //           //DateTime.now() - not to allow to choose before today.
+// //                                                                 //           lastDate: DateTime(2100));
+// //                                                                 //
+// //                                                                 //       if (pickedDate != null) {
+// //                                                                 //         print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+// //                                                                 //         String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+// //                                                                 //         print(formattedDate); //formatted date output using intl package =>  2021-03-16
+// //                                                                 //         setState(() {
+// //                                                                 //           dateInput.text = formattedDate; //set output date to TextField value.
+// //                                                                 //         });
+// //                                                                 //       } else {}
+// //                                                                 //     },
+// //                                                                 //   ))
+// //                                                               )),
+// //
+// //                                                           //Residentiaal Address
+// //                                                         ],
+// //                                                       ),
+// //                                                     ],
+// //                                                   ),
+// //                                                 ),
+// //                                               ],
+// //                                             ),
+// //
+// //                                             // ExpansionTile(
+// //                                             //     title: Text("Parent Data"),
+// //                                             //     children: <Widget>[
+// //                                             //       Focus(
+// //                                             //         onFocusChange: (value) {
+// //                                             //           if (!value) {
+// //                                             //             setState(() {
+// //                                             //               //_emailAutoValidate =
+// //                                             //               // true;
+// //                                             //             });
+// //                                             //           }
+// //                                             //         },
+// //                                             //         child: //FathersHometown
+// //                                             //             Column(
+// //                                             //           children: [
+// //                                             //             //Fathersname
+// //                                             //             Row(
+// //                                             //               children: [
+// //                                             //                 Padding(
+// //                                             //                   padding:
+// //                                             //                       const EdgeInsets
+// //                                             //                           .all(8.0),
+// //                                             //                   child: Container(
+// //                                             //                     height:
+// //                                             //                         size.width /
+// //                                             //                             8,
+// //                                             //                     width:
+// //                                             //                         size.width /
+// //                                             //                             2.5,
+// //                                             //                     alignment:
+// //                                             //                         Alignment
+// //                                             //                             .center,
+// //                                             //                     padding: EdgeInsets.only(
+// //                                             //                         right:
+// //                                             //                             size.width /
+// //                                             //                                 30),
+// //                                             //                     decoration:
+// //                                             //                         BoxDecoration(
+// //                                             //                       color: Colors
+// //                                             //                           .black
+// //                                             //                           .withOpacity(
+// //                                             //                               .1),
+// //                                             //                       borderRadius:
+// //                                             //                           BorderRadius
+// //                                             //                               .circular(
+// //                                             //                                   20),
+// //                                             //                     ),
+// //                                             //                     child:
+// //                                             //                         TextField(
+// //                                             //                       style:
+// //                                             //                           TextStyle(
+// //                                             //                         color: Colors
+// //                                             //                             .black
+// //                                             //                             .withOpacity(
+// //                                             //                                 .9),
+// //                                             //                       ),
+// //                                             //                       controller:
+// //                                             //                           fathersname,
+// //                                             //                       onChanged:
+// //                                             //                           (value) {
+// //                                             //                         addMember
+// //                                             //                                 .fathername =
+// //                                             //                             value;
+// //                                             //                       },
+// //                                             //                       // obscureText: true,
+// //                                             //                       keyboardType:
+// //                                             //                           TextInputType
+// //                                             //                               .name,
+// //                                             //                       decoration:
+// //                                             //                           InputDecoration(
+// //                                             //                         prefixIcon:
+// //                                             //                             Icon(
+// //                                             //                           Icons
+// //                                             //                               .man_2_outlined,
+// //                                             //                           color: Colors
+// //                                             //                               .black
+// //                                             //                               .withOpacity(
+// //                                             //                                   .8),
+// //                                             //                         ),
+// //                                             //                         border:
+// //                                             //                             InputBorder
+// //                                             //                                 .none,
+// //                                             //                         hintMaxLines:
+// //                                             //                             1,
+// //                                             //                         hintText:
+// //                                             //                             'Fathers Name',
+// //                                             //                         hintStyle:
+// //                                             //                             TextStyle(
+// //                                             //                           fontSize:
+// //                                             //                               14,
+// //                                             //                           color: Colors
+// //                                             //                               .black
+// //                                             //                               .withOpacity(
+// //                                             //                                   .5),
+// //                                             //                         ),
+// //                                             //                       ),
+// //                                             //                     ),
+// //                                             //                   ),
+// //                                             //                 ),
+// //                                             //
+// //                                             //                 //mothersname
+// //                                             //                 Padding(
+// //                                             //                   padding:
+// //                                             //                       const EdgeInsets
+// //                                             //                           .all(8.0),
+// //                                             //                   child: Container(
+// //                                             //                     height:
+// //                                             //                         size.width /
+// //                                             //                             8,
+// //                                             //                     width:
+// //                                             //                         size.width /
+// //                                             //                             2.5,
+// //                                             //                     alignment:
+// //                                             //                         Alignment
+// //                                             //                             .center,
+// //                                             //                     padding: EdgeInsets.only(
+// //                                             //                         right:
+// //                                             //                             size.width /
+// //                                             //                                 30),
+// //                                             //                     decoration:
+// //                                             //                         BoxDecoration(
+// //                                             //                       color: Colors
+// //                                             //                           .black
+// //                                             //                           .withOpacity(
+// //                                             //                               .1),
+// //                                             //                       borderRadius:
+// //                                             //                           BorderRadius
+// //                                             //                               .circular(
+// //                                             //                                   20),
+// //                                             //                     ),
+// //                                             //                     child:
+// //                                             //                         TextField(
+// //                                             //                       style:
+// //                                             //                           TextStyle(
+// //                                             //                         color: Colors
+// //                                             //                             .black
+// //                                             //                             .withOpacity(
+// //                                             //                                 .9),
+// //                                             //                       ),
+// //                                             //                       controller:
+// //                                             //                           mothersname,
+// //                                             //                       onChanged:
+// //                                             //                           (value) {
+// //                                             //                         addMember
+// //                                             //                                 .mothername =
+// //                                             //                             value;
+// //                                             //                       },
+// //                                             //                       // obscureText: true,
+// //                                             //                       keyboardType:
+// //                                             //                           TextInputType
+// //                                             //                               .name,
+// //                                             //                       decoration:
+// //                                             //                           InputDecoration(
+// //                                             //                         prefixIcon:
+// //                                             //                             Icon(
+// //                                             //                           Icons
+// //                                             //                               .woman,
+// //                                             //                           color: Colors
+// //                                             //                               .black
+// //                                             //                               .withOpacity(
+// //                                             //                                   .8),
+// //                                             //                         ),
+// //                                             //                         border:
+// //                                             //                             InputBorder
+// //                                             //                                 .none,
+// //                                             //                         hintMaxLines:
+// //                                             //                             1,
+// //                                             //                         hintText:
+// //                                             //                             'Mothers Name',
+// //                                             //                         hintStyle:
+// //                                             //                             TextStyle(
+// //                                             //                           fontSize:
+// //                                             //                               14,
+// //                                             //                           color: Colors
+// //                                             //                               .black
+// //                                             //                               .withOpacity(
+// //                                             //                                   .5),
+// //                                             //                         ),
+// //                                             //                       ),
+// //                                             //                     ),
+// //                                             //                   ),
+// //                                             //                 ),
+// //                                             //               ],
+// //                                             //             ),
+// //                                             //
+// //                                             //             //Mother hometown
+// //                                             //             // Row(
+// //                                             //             //   children: [
+// //                                             //             //     Padding(
+// //                                             //             //       padding:
+// //                                             //             //           const EdgeInsets
+// //                                             //             //               .all(8.0),
+// //                                             //             //       child: Container(
+// //                                             //             //         height:
+// //                                             //             //             size.width /
+// //                                             //             //                 8,
+// //                                             //             //         width:
+// //                                             //             //             size.width /
+// //                                             //             //                 2.5,
+// //                                             //             //         alignment:
+// //                                             //             //             Alignment
+// //                                             //             //                 .center,
+// //                                             //             //         padding: EdgeInsets.only(
+// //                                             //             //             right:
+// //                                             //             //                 size.width /
+// //                                             //             //                     30),
+// //                                             //             //         decoration:
+// //                                             //             //             BoxDecoration(
+// //                                             //             //           color: Colors
+// //                                             //             //               .black
+// //                                             //             //               .withOpacity(
+// //                                             //             //                   .1),
+// //                                             //             //           borderRadius:
+// //                                             //             //               BorderRadius
+// //                                             //             //                   .circular(
+// //                                             //             //                       20),
+// //                                             //             //         ),
+// //                                             //             //         child:
+// //                                             //             //             TextFormField(
+// //                                             //             //           style:
+// //                                             //             //               TextStyle(
+// //                                             //             //             color: Colors
+// //                                             //             //                 .black
+// //                                             //             //                 .withOpacity(
+// //                                             //             //                     .5),
+// //                                             //             //           ),
+// //                                             //             //           controller:
+// //                                             //             //               fathershomeTown,
+// //                                             //             //           onChanged:
+// //                                             //             //               (value) {
+// //                                             //             //             addMember
+// //                                             //             //                     .fathershometown =
+// //                                             //             //                 value;
+// //                                             //             //           },
+// //                                             //             //           // obscureText: true,
+// //                                             //             //           keyboardType:
+// //                                             //             //               TextInputType
+// //                                             //             //                   .name,
+// //                                             //             //           decoration:
+// //                                             //             //               InputDecoration(
+// //                                             //             //             prefixIcon:
+// //                                             //             //                 Icon(
+// //                                             //             //               Icons
+// //                                             //             //                   .home_sharp,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .8),
+// //                                             //             //             ),
+// //                                             //             //             border:
+// //                                             //             //                 InputBorder
+// //                                             //             //                     .none,
+// //                                             //             //             hintMaxLines:
+// //                                             //             //                 1,
+// //                                             //             //             hintText:
+// //                                             //             //                 'F.HomeTown',
+// //                                             //             //             hintStyle:
+// //                                             //             //                 TextStyle(
+// //                                             //             //               fontSize:
+// //                                             //             //                   13,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .5),
+// //                                             //             //             ),
+// //                                             //             //           ),
+// //                                             //             //         ),
+// //                                             //             //       ),
+// //                                             //             //     ),
+// //                                             //             //     //Mothershometown
+// //                                             //             //     Padding(
+// //                                             //             //       padding:
+// //                                             //             //           const EdgeInsets
+// //                                             //             //               .all(8.0),
+// //                                             //             //       child: Container(
+// //                                             //             //         height:
+// //                                             //             //             size.width /
+// //                                             //             //                 8,
+// //                                             //             //         width:
+// //                                             //             //             size.width /
+// //                                             //             //                 2.5,
+// //                                             //             //         alignment:
+// //                                             //             //             Alignment
+// //                                             //             //                 .center,
+// //                                             //             //         padding: EdgeInsets.only(
+// //                                             //             //             right:
+// //                                             //             //                 size.width /
+// //                                             //             //                     30),
+// //                                             //             //         decoration:
+// //                                             //             //             BoxDecoration(
+// //                                             //             //           color: Colors
+// //                                             //             //               .black
+// //                                             //             //               .withOpacity(
+// //                                             //             //                   .1),
+// //                                             //             //           borderRadius:
+// //                                             //             //               BorderRadius
+// //                                             //             //                   .circular(
+// //                                             //             //                       20),
+// //                                             //             //         ),
+// //                                             //             //         child:
+// //                                             //             //             TextField(
+// //                                             //             //           style:
+// //                                             //             //               TextStyle(
+// //                                             //             //             color: Colors
+// //                                             //             //                 .black
+// //                                             //             //                 .withOpacity(
+// //                                             //             //                     .9),
+// //                                             //             //           ),
+// //                                             //             //           controller:
+// //                                             //             //               MothershomeTown,
+// //                                             //             //           onChanged:
+// //                                             //             //               (value) {
+// //                                             //             //             addMember
+// //                                             //             //                     .mothershometown =
+// //                                             //             //                 value;
+// //                                             //             //           },
+// //                                             //             //           // obscureText: true,
+// //                                             //             //           keyboardType:
+// //                                             //             //               TextInputType
+// //                                             //             //                   .name,
+// //                                             //             //           decoration:
+// //                                             //             //               InputDecoration(
+// //                                             //             //             prefixIcon:
+// //                                             //             //                 Icon(
+// //                                             //             //               Icons.man,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .8),
+// //                                             //             //             ),
+// //                                             //             //             border:
+// //                                             //             //                 InputBorder
+// //                                             //             //                     .none,
+// //                                             //             //             hintMaxLines:
+// //                                             //             //                 1,
+// //                                             //             //             hintText:
+// //                                             //             //                 'M.Home',
+// //                                             //             //             hintStyle:
+// //                                             //             //                 TextStyle(
+// //                                             //             //               fontSize:
+// //                                             //             //                   14,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .5),
+// //                                             //             //             ),
+// //                                             //             //           ),
+// //                                             //             //         ),
+// //                                             //             //       ),
+// //                                             //             //     ),
+// //                                             //             //   ],
+// //                                             //             // ),
+// //                                             //             // Row(
+// //                                             //             //   children: [
+// //                                             //             //     Padding(
+// //                                             //             //       padding:
+// //                                             //             //           const EdgeInsets
+// //                                             //             //               .all(8.0),
+// //                                             //             //       child: Container(
+// //                                             //             //         height:
+// //                                             //             //             size.width /
+// //                                             //             //                 8,
+// //                                             //             //         width:
+// //                                             //             //             size.width /
+// //                                             //             //                 2.5,
+// //                                             //             //         alignment:
+// //                                             //             //             Alignment
+// //                                             //             //                 .center,
+// //                                             //             //         padding: EdgeInsets.only(
+// //                                             //             //             right:
+// //                                             //             //                 size.width /
+// //                                             //             //                     30),
+// //                                             //             //         decoration:
+// //                                             //             //             BoxDecoration(
+// //                                             //             //           color: Colors
+// //                                             //             //               .black
+// //                                             //             //               .withOpacity(
+// //                                             //             //                   .1),
+// //                                             //             //           borderRadius:
+// //                                             //             //               BorderRadius
+// //                                             //             //                   .circular(
+// //                                             //             //                       20),
+// //                                             //             //         ),
+// //                                             //             //         child:
+// //                                             //             //             TextField(
+// //                                             //             //           style:
+// //                                             //             //               TextStyle(
+// //                                             //             //             color: Colors
+// //                                             //             //                 .black
+// //                                             //             //                 .withOpacity(
+// //                                             //             //                     .9),
+// //                                             //             //           ),
+// //                                             //             //           controller:
+// //                                             //             //               FatherReligion,
+// //                                             //             //           onChanged:
+// //                                             //             //               (value) {
+// //                                             //             //             addMember
+// //                                             //             //                     .fatherReligion =
+// //                                             //             //                 value;
+// //                                             //             //           },
+// //                                             //             //           // obscureText: true,
+// //                                             //             //           keyboardType:
+// //                                             //             //               TextInputType
+// //                                             //             //                   .name,
+// //                                             //             //           decoration:
+// //                                             //             //               InputDecoration(
+// //                                             //             //             prefixIcon:
+// //                                             //             //                 Icon(
+// //                                             //             //               Icons
+// //                                             //             //                   .circle_sharp,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .lightBlueAccent
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .8),
+// //                                             //             //             ),
+// //                                             //             //             border:
+// //                                             //             //                 InputBorder
+// //                                             //             //                     .none,
+// //                                             //             //             hintMaxLines:
+// //                                             //             //                 1,
+// //                                             //             //             hintText:
+// //                                             //             //                 'F.ReligiousGroup',
+// //                                             //             //             hintStyle:
+// //                                             //             //                 TextStyle(
+// //                                             //             //               fontSize:
+// //                                             //             //                   14,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .5),
+// //                                             //             //             ),
+// //                                             //             //           ),
+// //                                             //             //         ),
+// //                                             //             //       ),
+// //                                             //             //     ),
+// //                                             //             //     Padding(
+// //                                             //             //       padding:
+// //                                             //             //           const EdgeInsets
+// //                                             //             //               .all(8.0),
+// //                                             //             //       child: Container(
+// //                                             //             //         height:
+// //                                             //             //             size.width /
+// //                                             //             //                 8,
+// //                                             //             //         width:
+// //                                             //             //             size.width /
+// //                                             //             //                 2.5,
+// //                                             //             //         alignment:
+// //                                             //             //             Alignment
+// //                                             //             //                 .center,
+// //                                             //             //         padding: EdgeInsets.only(
+// //                                             //             //             right:
+// //                                             //             //                 size.width /
+// //                                             //             //                     30),
+// //                                             //             //         decoration:
+// //                                             //             //             BoxDecoration(
+// //                                             //             //           color: Colors
+// //                                             //             //               .black
+// //                                             //             //               .withOpacity(
+// //                                             //             //                   .1),
+// //                                             //             //           borderRadius:
+// //                                             //             //               BorderRadius
+// //                                             //             //                   .circular(
+// //                                             //             //                       20),
+// //                                             //             //         ),
+// //                                             //             //         child:
+// //                                             //             //             TextField(
+// //                                             //             //           style:
+// //                                             //             //               TextStyle(
+// //                                             //             //             color: Colors
+// //                                             //             //                 .black
+// //                                             //             //                 .withOpacity(
+// //                                             //             //                     .9),
+// //                                             //             //           ),
+// //                                             //             //           controller:
+// //                                             //             //               MothersReligion,
+// //                                             //             //           onChanged:
+// //                                             //             //               (value) {
+// //                                             //             //             addMember
+// //                                             //             //                     .motherReligion =
+// //                                             //             //                 value;
+// //                                             //             //           },
+// //                                             //             //           // obscureText: true,
+// //                                             //             //           keyboardType:
+// //                                             //             //               TextInputType
+// //                                             //             //                   .name,
+// //                                             //             //           decoration:
+// //                                             //             //               InputDecoration(
+// //                                             //             //             prefixIcon:
+// //                                             //             //                 Icon(
+// //                                             //             //               Icons
+// //                                             //             //                   .circle_sharp,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .lightBlueAccent
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .8),
+// //                                             //             //             ),
+// //                                             //             //             border:
+// //                                             //             //                 InputBorder
+// //                                             //             //                     .none,
+// //                                             //             //             hintMaxLines:
+// //                                             //             //                 1,
+// //                                             //             //             hintText:
+// //                                             //             //                 'M.ReligiousGroup',
+// //                                             //             //             hintStyle:
+// //                                             //             //                 TextStyle(
+// //                                             //             //               fontSize:
+// //                                             //             //                   14,
+// //                                             //             //               color: Colors
+// //                                             //             //                   .black
+// //                                             //             //                   .withOpacity(
+// //                                             //             //                       .5),
+// //                                             //             //             ),
+// //                                             //             //           ),
+// //                                             //             //         ),
+// //                                             //             //       ),
+// //                                             //             //     ),
+// //                                             //             //   ],
+// //                                             //             // ),
+// //                                             //             //LocationDD(product: newProduct),
+// //                                             //             //Marrital Status
+// //                                             //             // Row(
+// //                                             //             //   crossAxisAlignment:
+// //                                             //             //       CrossAxisAlignment
+// //                                             //             //           .start,
+// //                                             //             //   mainAxisAlignment:
+// //                                             //             //       MainAxisAlignment
+// //                                             //             //           .spaceBetween,
+// //                                             //             //   children: [
+// //                                             //             //     Padding(
+// //                                             //             //       padding:
+// //                                             //             //           const EdgeInsets
+// //                                             //             //               .all(8.0),
+// //                                             //             //       child: Column(
+// //                                             //             //         children: [
+// //                                             //             //           Text(
+// //                                             //             //               "Father-Alive?"),
+// //                                             //             //           Padding(
+// //                                             //             //             padding:
+// //                                             //             //                 const EdgeInsets.all(
+// //                                             //             //                     8.0),
+// //                                             //             //             child:
+// //                                             //             //                 DropdownButton(
+// //                                             //             //               // Initial Value
+// //                                             //             //               value: FatherAliveStatusvalue ==
+// //                                             //             //                       null
+// //                                             //             //                   ? null
+// //                                             //             //                   : FatherAliveStatusvalue,
+// //                                             //             //
+// //                                             //             //               // Down Arrow Icon
+// //                                             //             //               icon: const Icon(
+// //                                             //             //                   Icons
+// //                                             //             //                       .keyboard_arrow_down),
+// //                                             //             //
+// //                                             //             //               // Array list of items
+// //                                             //             //               items: FatherAliveStatus.map(
+// //                                             //             //                   (String
+// //                                             //             //                       items) {
+// //                                             //             //                 return DropdownMenuItem(
+// //                                             //             //                   value:
+// //                                             //             //                       items,
+// //                                             //             //                   child:
+// //                                             //             //                       Text(items),
+// //                                             //             //                 );
+// //                                             //             //               }).toList(),
+// //                                             //             //               // After selecting the desired option,it will
+// //                                             //             //               // change button value to selected value
+// //                                             //             //               onChanged:
+// //                                             //             //                   (newValue) {
+// //                                             //             //                 setState(
+// //                                             //             //                     () {
+// //                                             //             //                   FatherAliveStatusvalue =
+// //                                             //             //                       newValue.toString();
+// //                                             //             //                 });
+// //                                             //             //               },
+// //                                             //             //             ),
+// //                                             //             //           ),
+// //                                             //             //         ],
+// //                                             //             //       ),
+// //                                             //             //     ),
+// //                                             //             //
+// //                                             //             //     //Marriage Registered?
+// //                                             //             //     // Padding(
+// //                                             //             //     //   padding:
+// //                                             //             //     //       const EdgeInsets
+// //                                             //             //     //           .all(8.0),
+// //                                             //             //     //   child: Column(
+// //                                             //             //     //     children: [
+// //                                             //             //     //       Text(
+// //                                             //             //     //           "Mother-Alive?"),
+// //                                             //             //     //       Padding(
+// //                                             //             //     //         padding:
+// //                                             //             //     //             const EdgeInsets.all(
+// //                                             //             //     //                 8.0),
+// //                                             //             //     //         child:
+// //                                             //             //     //             DropdownButton(
+// //                                             //             //     //           // Initial Value
+// //                                             //             //     //           value: MotherAliveStatusvalue ==
+// //                                             //             //     //                   null
+// //                                             //             //     //               ? null
+// //                                             //             //     //               : MotherAliveStatusvalue,
+// //                                             //             //     //
+// //                                             //             //     //           // Down Arrow Icon
+// //                                             //             //     //           icon: const Icon(
+// //                                             //             //     //               Icons
+// //                                             //             //     //                   .keyboard_arrow_down),
+// //                                             //             //     //
+// //                                             //             //     //           // Array list of items
+// //                                             //             //     //           items: MotherAliveStatus.map(
+// //                                             //             //     //               (String
+// //                                             //             //     //                   items) {
+// //                                             //             //     //             return DropdownMenuItem(
+// //                                             //             //     //               value:
+// //                                             //             //     //                   items,
+// //                                             //             //     //               child:
+// //                                             //             //     //                   Text(items),
+// //                                             //             //     //             );
+// //                                             //             //     //           }).toList(),
+// //                                             //             //     //           // After selecting the desired option,it will
+// //                                             //             //     //           // change button value to selected value
+// //                                             //             //     //           onChanged:
+// //                                             //             //     //               (newValue) {
+// //                                             //             //     //             setState(
+// //                                             //             //     //                 () {
+// //                                             //             //     //               MotherAliveStatusvalue =
+// //                                             //             //     //                   newValue.toString();
+// //                                             //             //     //             });
+// //                                             //             //     //           },
+// //                                             //             //     //         ),
+// //                                             //             //     //       ),
+// //                                             //             //     //     ],
+// //                                             //             //     //   ),
+// //                                             //             //     // ),
+// //                                             //             //   ],
+// //                                             //             // ),
+// //                                             //           ],
+// //                                             //         ),
+// //                                             //
+// //                                             //       ),
+// //                                             //     ]),
+// //
+// // //                                             ExpansionTile(
+// // //                                                 title: Text("Children Data"),
+// // //                                                 children: <Widget>[
+// // //                                                   Focus(
+// // //                                                     onFocusChange: (value) {
+// // //                                                       if (!value) {
+// // //                                                         setState(() {
+// // //                                                           _emailAutoValidate =
+// // //                                                               true;
+// // //                                                         });
+// // //                                                       }
+// // //                                                     },
+// // //                                                     child: //FathersHometown
+// // //                                                         Column(
+// // //                                                       children: [
+// // //                                                         //Fathersname
+// // //                                                         Row(
+// // //                                                           children: [
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Container(
+// // //                                                                 height:
+// // //                                                                     size.width /
+// // //                                                                         8,
+// // //                                                                 width:
+// // //                                                                     size.width /
+// // //                                                                         2.5,
+// // //                                                                 alignment:
+// // //                                                                     Alignment
+// // //                                                                         .center,
+// // //                                                                 padding: EdgeInsets.only(
+// // //                                                                     right:
+// // //                                                                         size.width /
+// // //                                                                             30),
+// // //                                                                 decoration:
+// // //                                                                     BoxDecoration(
+// // //                                                                   color: Colors
+// // //                                                                       .black
+// // //                                                                       .withOpacity(
+// // //                                                                           .1),
+// // //                                                                   borderRadius:
+// // //                                                                       BorderRadius
+// // //                                                                           .circular(
+// // //                                                                               20),
+// // //                                                                 ),
+// // //                                                                 child:
+// // //                                                                     TextField(
+// // //                                                                   style:
+// // //                                                                       TextStyle(
+// // //                                                                     color: Colors
+// // //                                                                         .black
+// // //                                                                         .withOpacity(
+// // //                                                                             .9),
+// // //                                                                   ),
+// // //                                                                   controller:
+// // //                                                                       nochildren,
+// // //                                                                   onChanged:
+// // //                                                                       (value) {
+// // //                                                                     addMember
+// // //                                                                             .fathername =
+// // //                                                                         value;
+// // //                                                                   },
+// // //                                                                   // obscureText: true,
+// // //                                                                   keyboardType:
+// // //                                                                       TextInputType
+// // //                                                                           .name,
+// // //                                                                   decoration:
+// // //                                                                       InputDecoration(
+// // //                                                                     prefixIcon:
+// // //                                                                         Icon(
+// // //                                                                       Icons
+// // //                                                                           .child_care_rounded,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .8),
+// // //                                                                     ),
+// // //                                                                     border:
+// // //                                                                         InputBorder
+// // //                                                                             .none,
+// // //                                                                     hintMaxLines:
+// // //                                                                         1,
+// // //                                                                     hintText:
+// // //                                                                         'No. Children',
+// // //                                                                     hintStyle:
+// // //                                                                         TextStyle(
+// // //                                                                       fontSize:
+// // //                                                                           14,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .5),
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ),
+// // //                                                               ),
+// // //                                                             ),
+// // // //Gender of child
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Column(
+// // //                                                                 children: [
+// // //                                                                   Text(
+// // //                                                                       "Gender"),
+// // //                                                                   Padding(
+// // //                                                                     padding:
+// // //                                                                         const EdgeInsets.all(
+// // //                                                                             8.0),
+// // //                                                                     child:
+// // //                                                                         DropdownButton(
+// // //                                                                       // Initial Value
+// // //                                                                       value: ChiledGenderStatusvalue ==
+// // //                                                                               null
+// // //                                                                           ? null
+// // //                                                                           : ChiledGenderStatusvalue,
+// // //
+// // //                                                                       // Down Arrow Icon
+// // //                                                                       icon: const Icon(
+// // //                                                                           Icons
+// // //                                                                               .keyboard_arrow_down),
+// // //
+// // //                                                                       // Array list of items
+// // //                                                                       items: ChiledGenderStatus.map(
+// // //                                                                           (String
+// // //                                                                               items) {
+// // //                                                                         return DropdownMenuItem(
+// // //                                                                           value:
+// // //                                                                               items,
+// // //                                                                           child:
+// // //                                                                               Text(items),
+// // //                                                                         );
+// // //                                                                       }).toList(),
+// // //                                                                       // After selecting the desired option,it will
+// // //                                                                       // change button value to selected value
+// // //                                                                       onChanged:
+// // //                                                                           (newValue) {
+// // //                                                                         setState(
+// // //                                                                             () {
+// // //                                                                           ChiledGenderStatusvalue =
+// // //                                                                               newValue.toString();
+// // //                                                                         });
+// // //                                                                       },
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ],
+// // //                                                               ),
+// // //                                                             ),
+// // //                                                           ],
+// // //                                                         ),
+// // //
+// // //                                                         //firstor second child
+// // //
+// // //                                                         Row(
+// // //                                                           children: [
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Container(
+// // //                                                                 height:
+// // //                                                                     size.width /
+// // //                                                                         8,
+// // //                                                                 width:
+// // //                                                                     size.width /
+// // //                                                                         2.5,
+// // //                                                                 alignment:
+// // //                                                                     Alignment
+// // //                                                                         .center,
+// // //                                                                 padding: EdgeInsets.only(
+// // //                                                                     right:
+// // //                                                                         size.width /
+// // //                                                                             30),
+// // //                                                                 decoration:
+// // //                                                                     BoxDecoration(
+// // //                                                                   color: Colors
+// // //                                                                       .black
+// // //                                                                       .withOpacity(
+// // //                                                                           .1),
+// // //                                                                   borderRadius:
+// // //                                                                       BorderRadius
+// // //                                                                           .circular(
+// // //                                                                               20),
+// // //                                                                 ),
+// // //                                                                 child:
+// // //                                                                     TextField(
+// // //                                                                   style:
+// // //                                                                       TextStyle(
+// // //                                                                     color: Colors
+// // //                                                                         .black
+// // //                                                                         .withOpacity(
+// // //                                                                             .9),
+// // //                                                                   ),
+// // //                                                                   controller:
+// // //                                                                       firstchild,
+// // //                                                                   onChanged:
+// // //                                                                       (value) {
+// // //                                                                     addMember
+// // //                                                                             .firstchild =
+// // //                                                                         value;
+// // //                                                                   },
+// // //                                                                   // obscureText: true,
+// // //                                                                   keyboardType:
+// // //                                                                       TextInputType
+// // //                                                                           .name,
+// // //                                                                   decoration:
+// // //                                                                       InputDecoration(
+// // //                                                                     prefixIcon:
+// // //                                                                         Icon(
+// // //                                                                       Icons
+// // //                                                                           .child_friendly,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .8),
+// // //                                                                     ),
+// // //                                                                     border:
+// // //                                                                         InputBorder
+// // //                                                                             .none,
+// // //                                                                     hintMaxLines:
+// // //                                                                         1,
+// // //                                                                     hintText:
+// // //                                                                         '1st Child',
+// // //                                                                     hintStyle:
+// // //                                                                         TextStyle(
+// // //                                                                       fontSize:
+// // //                                                                           14,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .5),
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ),
+// // //                                                               ),
+// // //                                                             ),
+// // //                                                             //mothersname
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Container(
+// // //                                                                 height:
+// // //                                                                     size.width /
+// // //                                                                         8,
+// // //                                                                 width:
+// // //                                                                     size.width /
+// // //                                                                         2.5,
+// // //                                                                 alignment:
+// // //                                                                     Alignment
+// // //                                                                         .center,
+// // //                                                                 padding: EdgeInsets.only(
+// // //                                                                     right:
+// // //                                                                         size.width /
+// // //                                                                             30),
+// // //                                                                 decoration:
+// // //                                                                     BoxDecoration(
+// // //                                                                   color: Colors
+// // //                                                                       .black
+// // //                                                                       .withOpacity(
+// // //                                                                           .1),
+// // //                                                                   borderRadius:
+// // //                                                                       BorderRadius
+// // //                                                                           .circular(
+// // //                                                                               20),
+// // //                                                                 ),
+// // //                                                                 child:
+// // //                                                                     TextField(
+// // //                                                                   style:
+// // //                                                                       TextStyle(
+// // //                                                                     color: Colors
+// // //                                                                         .black
+// // //                                                                         .withOpacity(
+// // //                                                                             .9),
+// // //                                                                   ),
+// // //                                                                   controller:
+// // //                                                                       secondchild,
+// // //                                                                   onChanged:
+// // //                                                                       (value) {
+// // //                                                                     addMember
+// // //                                                                             .secondchild =
+// // //                                                                         value;
+// // //                                                                   },
+// // //                                                                   // obscureText: true,
+// // //                                                                   keyboardType:
+// // //                                                                       TextInputType
+// // //                                                                           .name,
+// // //                                                                   decoration:
+// // //                                                                       InputDecoration(
+// // //                                                                     prefixIcon:
+// // //                                                                         Icon(
+// // //                                                                       Icons
+// // //                                                                           .child_friendly,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .8),
+// // //                                                                     ),
+// // //                                                                     border:
+// // //                                                                         InputBorder
+// // //                                                                             .none,
+// // //                                                                     hintMaxLines:
+// // //                                                                         1,
+// // //                                                                     hintText:
+// // //                                                                         '2nd Child',
+// // //                                                                     hintStyle:
+// // //                                                                         TextStyle(
+// // //                                                                       fontSize:
+// // //                                                                           14,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .5),
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ),
+// // //                                                               ),
+// // //                                                             ),
+// // //                                                           ],
+// // //                                                         ),
+// // //                                                         //third and forth
+// // //                                                         Row(
+// // //                                                           children: [
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Container(
+// // //                                                                 height:
+// // //                                                                     size.width /
+// // //                                                                         8,
+// // //                                                                 width:
+// // //                                                                     size.width /
+// // //                                                                         2.5,
+// // //                                                                 alignment:
+// // //                                                                     Alignment
+// // //                                                                         .center,
+// // //                                                                 padding: EdgeInsets.only(
+// // //                                                                     right:
+// // //                                                                         size.width /
+// // //                                                                             30),
+// // //                                                                 decoration:
+// // //                                                                     BoxDecoration(
+// // //                                                                   color: Colors
+// // //                                                                       .black
+// // //                                                                       .withOpacity(
+// // //                                                                           .1),
+// // //                                                                   borderRadius:
+// // //                                                                       BorderRadius
+// // //                                                                           .circular(
+// // //                                                                               20),
+// // //                                                                 ),
+// // //                                                                 child:
+// // //                                                                     TextField(
+// // //                                                                   style:
+// // //                                                                       TextStyle(
+// // //                                                                     color: Colors
+// // //                                                                         .black
+// // //                                                                         .withOpacity(
+// // //                                                                             .9),
+// // //                                                                   ),
+// // //                                                                   controller:
+// // //                                                                       thirdchild,
+// // //                                                                   onChanged:
+// // //                                                                       (value) {
+// // //                                                                     addMember
+// // //                                                                             .thirdchild =
+// // //                                                                         value;
+// // //                                                                   },
+// // //                                                                   // obscureText: true,
+// // //                                                                   keyboardType:
+// // //                                                                       TextInputType
+// // //                                                                           .name,
+// // //                                                                   decoration:
+// // //                                                                       InputDecoration(
+// // //                                                                     prefixIcon:
+// // //                                                                         Icon(
+// // //                                                                       Icons
+// // //                                                                           .child_friendly,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .8),
+// // //                                                                     ),
+// // //                                                                     border:
+// // //                                                                         InputBorder
+// // //                                                                             .none,
+// // //                                                                     hintMaxLines:
+// // //                                                                         1,
+// // //                                                                     hintText:
+// // //                                                                         '3rd child',
+// // //                                                                     hintStyle:
+// // //                                                                         TextStyle(
+// // //                                                                       fontSize:
+// // //                                                                           14,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .5),
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ),
+// // //                                                               ),
+// // //                                                             ),
+// // //                                                             //mothersname
+// // //                                                             Padding(
+// // //                                                               padding:
+// // //                                                                   const EdgeInsets
+// // //                                                                       .all(8.0),
+// // //                                                               child: Container(
+// // //                                                                 height:
+// // //                                                                     size.width /
+// // //                                                                         8,
+// // //                                                                 width:
+// // //                                                                     size.width /
+// // //                                                                         2.5,
+// // //                                                                 alignment:
+// // //                                                                     Alignment
+// // //                                                                         .center,
+// // //                                                                 padding: EdgeInsets.only(
+// // //                                                                     right:
+// // //                                                                         size.width /
+// // //                                                                             30),
+// // //                                                                 decoration:
+// // //                                                                     BoxDecoration(
+// // //                                                                   color: Colors
+// // //                                                                       .black
+// // //                                                                       .withOpacity(
+// // //                                                                           .1),
+// // //                                                                   borderRadius:
+// // //                                                                       BorderRadius
+// // //                                                                           .circular(
+// // //                                                                               20),
+// // //                                                                 ),
+// // //                                                                 child:
+// // //                                                                     TextField(
+// // //                                                                   style:
+// // //                                                                       TextStyle(
+// // //                                                                     color: Colors
+// // //                                                                         .black
+// // //                                                                         .withOpacity(
+// // //                                                                             .9),
+// // //                                                                   ),
+// // //                                                                   controller:
+// // //                                                                       forthchild,
+// // //                                                                   onChanged:
+// // //                                                                       (value) {
+// // //                                                                     addMember
+// // //                                                                             .fourthchild =
+// // //                                                                         value;
+// // //                                                                   },
+// // //                                                                   // obscureText: true,
+// // //                                                                   keyboardType:
+// // //                                                                       TextInputType
+// // //                                                                           .name,
+// // //                                                                   decoration:
+// // //                                                                       InputDecoration(
+// // //                                                                     prefixIcon:
+// // //                                                                         Icon(
+// // //                                                                       Icons
+// // //                                                                           .child_friendly,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .8),
+// // //                                                                     ),
+// // //                                                                     border:
+// // //                                                                         InputBorder
+// // //                                                                             .none,
+// // //                                                                     hintMaxLines:
+// // //                                                                         1,
+// // //                                                                     hintText:
+// // //                                                                         '4th Child',
+// // //                                                                     hintStyle:
+// // //                                                                         TextStyle(
+// // //                                                                       fontSize:
+// // //                                                                           14,
+// // //                                                                       color: Colors
+// // //                                                                           .black
+// // //                                                                           .withOpacity(
+// // //                                                                               .5),
+// // //                                                                     ),
+// // //                                                                   ),
+// // //                                                                 ),
+// // //                                                               ),
+// // //                                                             ),
+// // //                                                           ],
+// // //                                                         ),
+// // //
+// // //                                                         //LocationDD(product: newProduct),
+// // //                                                       ],
+// // //                                                     ),
+// // //
+// // //                                                     // TextFormField(
+// // //                                                     //   autovalidate: _emailAutoValidate,
+// // //                                                     //   controller: _email,
+// // //                                                     //   textInputAction: TextInputAction.next,
+// // //                                                     //   decoration: InputDecoration(
+// // //                                                     //       hintText: "enter email",
+// // //                                                     //       labelText: "Email",
+// // //                                                     //       border: OutlineInputBorder()),
+// // //                                                     //   validator: (value) {
+// // //                                                     //     if (value.isEmpty) {
+// // //                                                     //       return "Email field cannot be empty.";
+// // //                                                     //     }
+// // //                                                     //     return null;
+// // //                                                     //   },
+// // //                                                     // ),
+// // //                                                   ),
+// // //                                                 ]),
+// //
+// //                                             //Username
+// //                                             // SingleChildScrollView(
+// //                                             //   scrollDirection: Axis.horizontal,
+// //                                             //   child: Row(
+// //                                             //     children: [
+// //                                             //
+// //                                             //
+// //                                             //     ],
+// //                                             //   ),
+// //                                             // ),
+// //
+// //                                             //Hometown
+// //                                           ]),
+// //                                     )),
+// //                                 Align(
+// //                                     alignment: Alignment.topCenter,
+// //                                     child: Padding(
+// //                                         padding: const EdgeInsets.only(top: 10),
+// //                                         child: SizedBox(
+// //                                           height: 100,
+// //                                           width: 100,
+// //                                           child: ClipRRect(
+// //                                             borderRadius:
+// //                                                 BorderRadius.circular(100),
+// //                                             child: Container(
+// //                                               color: Colors.lightBlueAccent,
+// //                                               child: SizedBox(
+// //                                                 height: 250,
+// //                                                 child: Card(
+// //                                                   elevation: 8,
+// //                                                   shadowColor: Colors.grey,
+// //                                                   shape:
+// //                                                       const RoundedRectangleBorder(
+// //                                                           borderRadius:
+// //                                                               BorderRadius.all(
+// //                                                             Radius.circular(
+// //                                                                 100),
+// //                                                           ),
+// //                                                           side: BorderSide(
+// //                                                               width: 2,
+// //                                                               color: Colors
+// //                                                                   .white24)),
+// //                                                   child: Container(
+// //                                                     padding: EdgeInsets.all(22),
+// //                                                     child: Container(
+// //                                                         child: Center(
+// //                                                             child: ImagePro())),
+// //                                                   ),
+// //                                                 ),
+// //                                               ),
+// //                                             ),
+// //                                           ),
+// //                                         )))
+// //                               ],
+// //                             ),
+// //                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -2706,34 +3770,51 @@ class _fillaformState extends State<fillaform> {
       },
     );
   }
-
   Future biodatadb(context) async {
     final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
 
-    clients.child(_firebaseAuth).update({
-      // "Marriage-Registered": MarriageRegistered,
-      // "Marrital Status": MaritalStatusvalue,
-      // "Father-Alive": FatherAliveStatusvalue,
-      // "Mother-Alive": MotherAliveStatusvalue,
-      // "Date Of Birth": birthDateInString,
-      // "Child Gender": ChiledGenderStatusvalue,
-      // "Number Of Children": nochildren,
-      "FirstChild": firstchild.text.toString(),
-      "SecondChild": secondchild.text.toString(),
-      "ThirdChild": thirdchild.text.toString(),
-      "FourthChild": forthchild.text.toString(),
-      "Region": region.text.toString(),
-      "HomeTown": hometown.text.toString(),
-      // "": rndnumber.toString(),
-      // "placeofwork": addMember.placeofwork,
-      // "Residence": addMember.residence,
+    Map<String, dynamic> updateData = {};
 
-      // "language": addMember.language,
-      // "Occupation": addMember.Occupation,
-      //
-      // "homeTown": addMember.homeTown,
-    });
+    if (hometown.text != null) {
+      updateData["HomeTown"] = hometown.text.toString();
+    }
+
+    if (birthDateInString != null) {
+      updateData["Date Of Birth"] = birthDateInString;
+    }
+
+    if (addMember.placeofwork != null) {
+      updateData["placeofwork"] = addMember.placeofwork;
+    }
+
+    if (addMember.residence != null) {
+      updateData["Residence"] = addMember.residence;
+    }
+
+    if (addMember.language != null) {
+      updateData["language"] = addMember.language;
+    }
+
+    if (addMember.Occupation != null) {
+      updateData["Occupation"] = addMember.Occupation;
+    }
+
+    clients.child(_firebaseAuth).update(updateData);
   }
+
+  // Future biodatadb(context) async {
+  //   final String _firebaseAuth = FirebaseAuth.instance.currentUser!.uid;
+  //
+  //   clients.child(_firebaseAuth).update({
+  //     "HomeTown": hometown.text.toString(),
+  //     "Date Of Birth":birthDateInString,
+  //     "placeofwork": addMember.placeofwork,
+  //     "Residence": addMember.residence,
+  //     "language": addMember.language,
+  //     "Occupation": addMember.Occupation,
+  //
+  //   });
+  // }
 }
 
 io.File? image;

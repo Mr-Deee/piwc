@@ -10,9 +10,14 @@ class Users extends ChangeNotifier {
   String? id;
   String? email;
   String? Region;
+  String? Residence;
   String? fname;
   String? username;
   String? profilepicture;
+  String? languge;
+  String? DOB;
+  String? placeofwork;
+
   String? phone;
   String? lname;
   String? Occupation;
@@ -27,10 +32,14 @@ class Users extends ChangeNotifier {
     this.hometown,
     this.username,
     this.fname,
+    this.DOB,
+    this.languge,
     this.Occupation,
+    this.placeofwork,
     this.Region,
     this.lname,
     this.profilepicture,
+    this.Residence,
     this.phone,
   });
 
@@ -38,7 +47,10 @@ class Users extends ChangeNotifier {
     return Users(
       id: map['id'],
       email: map["email"],
+      Residence: map["Residence"],
       hometown: map["homeTown"],
+      languge: map["language"],
+      DOB: map["Date Of Birth"],
       Occupation: map["Occupation"],
       username: map["UserName"],
       fname: map["firstName"],
@@ -46,6 +58,7 @@ class Users extends ChangeNotifier {
       Region: map["Region"],
       profilepicture: map["profile"].toString(),
       phone: map["phone"],
+      placeofwork: map["placeofwork"],
     );
   }
 
