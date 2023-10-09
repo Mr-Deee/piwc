@@ -30,7 +30,22 @@ class _registrationState extends State<registration> {
   TextEditingController password = new TextEditingController();
   TextEditingController phone = new TextEditingController();
   String? _email, _password, _firstName,_lastname, _mobileNumber;
+  DateTime? selectedDate;
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = (await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    ))!;
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
@@ -249,45 +264,82 @@ class _registrationState extends State<registration> {
                                         ),
                                       ],
                                     ),
+                                    // Date of Birth
+                                    Row(
+                                      children: [
 
-                                    //pass
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: size.width / 8,
-                                        width: size.width / 1.25,
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.only(
-                                            right: size.width / 30),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(.1),
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: TextField(
-                                          style: TextStyle(
-                                            color: Colors.white.withOpacity(.9),
-                                          ),
-                                          controller: password,
-                                          obscureText: true,
-                                          onChanged: (value){
-                                            _password=value;
+                                        //date
+                                        InkWell(
+                                          onTap: () {
+                                            _selectDate(context);
                                           },
-                                          // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.password,
-                                              color: Colors.white.withOpacity(.8),
+                                          child: Container(
+                                            height: size.width / 8,
+                                            width: size.width / 2.4,
+                                            alignment: Alignment.center,
+                                            padding:
+                                            EdgeInsets.only(right: size.width / 30),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(.1),
+                                              borderRadius: BorderRadius.circular(20),
                                             ),
-                                            border: InputBorder.none,
-                                            hintMaxLines: 1,
-                                            hintText: 'Password...',
-                                            hintStyle: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white.withOpacity(.5),
+                                            child: selectedDate != null
+                                                ? Text(
+                                              "${selectedDate!.toLocal()}".split(' ')[0],
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(.9),
+                                              ),
+                                            )
+                                                : Text(
+                                              "Select Date of Birth",
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(.5),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
+
+                                        //pass
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: size.width / 8,
+                                            width: size.width / 2.1,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(
+                                                right: size.width / 30),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withOpacity(.1),
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                            child: TextField(
+                                              style: TextStyle(
+                                                color: Colors.white.withOpacity(.9),
+                                              ),
+                                              controller: password,
+                                              obscureText: true,
+                                              onChanged: (value){
+                                                _password=value;
+                                              },
+                                              // keyboardType: isPassword ? TextInputType.name : TextInputType.text,
+                                              decoration: InputDecoration(
+                                                prefixIcon: Icon(
+                                                  Icons.password,
+                                                  color: Colors.white.withOpacity(.8),
+                                                ),
+                                                border: InputBorder.none,
+                                                hintMaxLines: 1,
+                                                hintText: 'Password...',
+                                                hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white.withOpacity(.5),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                      ],
                                     ),
 
 
@@ -297,20 +349,23 @@ class _registrationState extends State<registration> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                       children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Forgotten password!',
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                        Padding(
+                                          padding: const EdgeInsets.only(top:18.0),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              text: 'Forgotten password!',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  HapticFeedback.lightImpact();
+                                                  Fluttertoast.showToast(
+                                                    msg:
+                                                    'Forgotten password! button pressed',
+                                                  );
+                                                },
                                             ),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {
-                                                HapticFeedback.lightImpact();
-                                                Fluttertoast.showToast(
-                                                  msg:
-                                                  'Forgotten password! button pressed',
-                                                );
-                                              },
                                           ),
                                         ),
 
@@ -404,6 +459,7 @@ class _registrationState extends State<registration> {
       "fullName":fname.text.trim() + lname.text.trim(),
       "phone": phone.text.trim(),
       "Password": password.text.trim(),
+      'Date Of Birth': selectedDate!.toLocal().toString().split(' ')[0],
       // "Dob":birthDate,
       // "Gender":Gender,
     };
