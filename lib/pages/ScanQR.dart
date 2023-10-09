@@ -16,48 +16,46 @@ class ScanQR extends StatefulWidget {
 class _ScanQRState extends State<ScanQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
-  bool isQRScanning = false; // Flag to track whether QR scanning is active
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool isScanning = true;
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-
-// Format the date as a string (e.g., "2023-09-21")
-    String formattedDate =
-        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     var firstname = Provider.of<Users>(context).userInfo?.fname ?? "";
-    var lastname = Provider.of<Users>(context).userInfo?.lname ?? "";
     var email = Provider.of<Users>(context).userInfo?.email ?? "";
-    var Occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
 
-    Future<void> addNewAttendance() async {
-// Write the scanned QR code data to Firebase
-      await firestore.collection('Attendance').add({
-        'DateChecked': formattedDate,
-        'username': firstname,
-        'email': email,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+    Future<void> addNewAttendance(String formattedDate) async {
+      if (result != null) {
+        // Write the scanned QR code data to Firebase
+        await firestore.collection('Attendance').add({
+          'DateChecked': formattedDate,
+          'username': firstname,
+          'email': email,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
 
-// Show a pop-up (dialog) with a "Thanks" message
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Thanks'),
-            content: Text('Attendance recorded. Thanks!'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
+        // Show a pop-up (dialog) with a "Thanks" message
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Thanks'),
+              content: Text('Attendance recorded. Thanks!'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    setState(() {
+                      isScanning = true; // Resume scanning
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
 
     return Scaffold(
@@ -66,10 +64,8 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          Visibility(
-            visible: isQRScanning,
-            // Show QR capture view when scanning is active
-            child: Container(
+          if (isScanning)
+            Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.blue, width: 2.0),
                 borderRadius: BorderRadius.circular(12.0),
@@ -85,11 +81,10 @@ class _ScanQRState extends State<ScanQR> {
                       controller.scannedDataStream.listen((barcode) async {
                         setState(() {
                           result = barcode;
-                          isQRScanning =
-                              false; // Stop scanning when QR code is detected
+                          isScanning = false; // Stop scanning after QR code is captured
                         });
 
-// Perform any other actions you need with the scanned data
+                        // Perform any other actions you need with the scanned data
                         print('Scanned QR Code: ${barcode.code}');
                       });
                     },
@@ -97,41 +92,34 @@ class _ScanQRState extends State<ScanQR> {
                 ),
               ),
             ),
-          ),
-          if (result != null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Attendance Code: ${result!.code}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          Container(
-            child: Row(
+          if (!isScanning && result != null)
+            Column(
               children: [
-                Text("Name:"),
-                Text(firstname ?? "loading"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Attendance Code: ${result!.code}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                Text("Name: $firstname"),
+                Text("Email: $email"),
+                ElevatedButton(
+                  onPressed: () {
+                    // Finish the attendance process
+                    DateTime now = DateTime.now();
+
+                    // Format the date as a string (e.g., "2023-09-21")
+                    String formattedDate =
+                        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
+                    addNewAttendance(formattedDate);
+                  },
+                  child: Text('Click Done to Finish Attendance'),
+                ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              Column(children: [
-                Text(email ?? "loading"),
-              ]),
-            ],
-          )
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            isQRScanning = true; // Start scanning when the button is pressed
-            result = null; // Reset the result when scanning starts
-          });
-        },
-        child: Icon(Icons
-            .add_task), // You can replace 'Icons.add' with your desired image
       ),
     );
   }
