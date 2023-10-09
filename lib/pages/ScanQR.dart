@@ -16,13 +16,14 @@ class ScanQR extends StatefulWidget {
 class _ScanQRState extends State<ScanQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
+  bool isQRScanning = false; // Flag to track whether QR scanning is active
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
 
-    // Format the date as a string (e.g., "2023-09-21")
+// Format the date as a string (e.g., "2023-09-21")
     String formattedDate =
         "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     var firstname = Provider.of<Users>(context).userInfo?.fname ?? "";
@@ -31,7 +32,7 @@ class _ScanQRState extends State<ScanQR> {
     var Occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
 
     Future<void> addNewAttendance() async {
-      // Write the scanned QR code data to Firebase
+// Write the scanned QR code data to Firebase
       await firestore.collection('Attendance').add({
         'DateChecked': formattedDate,
         'username': firstname,
@@ -39,7 +40,7 @@ class _ScanQRState extends State<ScanQR> {
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // Show a pop-up (dialog) with a "Thanks" message
+// Show a pop-up (dialog) with a "Thanks" message
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -65,36 +66,34 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 2.0),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            margin: EdgeInsets.all(16.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: QRView(
-                  key: qrKey,
-                  onQRViewCreated: (QRViewController controller) {
-                    controller.scannedDataStream.listen((barcode) async {
-                      setState(() {
-                        result = barcode;
+          Visibility(
+            visible: isQRScanning,
+            // Show QR capture view when scanning is active
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              margin: EdgeInsets.all(16.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: (QRViewController controller) {
+                      controller.scannedDataStream.listen((barcode) async {
+                        setState(() {
+                          result = barcode;
+                          isQRScanning =
+                              false; // Stop scanning when QR code is detected
+                        });
+
+// Perform any other actions you need with the scanned data
+                        print('Scanned QR Code: ${barcode.code}');
                       });
-
-                      // Write the scanned QR code data to Firebase
-                      // await firestore.collection('Attendance').add({
-                      //   'name':firstname,
-                      //   'date':formattedDate,
-                      //   'data': barcode.code,
-                      //   'timestamp': FieldValue.serverTimestamp(),
-                      // });
-
-                      // Perform any other actions you need with the scanned data
-                      print('Scanned QR Code: ${barcode.code}');
-                    });
-                  },
+                    },
+                  ),
                 ),
               ),
             ),
@@ -126,8 +125,10 @@ class _ScanQRState extends State<ScanQR> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your floating button action here
-          addNewAttendance();
+          setState(() {
+            isQRScanning = true; // Start scanning when the button is pressed
+            result = null; // Reset the result when scanning starts
+          });
         },
         child: Icon(Icons
             .add_task), // You can replace 'Icons.add' with your desired image
