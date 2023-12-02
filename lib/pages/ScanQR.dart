@@ -5,6 +5,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/Users.dart';
+import '../progressdialog.dart';
 
 class ScanQR extends StatefulWidget {
   const ScanQR({Key? key}) : super(key: key);
@@ -22,14 +23,21 @@ class _ScanQRState extends State<ScanQR> {
   @override
   Widget build(BuildContext context) {
     var firstname = Provider.of<Users>(context).userInfo?.fname ?? "";
+    var lastname = Provider.of<Users>(context).userInfo?.lname ?? "";
     var email = Provider.of<Users>(context).userInfo?.email ?? "";
+    var phone = Provider.of<Users>(context).userInfo?.phone ?? "";
+    var occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
+    var hometown = Provider.of<Users>(context).userInfo?.hometown ?? "";
 
     Future<void> addNewAttendance(String formattedDate) async {
       if (result != null) {
         // Write the scanned QR code data to Firebase
         await firestore.collection('Attendance').add({
           'DateChecked': formattedDate,
-          'username': firstname,
+          'Occupation': occupation,
+          'HomeTown': hometown,
+          'phone': phone,
+          'username': firstname + lastname,
           'email': email,
           'timestamp': FieldValue.serverTimestamp(),
         });
@@ -106,6 +114,14 @@ class _ScanQRState extends State<ScanQR> {
                 Text("Email: $email"),
                 ElevatedButton(
                   onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return ProgressDialog(
+                          message: "Checking your attendance ,Please wait.....",
+                        );
+                      });
                     // Finish the attendance process
                     DateTime now = DateTime.now();
 

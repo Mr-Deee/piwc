@@ -227,6 +227,7 @@ class _homepageState extends State<homepage> {
                                                       const EdgeInsets.all(8.0),
                                                   child: GestureDetector(
                                                     onTap: () {
+                                                      AssistantMethods.getCurrentOnlineUserInfo(context);
                                                       Navigator.of(context).push(
                                                           MaterialPageRoute(
                                                               builder: (context) =>

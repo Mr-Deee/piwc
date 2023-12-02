@@ -23,6 +23,8 @@ class _MemberProfileState extends State<MemberProfile> {
     var firstname = Provider.of<Users>(context).userInfo?.fname ?? "";
     var lastname = Provider.of<Users>(context).userInfo?.lname ?? "";
     var email = Provider.of<Users>(context).userInfo?.email ?? "";
+    var phone = Provider.of<Users>(context).userInfo?.phone ?? "";
+    var hometown = Provider.of<Users>(context).userInfo?.hometown ?? "";
     var Occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
 
     // var education = Provider.of<otherUsermodel>(context).otherinfo!.Education;
@@ -47,82 +49,81 @@ class _MemberProfileState extends State<MemberProfile> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        //Profile Photo
-                        Container(
-                            width: 130,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 4,
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor),
-                              boxShadow: [
-                                BoxShadow(
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: const Offset(0, 10))
-                              ],
-                              shape: BoxShape.circle,
-
-                              // image: const DecorationImage(
-                              //     fit: BoxFit.cover,
-                              //     image: NetworkImage(
-                              //       "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                              //     ))),
-                            ),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              radius: 70,
-                              backgroundImage: Provider.of<Users>(context)
-                                          .userInfo
-                                          ?.profilepicture !=
-                                      null
-                                  ? NetworkImage(
-                                      Provider.of<Users>(context)
-                                          .userInfo!
-                                          .profilepicture!,
-                                    )
-                                  : null,
-                            )),
-                        //email
-                        Container(
-                            child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "${firstname} " + "${lastname}",
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          //Profile Photo
+                          Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 4,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor),
+                                boxShadow: [
+                                  BoxShadow(
+                                      spreadRadius: 2,
+                                      blurRadius: 10,
+                                      color: Colors.black.withOpacity(0.1),
+                                      offset: const Offset(0, 10))
+                                ],
+                                shape: BoxShape.circle,
+                      
+                                // image: const DecorationImage(
+                                //     fit: BoxFit.cover,
+                                //     image: NetworkImage(
+                                //       "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
+                                //     ))),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                  email ?? "" + " ",
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                radius: 70,
+                                backgroundImage: Provider.of<Users>(context).userInfo?.profilepicture != null
+                                    ?  Image.asset(
+                                  'assets/images/logo.png',
+                                  fit: BoxFit.cover, // You can adjust the BoxFit as needed
+                                ).image
+                                    : null,
+                              )),
+                          //email
+                          Container(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${firstname} " + "${lastname}",
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(
-                                  " ",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    email ?? "" + " ",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )),
-                      ],
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    phone??" ",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 30,
@@ -139,7 +140,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "${Occupation} •",
+                                      "${Occupation} |  ${hometown}",
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.normal,
@@ -174,43 +175,43 @@ class _MemberProfileState extends State<MemberProfile> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(13.0),
-                      child: SizedBox(
-                        height: size.height,
-                        width: width,
-                        child: Card(
-                          color: Colors.white12,
-                          elevation: 8,
-                          shadowColor: Colors.black38,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              side:
-                                  BorderSide(width: 2, color: Colors.white24)),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Text('',
-                                    style: GoogleFonts.openSans(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    )),
-                              ),
-                              // Text(Description??"")
-
-                              // Icon(
-                              //   Icons.add,
-                              //   color: Colors.white,
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(13.0),
+                    //   child: SizedBox(
+                    //     height: size.height,
+                    //     width: width,
+                    //     child: Card(
+                    //       color: Colors.white12,
+                    //       elevation: 8,
+                    //       shadowColor: Colors.black38,
+                    //       shape: const RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.all(
+                    //             Radius.circular(20),
+                    //           ),
+                    //           side:
+                    //               BorderSide(width: 2, color: Colors.white24)),
+                    //       child: Column(
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.all(20.0),
+                    //             child: Text('',
+                    //                 style: GoogleFonts.openSans(
+                    //                   color: Colors.white,
+                    //                   fontWeight: FontWeight.bold,
+                    //                   fontSize: 20,
+                    //                 )),
+                    //           ),
+                    //           // Text(Description??"")
+                    //
+                    //           // Icon(
+                    //           //   Icons.add,
+                    //           //   color: Colors.white,
+                    //           // ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

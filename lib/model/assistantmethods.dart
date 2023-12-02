@@ -29,10 +29,12 @@ class AssistantMethods{
         //     dataSnapShot);ASSIGN DATA FROM SNAPSHOT TO 'USERS' OBJECT
 
         DatabaseEvent event = await reference.once();
+        print(event);
 
         context.read<Users>().setUser(Users.fromMap(Map<String, dynamic>.from(event.snapshot.value as dynamic)));
         print(
             'assistant methods step 7:: assign users data to usersCurrentInfo object');
+        print(Users().fname);
       }
     }
     );

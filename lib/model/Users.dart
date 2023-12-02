@@ -48,7 +48,7 @@ class Users extends ChangeNotifier {
       id: map['id'],
       email: map["email"],
       Residence: map["Residence"],
-      hometown: map["homeTown"],
+      hometown: map["HomeTown"],
       languge: map["language"],
       DOB: map["Date Of Birth"],
       Occupation: map["Occupation"],
