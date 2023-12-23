@@ -80,7 +80,7 @@ class _ScanQRState extends State<ScanQR> {
               ),
               margin: EdgeInsets.all(16.0),
               child: QRCodeDartScanView(
-                typeCamera: TypeCamera.back,
+                typeCamera: TypeCamera.front,
              heightPreview: 444,
                  widthPreview: 333,
                  key: qrKey,
