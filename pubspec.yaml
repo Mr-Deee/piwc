@@ -50,7 +50,7 @@ dependencies:
   intl: ^0.18.1
   qr_code_dart_scan: ^0.7.3
   excel: ^2.0.1
-  qr_code_dart_scan: ^0.7.3
+
 
 dev_dependencies:
   flutter_test:
