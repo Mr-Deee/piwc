@@ -94,7 +94,7 @@ class _ScanQRState extends State<ScanQR> {
             aspectRatio: 1.0,
             child: QRCodeDartScanView(
               key: qrKey,
-              typeCamera: TypeCamera.back,
+              typeCamera: TypeCamera.front,
               typeScan: TypeScan.live,
               onCapture: onCapture,
             ),
