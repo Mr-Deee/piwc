@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../model/Users.dart';
 import '../progressdialog.dart';
+import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 
 class ScanQR extends StatefulWidget {
   const ScanQR({Key? key}) : super(key: key);
@@ -16,7 +14,9 @@ class ScanQR extends StatefulWidget {
 
 class _ScanQRState extends State<ScanQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
+  // Barcode? result;
+  QRCodeDartScanController? controller;
+  String result="";
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isScanning = true;
 
@@ -37,7 +37,7 @@ class _ScanQRState extends State<ScanQR> {
           'Occupation': occupation,
           'HomeTown': hometown,
           'phone': phone,
-          'username': firstname + lastname,
+          'username': '$firstname $lastname',
           'email': email,
           'timestamp': FieldValue.serverTimestamp(),
         });
@@ -79,25 +79,19 @@ class _ScanQRState extends State<ScanQR> {
                 borderRadius: BorderRadius.circular(12.0),
               ),
               margin: EdgeInsets.all(16.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: QRView(
-                    key: qrKey,
-                    onQRViewCreated: (QRViewController controller) {
-                      controller.scannedDataStream.listen((barcode) async {
-                        setState(() {
-                          result = barcode;
-                          isScanning = false; // Stop scanning after QR code is captured
-                        });
+              child: QRCodeDartScanView(
 
-                        // Perform any other actions you need with the scanned data
-                        print('Scanned QR Code: ${barcode.code}');
-                      });
-                    },
-                  ),
-                ),
+
+                key: qrKey,
+                onCapture: (capturedQr)  {
+                  setState(() {
+                    result = capturedQr as String;
+                    isScanning = false; // Stop scanning after QR code is captured
+                  });
+
+                  // Perform any other actions you need with the scanned data
+                  print('Scanned QR Code: $capturedQr');
+                },
               ),
             ),
           if (!isScanning && result != null)
@@ -106,7 +100,7 @@ class _ScanQRState extends State<ScanQR> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Attendance Code: ${result!.code}',
+                    'Attendance Code: ${result}',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -115,13 +109,13 @@ class _ScanQRState extends State<ScanQR> {
                 ElevatedButton(
                   onPressed: () {
                     showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return ProgressDialog(
-                          message: "Checking your attendance ,Please wait.....",
-                        );
-                      });
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return ProgressDialog(
+                            message: "Checking your attendance, Please wait.....",
+                          );
+                        });
                     // Finish the attendance process
                     DateTime now = DateTime.now();
 
