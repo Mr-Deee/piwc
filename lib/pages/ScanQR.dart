@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../model/Users.dart';
 import '../progressdialog.dart';
@@ -17,7 +17,7 @@ class ScanQR extends StatefulWidget {
 
 class _ScanQRState extends State<ScanQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
+  Result? result;
   Result? resultData;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isScanning = true;
