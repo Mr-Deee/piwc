@@ -162,7 +162,7 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          if (isScanning && !kIsWeb)
+          if (isScanning)
             buildQrCodeScanner(), // Show QR code scanner if scanning
           if (!isScanning && resultData != null)
             buildScannedData(), // Show scanned data if not scanning
