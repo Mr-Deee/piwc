@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:qr_code_scanner/qr_code_scanner.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../model/Users.dart';
 import '../progressdialog.dart';
 
@@ -33,16 +33,16 @@ class _ScanQRState extends State<ScanQR> {
 
 
     Future<void> addNewAttendance(String formattedDate) async {
-      if (result != null) {
+      if (firstname != null) {
         // Write the scanned QR code data to Firebase
         await firestore.collection('Attendance').add({
-          'DateChecked': formattedDate,
-          'Occupation': occupation,
-          'HomeTown': hometown,
-          'phone': phone,
-          'username': '$firstname $lastname',
-          'email': email,
-          'timestamp': FieldValue.serverTimestamp(),
+          'DateChecked': formattedDate??"",
+          'Occupation': occupation??"",
+          'HomeTown': hometown??"",
+          'phone': phone??"",
+          'username': '$firstname $lastname'??"",
+          'email': email??"",
+          'timestamp': FieldValue.serverTimestamp()??"",
         });
 
         // Show a pop-up (dialog) with a "Thanks" message
@@ -117,7 +117,8 @@ class _ScanQRState extends State<ScanQR> {
           Text("Name: $firstname $lastname"),
           Text("Email: $email"),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              // Show the progress dialog
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -127,17 +128,30 @@ class _ScanQRState extends State<ScanQR> {
                   );
                 },
               );
-              // Finish the attendance process
-              DateTime now = DateTime.now();
 
-              // Format the date as a string (e.g., "2023-09-21")
-              String formattedDate =
-                  "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+              try {
+                // Finish the attendance process
+                DateTime now = DateTime.now();
 
-              addNewAttendance(formattedDate);
+                // Format the date as a string (e.g., "2023-09-21")
+                String formattedDate =
+                    "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
+                // Perform your attendance process (assuming addNewAttendance is an asynchronous function)
+                await addNewAttendance(formattedDate);
+
+                // Close the dialog after completing the attendance process
+                // Navigator.pop(context);
+              } catch (error) {
+                // Handle errors here, if any
+                print('Error: $error');
+                // Close the dialog in case of an error
+                // Navigator.pop(context);
+              }
             },
             child: Text('Click Done to Finish Attendance'),
           ),
+
         ],
       );
     }
@@ -148,7 +162,7 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          if (isScanning)
+          if (isScanning && !kIsWeb)
             buildQrCodeScanner(), // Show QR code scanner if scanning
           if (!isScanning && resultData != null)
             buildScannedData(), // Show scanned data if not scanning
