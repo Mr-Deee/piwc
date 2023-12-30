@@ -1,11 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/Users.dart';
 import '../progressdialog.dart';
-import 'dart:io' show Platform;
-
+import 'dart:html' as html; // Add this import for web support
 class ScanQR extends StatefulWidget {
   const ScanQR({Key? key}) : super(key: key);
 
@@ -15,15 +15,10 @@ class ScanQR extends StatefulWidget {
 
 class _ScanQRState extends State<ScanQR> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
+  Result? result;
+  Result? resultData;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool isScanning = true;
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +29,18 @@ class _ScanQRState extends State<ScanQR> {
     var occupation = Provider.of<Users>(context).userInfo?.Occupation ?? "";
     var hometown = Provider.of<Users>(context).userInfo?.hometown ?? "";
 
+
     Future<void> addNewAttendance(String formattedDate) async {
       if (firstname != null) {
         // Write the scanned QR code data to Firebase
         await firestore.collection('Attendance').add({
-          'DateChecked': formattedDate ?? "",
-          'Occupation': occupation ?? "",
-          'HomeTown': hometown ?? "",
-          'phone': phone ?? "",
-          'username': '$firstname $lastname' ?? "",
-          'email': email ?? "",
-          'timestamp': FieldValue.serverTimestamp() ?? "",
+          'DateChecked': formattedDate??"",
+          'Occupation': occupation??"",
+          'HomeTown': hometown??"",
+          'phone': phone??"",
+          'username': '$firstname $lastname'??"",
+          'email': email??"",
+          'timestamp': FieldValue.serverTimestamp()??"",
         });
 
         // Show a pop-up (dialog) with a "Thanks" message
@@ -72,15 +68,16 @@ class _ScanQRState extends State<ScanQR> {
     }
 
     // Function to handle QR code capture
-    void onCapture(String result) {
+    void onCapture(Result result) {
       setState(() {
         isScanning = false; // Stop scanning after QR code is captured
+        resultData = result;
       });
 
       // Perform any other actions you need with the scanned data
       print('Scanned QR Code: $result');
     }
-
+    bool isWeb() => html.window.runtimeType.toString() == "_GWDartWindow";
     // Widget for displaying the QR code scanner
     Widget buildQrCodeScanner() {
       return Container(
@@ -91,14 +88,14 @@ class _ScanQRState extends State<ScanQR> {
         margin: EdgeInsets.all(16.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: QRView(
-            key: qrKey,
-            onQRViewCreated: (controller) {
-              this.controller = controller;
-              controller.scannedDataStream.listen((scanData) {
-                onCapture(scanData.code!);
-              });
-            },
+          child: AspectRatio(
+            aspectRatio: 1.0,
+            child: QRCodeDartScanView(
+              key: qrKey,
+              typeCamera: TypeCamera.front,
+              typeScan: TypeScan.live,
+              onCapture: onCapture,
+            ),
           ),
         ),
       );
@@ -108,13 +105,13 @@ class _ScanQRState extends State<ScanQR> {
     Widget buildScannedData() {
       return Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Text(
-          //     // 'Attendance Code: ${controller?.qrCode ?? ""}',
-          //     style: TextStyle(fontSize: 16),
-          //   ),
-          // ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Attendance Code: ${resultData ?? ""}',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
           Text("Name: $firstname $lastname"),
           Text("Email: $email"),
           ElevatedButton(
@@ -152,6 +149,7 @@ class _ScanQRState extends State<ScanQR> {
             },
             child: Text('Click Done to Finish Attendance'),
           ),
+
         ],
       );
     }
@@ -162,10 +160,13 @@ class _ScanQRState extends State<ScanQR> {
       ),
       body: Column(
         children: <Widget>[
-          if (isScanning) buildQrCodeScanner(), // Show QR code scanner if scanning
-          if (!isScanning && controller != null) buildScannedData(), // Show scanned data if not scanning
+          if (isScanning && !isWeb())
+            buildQrCodeScanner(), // Show QR code scanner if scanning
+          if (!isScanning && resultData != null)
+            buildScannedData(), // Show scanned data if not scanning
         ],
       ),
     );
   }
+
 }
