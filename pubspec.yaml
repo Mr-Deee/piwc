@@ -48,7 +48,9 @@ dependencies:
   google_fonts: 
   # ^3.0.1
   intl: ^0.18.1
-  qr_code_dart_scan: ^0.7.3
+  camera: ^0.9.4
+  qr_code_scanner: ^0.7.0
+#  qr_code_dart_scan: ^0.7.3
   excel: ^2.0.1
 
 
