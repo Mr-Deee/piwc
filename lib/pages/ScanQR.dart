@@ -113,14 +113,33 @@ class _ScanQRState extends State<ScanQR> {
         margin: EdgeInsets.all(16.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: QRCodeDartScanView(
-              key: qrKey,
-              typeCamera: TypeCamera.back,
-              typeScan:  determineScanType(),
-              onCapture: onCapture,
-            ),
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 1.0,
+                child: QRCodeDartScanView(
+                  key: qrKey,
+                  typeCamera: TypeCamera.back,
+                  typeScan:  determineScanType(),
+                  onCapture: onCapture,
+                ),
+              ),
+
+              // Add a capture button for web
+              if (kIsWeb)
+                ElevatedButton(
+                  onPressed: () {
+
+                    // buildScannedData();
+                    // Perform capture action
+                    // You can call onCapture manually or perform custom logic
+                    // when the button is pressed on the web
+                    // For example:
+
+                  },
+                  child: Text('Capture'),
+                ),
+            ],
           ),
         ),
       );
