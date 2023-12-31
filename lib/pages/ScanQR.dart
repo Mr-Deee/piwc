@@ -131,20 +131,20 @@ class _ScanQRState extends State<ScanQR> {
                 ),
               ),
 
-              // Add a capture button for web
-              if (kIsWeb)
-                ElevatedButton(
-                  onPressed: () {
-
-                    // buildScannedData();
-                    // Perform capture action
-                    // You can call onCapture manually or perform custom logic
-                    // when the button is pressed on the web
-                    // For example:
-
-                  },
-                  child: Text('Capture'),
-                ),
+              // // Add a capture button for web
+              // if (kIsWeb)
+              //   ElevatedButton(
+              //     onPressed: () {
+              //
+              //       // buildScannedData();
+              //       // Perform capture action
+              //       // You can call onCapture manually or perform custom logic
+              //       // when the button is pressed on the web
+              //       // For example:
+              //
+              //     },
+              //     child: Text('Capture'),
+              //   ),
             ],
           ),
         ),
@@ -218,44 +218,44 @@ class _ScanQRState extends State<ScanQR> {
         ],
       ),
 
-        floatingActionButton: isScanning
-    ? null // No button while scanning
-        : FloatingActionButton(
-    onPressed: () async {
-      // Show the progress dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ProgressDialog(
-            message: "Checking your attendance, Please wait.....",
-          );
-        },
-      );
-
-      try {
-        // Finish the attendance process
-        DateTime now = DateTime.now();
-
-        // Format the date as a string (e.g., "2023-09-21")
-        String formattedDate =
-            "${now.year}-${now.month.toString().padLeft(2, '0')}-${now
-            .day.toString().padLeft(2, '0')}";
-
-        // Perform your attendance process (assuming addNewAttendance is an asynchronous function)
-        await addNewAttendance(formattedDate);
-
-        // Close the dialog after completing the attendance process
-        Navigator.pop(context);
-      } catch (error) {
-        // Handle errors here, if any
-        print('Error: $error');
-        // Close the dialog in case of an error
-        Navigator.pop(context);
-      }
-    },
-    child: Icon(Icons.done),
-    ),
+    //     floatingActionButton: isScanning
+    // ? null // No button while scanning
+    //     : FloatingActionButton(
+    // onPressed: () async {
+    //   // Show the progress dialog
+    //   showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (BuildContext context) {
+    //       return ProgressDialog(
+    //         message: "Checking your attendance, Please wait.....",
+    //       );
+    //     },
+    //   );
+    //
+    //   try {
+    //     // Finish the attendance process
+    //     DateTime now = DateTime.now();
+    //
+    //     // Format the date as a string (e.g., "2023-09-21")
+    //     String formattedDate =
+    //         "${now.year}-${now.month.toString().padLeft(2, '0')}-${now
+    //         .day.toString().padLeft(2, '0')}";
+    //
+    //     // Perform your attendance process (assuming addNewAttendance is an asynchronous function)
+    //     await addNewAttendance(formattedDate);
+    //
+    //     // Close the dialog after completing the attendance process
+    //     Navigator.pop(context);
+    //   } catch (error) {
+    //     // Handle errors here, if any
+    //     print('Error: $error');
+    //     // Close the dialog in case of an error
+    //     Navigator.pop(context);
+    //   }
+    // },
+    // child: Icon(Icons.done),
+    // ),
     );
   }
 }
