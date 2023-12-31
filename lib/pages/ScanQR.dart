@@ -26,6 +26,12 @@ class _ScanQRState extends State<ScanQR> {
 
   Widget build(BuildContext context) {
     // Function to determine scanning type based on platform
+
+
+
+    TypeCamera determineCameraType() {
+      return kIsWeb ? TypeCamera.front : TypeCamera.back;
+    }
     TypeScan determineScanType() {
       return kIsWeb ? TypeScan.takePicture : TypeScan.live;
     }
@@ -119,7 +125,7 @@ class _ScanQRState extends State<ScanQR> {
                 aspectRatio: 1.0,
                 child: QRCodeDartScanView(
                   key: qrKey,
-                  typeCamera: TypeCamera.back,
+                  typeCamera: determineCameraType(),
                   typeScan:  determineScanType(),
                   onCapture: onCapture,
                 ),
