@@ -30,7 +30,7 @@ class _ScanQRState extends State<ScanQR> {
 
 
     TypeCamera determineCameraType() {
-      return kIsWeb ? TypeCamera.front : TypeCamera.front;
+      return kIsWeb ? TypeCamera.front : TypeCamera.back;
     }
     TypeScan determineScanType() {
       return kIsWeb ? TypeScan.takePicture : TypeScan.live;
